@@ -8,29 +8,30 @@ It is a game where the players try to sink the opponents ships.
 The first player to sink all the opponents ships wins.
 
 The game has 3 modes:
-## Player vs Player (PvP)
-## Player vs Ai/Computer (PvA)
-## Ai/Computer vs Ai/Computer (AivAi)
+ - Player vs Player (PvP)
+ - Player vs Ai/Computer (PvA)
+ - Ai/Computer vs Ai/Computer (AivAi)
+
 
 The Game has also some additional functionalities such as:
-    **- Randomly generate the ships
-    - Randomly generate the board
-    - Restart, Quit buttons.
-    - Toggle Cheat Button that reveals/hides the ships
-    - Place Ships button that places the ships automatically.
-    - Winner announcement.
-    - Multiple game modes for the people who are good at the game and would like** to compete against a skilled Computer.
+- Randomly generate the ships
+- Randomly generate the board
+- Restart, Quit buttons.
+- Toggle Cheat Button that reveals/hides the ships
+- Place Ships button that places the ships automatically.
+- Winner announcement.
+- Multiple game modes for the people who are good at the game and would like** to compete against a skilled Computer.
 
-## Team Members
-
-* **`[[Kelvin Likollari]]`** (kelvin.likollari@usi.ch), likolk
-
+## Author
+* **`[[Kelvin Likollari]]`** Contact @  (kelvin.likollari@usi.ch), (kelvilikol13@gmail.com)
 
 ## Project Structure
 
 This project is both a Maven project and a BlueJ project.
 You can open, compile, test, and run the code within BlueJ
-by opening `src/package.bluej`.
+by opening `src/package.bluej`. 
+
+The .xml files have been explicitly written by Mathias Hauswirth, USI (mathias.hauswirth@usi.ch)
 
 You can use Maven to compile, test, and check the code
 by running `mvn` in this top-level directory (see below).
