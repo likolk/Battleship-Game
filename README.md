@@ -1,6 +1,5 @@
 # Project Call of Ship: Water Wars
-Kelvin Likollari and Ilker Kaymak 29 May 2022 - Programming Fundamentals 2 - BattleShip Project
-
+Kelvin Likollari 29 May 2022 - Programming Fundamentals 2 - BattleShip Project
 
 Call of Ships is a clone of the original battleship game.
 
@@ -24,12 +23,8 @@ The Game has also some additional functionalities such as:
 
 ## Team Members
 
-* **`[[Kelvin Likollari](https://github.com/likolk)]`** (kelvin.likollari@usi.ch), likolk
-* **`[[Ilker Kaymak](https://github.com/IlkerKaymak)]`** (kaymai@usi.ch), IlkerKaymak
+* **`[[Kelvin Likollari]]`** (kelvin.likollari@usi.ch), likolk
 
-## The TA who provided us with feedback as the game continued to develop.
-
-* **Diego Marcilio**
 
 ## Project Structure
 

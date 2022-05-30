@@ -1,0 +1,1485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd-cpd>
+   <duplication lines="32" tokens="200">
+      <file column="25" endcolumn="25" endline="523" line="492"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <file column="25" endcolumn="25" endline="555" line="524"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <codefragment><![CDATA[                        lastTurn = "First Player";
+                        // if the user clicks on a ship, the ship will be sunk
+                        // and the score will be increased by 1
+                        // we will also add an event listener to the placeShip button
+                        setHitWithIcon(x2, y2);
+                        if (checkWhetherShipIsSunk(x2, y2)) {
+                            sunkShips++;
+
+                            if (ships[x2][y2].getTypeOfShip() == "Carrier") {
+                                score += 10;
+                                JOptionPane.showMessageDialog(null, "You sunk the Carrier!");
+                            } else if (ships[x2][y2].getTypeOfShip() == "Battleship") {
+                                score += 8;
+                                JOptionPane.showMessageDialog(null, "You sunk the Battleship!");
+
+                            } else if (ships[x2][y2].getTypeOfShip() == "Cruiser") {
+                                score += 6;
+                                JOptionPane.showMessageDialog(null, "You sunk the Cruiser!");
+                            } else if (ships[x2][y2].getTypeOfShip() == "Submarine") {
+                                score += 4;
+                                JOptionPane.showMessageDialog(null, "You sunk the Submarine!");
+                            } else if (ships[x2][y2].getTypeOfShip() == "Destroyer") {
+                                score += 2;
+                                JOptionPane.showMessageDialog(null, "You sunk the Destroyer!");
+                            }
+                        }
+                        playGameWithTurns(x2, y2);
+                        // if game over
+                        if (isGameOver(lastTurn)) {
+                            JOptionPane.showMessageDialog(null, "Player 1 has won the game!");
+                            System.exit(0);
+                        }]]></codefragment>
+   </duplication>
+   <duplication lines="22" tokens="168">
+      <file column="25" endcolumn="25" endline="517" line="496"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <file column="25" endcolumn="25" endline="549" line="528"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <file column="9" endcolumn="9" endline="818" line="797"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <codefragment><![CDATA[                        setHitWithIcon(x2, y2);
+                        if (checkWhetherShipIsSunk(x2, y2)) {
+                            sunkShips++;
+
+                            if (ships[x2][y2].getTypeOfShip() == "Carrier") {
+                                score += 10;
+                                JOptionPane.showMessageDialog(null, "You sunk the Carrier!");
+                            } else if (ships[x2][y2].getTypeOfShip() == "Battleship") {
+                                score += 8;
+                                JOptionPane.showMessageDialog(null, "You sunk the Battleship!");
+
+                            } else if (ships[x2][y2].getTypeOfShip() == "Cruiser") {
+                                score += 6;
+                                JOptionPane.showMessageDialog(null, "You sunk the Cruiser!");
+                            } else if (ships[x2][y2].getTypeOfShip() == "Submarine") {
+                                score += 4;
+                                JOptionPane.showMessageDialog(null, "You sunk the Submarine!");
+                            } else if (ships[x2][y2].getTypeOfShip() == "Destroyer") {
+                                score += 2;
+                                JOptionPane.showMessageDialog(null, "You sunk the Destroyer!");
+                            }
+                        }]]></codefragment>
+   </duplication>
+   <duplication lines="37" tokens="158">
+      <file column="36" endcolumn="26" endline="639" line="603"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="27" endcolumn="26" endline="966" line="933"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[            while (isValid == false) { // while the move is not valid
+                x1 = player.shootPlayerRow(scannerino); // get the x coordinate
+                y1 = player.shootPlayerCol(scannerino); // get the y coordinate
+                if (aiFieldForAi.isValidMoveV2(x1, y1)) { // If the move of the ai is valid.
+                    if (aiFieldForAi.checkWhetherHitWasSuccessful(x1, y1)) { // If the move of the ai is a hit.
+                        playerScore++; // Increase the player's score.
+                        System.out.println("Ship Hit! Congratulations!");
+                        System.out.println("Current Score: " + playerScore);
+                        aiRoomsLeft--; // Decrease the number of rooms left for the ai.
+                        aiFieldForPlayer.setHit(x1, y1);  // Set the hit on the player's field.
+                        aiFieldForAi.setHit(x1, y1); // Set the hit on the ai's field.
+                    } else { // If the move of the ai is a miss.
+                        System.out.println("Ship Missed! Try again!");
+                        aiFieldForPlayer.setMissed(x1, y1); // Set the missed on the player's field.
+                        aiFieldForAi.setMissed(x1, y1); // Set the missed on the ai's field.
+                    }
+                    isValid = true; // The move is valid.
+                }
+            }
+        } catch (Exception ex) { // if the move is not valid
+            System.out.println(ex.getMessage()); // print the error message
+        }
+    }
+
+
+
+
+    /**
+     * This method asks the ai to make a move.
+     */
+    public static void aiTurnToMakeAMove() {
+        try {  // try to make a move
+            int x1;  // x coordinate
+            int y1; // y coordinate
+            boolean isValid = false; // whether the move is valid. Default is false.
+            int[] move; // the move
+            while (isValid == false) {]]></codefragment>
+   </duplication>
+   <duplication lines="38" tokens="152">
+      <file column="17" endcolumn="56" endline="282" line="245"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="17" endcolumn="56" endline="360" line="323"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[                } // if the input is between 0 and 9
+                row = input; // set the row number
+                valid = true; // set the boolean to true
+            } else if (scannerino.hasNextLine()) { // if the input is a string
+                scannerino.nextLine(); // get the input
+                int bufferLength = 0; // buffer length
+                try { // try to get the length of the input
+                    bufferLength = System.in.available(); // checks if the system.in buffer is empty
+                } catch (IOException ex) { // if something goes wrong
+                    ex.printStackTrace(); // print the stack trace
+                }
+                if (bufferLength > 0) { // if the input is not empty
+                    scannerino.nextLine(); // get the input
+                }
+                // print the message to the user
+                System.out.println("Invalid input.");
+            }
+        }
+        return row;
+    }
+
+    /**
+     * Method that asks the user in which column shall the ship be placed.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the column number where the ship shall be placed as an integer
+     */
+    public int inWhichRowToPutShipForSecondPlayer(Scanner scannerino) {
+        int row = 0; // row number
+        int col = 0; // column number
+        boolean valid = false; // boolean to check if the input is valid
+        // the input is valid if the input is a number between 0 and 9
+        while (valid == false) { // while the input is not valid
+            // print the message to the user
+            System.out.println("Enter the row number you want to place your ship: ");
+            if (scannerino.hasNextInt()) { // if the input is an integer
+                int input = scannerino.nextInt(); // get the input
+                if (input < 0 || input > this.fieldLength - 1) { // if the input is not between 0 and 9
+                    System.out.println("Invalid input.");]]></codefragment>
+   </duplication>
+   <duplication lines="37" tokens="148">
+      <file column="83" endcolumn="17" endline="394" line="358"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Ship.java"/>
+      <file column="81" endcolumn="17" endline="454" line="416"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Ship.java"/>
+      <codefragment><![CDATA[            int[] shipCoordinates = checkWhetherShipCanBePlacedInGrid(destroyer, 2);
+            int x1 = shipCoordinates[0];
+            int y1 = shipCoordinates[1];
+            boolean dir = true;
+            if (shipCoordinates[2] == 0) {
+                dir = false;
+            } else {
+                dir = true;
+            }
+            destroyer.placeShipGUI(x1, y1, dir, destroyer);
+        }
+    }
+
+
+    /**
+     * Method that places the submarine ship.
+     */
+    public static void placeSubmarine() {
+        for (int i = 0; i < 3; i++) {
+            Submarine submarine = new Submarine(i + 1);
+            int[] shipCoordinates = checkWhetherShipCanBePlacedInGrid(submarine, 3);
+            int x1 = shipCoordinates[0];
+            int y1 = shipCoordinates[1];
+            boolean dir = true;
+            if (shipCoordinates[2] == 0) {
+                dir = false;
+            } else {
+                dir = true;
+            }
+            submarine.placeShipGUI(x1, y1, dir, submarine);
+        }
+    }
+
+    /**
+     * Method that places the battleship ship.
+     */
+    public static void placeBattleship() {]]></codefragment>
+   </duplication>
+   <duplication lines="32" tokens="147">
+      <file column="47" endcolumn="37" endline="694" line="663"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="32" endcolumn="37" endline="734" line="703"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[            System.out.println(ex.getMessage()); // Print the error message.
+        }
+    }
+
+
+    /**
+     * This method asks the machine to make a move.
+     */
+    public static void makeAIMove() {
+        try {
+            Thread.sleep(1000);
+            boolean hit = false;
+            int x1;
+            int y1;
+            int[] move;
+            while (hit) {
+                move = ai.generateAiMove();
+                x1 = move[0];
+                y1 = move[1];
+                // if valid move
+                if (playerField.isValidMoveV2(x1, y1)) {
+                    if (playerField.checkWhetherHitWasSuccessful(x1, y1)) {
+                        System.out.println("AI hit a ship!");
+                        Thread.sleep(1000);
+                        System.out.println("Your ship was hit at position " + x1 + "," + y1 + ".");
+                        Thread.sleep(1000);
+                        aiRoomsLeft--;
+                        playerField.setHit(x1, y1); // update the player field
+                        aiField.setHit(x1, y1); // update the AI field
+                    } else {
+                        System.out.println("AI missed!");
+                        Thread.sleep(1000);]]></codefragment>
+   </duplication>
+   <duplication lines="22" tokens="141">
+      <file column="36" endcolumn="17" endline="660" line="639"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="27" endcolumn="17" endline="987" line="966"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[            while (isValid == false) {
+                move = ai.generateAiMove(); // get the move
+                x1 = move[0]; // x coordinate
+                y1 = move[1]; // y coordinate
+                if (playerFieldForPlayer.isValidMoveV2(x1, y1)) { // If the move of the player is valid.
+                    if (playerFieldForPlayer.checkWhetherHitWasSuccessful(x1, y1)) { // If the move of the player is a hit.
+                        String str = String.format("The Machine has hit your ship at row %d, column %d.\n", x1, y1);
+                        System.out.println(str);
+                        aiScore++; // Increase the ai's score.
+                        System.out.println("Current Score: " + aiScore);
+                        secondAiRoomsLeft--; // Decrease the number of rooms left.
+                        aiFieldForSecondAi.setHit(x1, y1); // Set the hit in the ai's field.
+                        aiFieldForSecondAi.setHit(x1, y1); // Set the hit in the player's field.
+                    } else { // If the move of the player is a miss.
+                        String str = String.format("The Machine's attack at row %d, column %d has been a miss.\n", x1, y1);
+                        System.out.println(str);
+
+                        aiFieldForSecondAi.setMissed(x1, y1); // Set the miss in the player's field.
+                        aiFieldForAi.setMissed(x1, y1); // Set the miss in the ai's field.
+                    }
+                    isValid = true; // The move is valid.
+                }]]></codefragment>
+   </duplication>
+   <duplication lines="34" tokens="140">
+      <file column="5" endcolumn="41" endline="177" line="144"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="5" endcolumn="41" endline="217" line="184"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[    }
+
+    /**
+     * Method that lets the player shoot a row.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the row that the player wants to shoot as an integer
+     */
+    public int shootPlayerRow(Scanner scannerino) {
+        int row = 0; // row number
+        int col = 0; // column number
+        boolean valid = false; // boolean to check if the input is valid
+        // the input is valid if the input is a number between 0 and 9
+        while (valid == false) { // while the input is not valid
+            // print the message to the user
+            System.out.println("Enter the row number you want to attack: ");
+            if (scannerino.hasNextInt()) { // if the input is an integer
+                int input = scannerino.nextInt(); // get the input
+                if (input < 0 || input >= this.fieldLength) { // if the input is not between 0 and 9
+                    System.out.println("Invalid input. Please enter a number between 0 and 9.");
+                } else { // if the input is between 0 and 9
+                    row = input; // set the row number
+                    valid = true; // set the boolean to true
+                }
+            } else if (scannerino.hasNextLine()) { // if the input is a string
+                scannerino.nextLine(); // get the input
+                int bufferLength = 0; // buffer length
+                try { // try to get the length of the input
+                    bufferLength = System.in.available(); // checks if the system.in buffer is empty
+                    // TODO: Fix empty catch block
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                if (bufferLength > 0) { // if the input is not empty
+                    scannerino.nextLine(); // get the input]]></codefragment>
+   </duplication>
+   <duplication lines="26" tokens="131">
+      <file column="49" endcolumn="14" endline="176" line="151"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <file column="55" endcolumn="15" endline="233" line="208"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <codefragment><![CDATA[                    public void actionPerformed(ActionEvent event) {
+                        final int[] a = button.getValues();
+                        if (g.shoot(a[1], a[0])) {
+                            // change the color of the cell we shot
+                            // using an event listener
+                            getCell();
+                            Object source = event.getSource();
+                            if (source instanceof Component) {
+                                Button but = (Button) source;
+                                ((Component) source).setBackground(GREEN);
+                                s1++;
+                            }
+                        } else if (button.getBackground() != GREEN) { // if the button is not black
+                            button.setBackground(YELLOW);
+                        }
+                    }
+                });
+                panel2.add(cellButtons[x][y]);
+            }
+        }
+        panel2.setBackground(PINK);
+        panel2.setBorder(createDashedBorder(ORANGE));
+        panel2.setBackground(YELLOW);
+
+        // Add the grid panel to the frame
+        JPanel panel22 = new JPanel();]]></codefragment>
+   </duplication>
+   <duplication lines="38" tokens="131">
+      <file column="68" endcolumn="46" endline="290" line="253"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="46" endcolumn="43" endline="339" line="302"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[                System.out.println("Your answer was not recognized");
+            }
+        }
+    }
+
+    /**
+     * This method is used to set the ships manually.
+     * @param scannerino the scanner object that is used to get the user input.
+     */
+    public static void setPlayerShipsManually(Scanner scannerino) {
+        int x1;
+        int y1;
+        String direction;
+        boolean isValid;
+        String str = "Please enter a ship of length ";
+        for (int size : shipSizes) {
+            System.out.println(str + size + ".");
+            isValid = false;
+            while (isValid == false) {
+                x1 = player.inWhichRowToPutShip(scannerino);
+                y1 = player.inWhichColToPutShip(scannerino);
+                direction = player.whichDirectionToPutShip(scannerino);
+
+                if (playerFieldForPlayer.isValidPlacementForShip(x1, y1, size, direction, true)) {
+                    playerFieldForPlayer.setShipOfDifferentSize(x1, y1, direction, size, player.getSymbol());
+                    updateGameDisplay(playerFieldForPlayer, aiFieldForPlayer);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Method that sets the player ship on the field automatically.
+     * @param x1 the x coordinate
+     * @param y1 the y coordinate
+     */
+    public static void setPlayerShipsManually(int x1, int y1) {]]></codefragment>
+   </duplication>
+   <duplication lines="36" tokens="129">
+      <file column="13" endcolumn="38" endline="202" line="167"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="38" endline="281" line="248"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="38" endline="321" line="287"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="38" endline="359" line="326"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[            } else if (scannerino.hasNextLine()) { // if the input is a string
+                scannerino.nextLine(); // get the input
+                int bufferLength = 0; // buffer length
+                try { // try to get the length of the input
+                    bufferLength = System.in.available(); // checks if the system.in buffer is empty
+                    // TODO: Fix empty catch block
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                if (bufferLength > 0) { // if the input is not empty
+                    scannerino.nextLine(); // get the input
+                }
+                // print the message to the user
+                System.out.println("Invalid input. Please enter a number between 0 and 9.");
+            }
+        }
+        return row;
+    }
+
+    /**
+     * Method that lets the player shoot a column.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the column that the player wants to shoot as an integer
+     */
+    // similar to above, now attack the column instead
+    public int shootPlayerCol(Scanner scannerino) {
+        int row = 0; // row number
+        int col = 0; // column number
+        boolean valid = false; // boolean to check if the input is valid
+        // the input is valid if the input is a number between 0 and 9
+        while (valid == false) { // while the input is not valid
+            // print the message to the user
+            System.out.println("Enter the column number you want to attack: ");
+            if (scannerino.hasNextInt()) { // if the input is an integer
+                int input = scannerino.nextInt(); // get the input
+                if (input < 0 || input >= this.fieldLength) { // if the input is not between 0 and 9]]></codefragment>
+   </duplication>
+   <duplication lines="38" tokens="108">
+      <file column="87" endcolumn="44" endline="363" line="326"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="96" endcolumn="34" endline="412" line="376"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[                    updateGameDisplay(playerFieldForPlayer, secondPlayerFieldForPlayer);
+                    break;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * This method places ships randomly on the field.
+     * @param field       the field on which the ships will be placed.
+     * @param gamePlayers the game players to place the ship on.
+     */
+    public static void placeShipRandomlyV2(Field field, GamePlayers gamePlayers) {
+        boolean isFree; // If the ship can be placed.
+        for (int size : shipSizes) { // Loop through the ships.
+            isFree = false; // The ship is not placed.
+            while (isFree == false) { // While the ship is not placed.
+                int rx = gamePlayers.generateRandomXCoordinate(); // Generate a random x coordinate.
+                int ry = gamePlayers.generateRandomYCoordinate(); // Generate a random y coordinate.
+                String direction = gamePlayers.generateRandomDirectionForAi(); // Randomly choose a direction.
+
+
+                if (field.isValidPlacementForShip(rx, ry, size, direction, false)) { // If the ship can be placed.
+                    field.directionOnWhereToSetShip(rx, ry, direction, size, ai.getSymbol()); // Set the ship.
+                    // isFree = true; // The ship is placed.
+                    break; // Break the loop.
+                }
+            }
+        }
+    }
+
+    /**
+     * Method that places ships randomly on the field in pvp mode.
+     * @param field      the field on which the ships will be placed
+     * @param gamePlayers the game players to place the ship on
+     */
+    public static void placeShipRandomlyPVP(Field field, GamePlayers gamePlayers) {]]></codefragment>
+   </duplication>
+   <duplication lines="33" tokens="102">
+      <file column="5" endcolumn="10" endline="469" line="437"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Field.java"/>
+      <file column="5" endcolumn="10" endline="499" line="472"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Field.java"/>
+      <codefragment><![CDATA[    }
+
+
+    /**
+     * The following method sets ships of various sizes 2 to 5 in the field.
+     *
+     * @param x1        the x coordinate of where the ship is placed.
+     * @param y1        the y coordinate of where the ship is placed.
+     * @param direction the direction of the ship.
+     * @param size      the size of the ship.
+     * @param symbol    the symbol of the ship.
+     */
+    public void setShipOfDifferentSize(int x1, int y1, String direction, int size, String symbol) {
+
+        if ("v".equals(direction)) { // vertical
+            for (int i = 0; i < size; i++) {
+                cells[x1 + i][y1].setOccupiedByShip(symbol);
+            }
+        } else if ("h".equals(direction)) { // horizontal
+            for (int j = 0; j < size; j++) {
+                cells[x1][y1 + j].setOccupiedByShip(symbol);
+            }
+        }
+    }
+
+    /**
+     * The following method checks whether a shot is valid or not.
+     *
+     * @param x1 x coordinate of the shot.
+     * @param y1 y coordinate of the shot.
+     * @return true if the shot is valid, false otherwise.
+     */
+    public boolean checkWhetherHitWasSuccessful(int x1, int y1) {]]></codefragment>
+   </duplication>
+   <duplication lines="24" tokens="97">
+      <file column="17" endcolumn="37" endline="367" line="344"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="17" endcolumn="37" endline="393" line="371"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[                int rx = gamePlayers.generateRandomXCoordinate(); // Generate a random x coordinate.
+                int ry = gamePlayers.generateRandomYCoordinate(); // Generate a random y coordinate.
+                String direction = gamePlayers.generateRandomDirectionForAi(); // Randomly choose a direction.
+
+
+                if (field.isValidPlacementForShip(rx, ry, size, direction, false)) { // If the ship can be placed.
+                    field.directionOnWhereToSetShip(rx, ry, direction, size, ai.getSymbol()); // Set the ship.
+                    // isFree = true; // The ship is placed.
+                    break; // Break the loop.
+                }
+            }
+        }
+    }
+
+    /**
+     * Method that places ships randomly on the field in pvp mode.
+     * @param field      the field on which the ships will be placed
+     * @param gamePlayers the game players to place the ship on
+     */
+    public static void placeShipRandomlyPVP(Field field, GamePlayers gamePlayers) {
+        boolean isFree; // If the ship can be placed.
+        for (int size : shipSizes) { // Loop through the ships.
+            isFree = false; // The ship is not placed.
+            while (isFree == false) { // While the ship is not placed.]]></codefragment>
+   </duplication>
+   <duplication lines="13" tokens="90">
+      <file column="9" endcolumn="13" endline="303" line="291"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="17" endcolumn="21" endline="618" line="606"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="17" endcolumn="21" endline="948" line="936"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[        if (playerFieldForPlayer.isValidMoveV2(x1, y1)) { // If the move is valid.
+            if (playerFieldForPlayer.checkWhetherHitWasSuccessful(x1, y1)) { // If the move is a hit.
+                playerScore++; // Increase the player's score.
+                System.out.println("Ship Hit! Congratulations!");
+                System.out.println("Current Score: " + playerScore);
+                aiRoomsLeft--; // Decrease the number of rooms left for the ai.
+                aiFieldForPlayer.setHit(x1, y1);  // Set the hit on the player's field.
+                aiFieldForAi.setHit(x1, y1); // Set the hit on the ai's field.
+            } else { // If the move is a miss.
+                System.out.println("Ship Missed! Try again!");
+                aiFieldForPlayer.setMissed(x1, y1); // Set the missed on the player's field.
+                aiFieldForAi.setMissed(x1, y1); // Set the missed on the ai's field.
+            }]]></codefragment>
+   </duplication>
+   <duplication lines="29" tokens="87">
+      <file column="5" endcolumn="14" endline="781" line="753"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="5" endcolumn="11" endline="846" line="816"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[    }
+
+    /**
+     * This method asks the player what symbol he wants to use for the Ai ships.
+     * @param scannerino the scanner that is used to get the input.
+     */
+    public static void getAiShipSymbol(Scanner scannerino) {
+        String input;
+        boolean validInput = false;
+        while (validInput == false) {
+            System.out.println("What symbol do you want to use for your ships?");
+            input = scannerino.nextLine();
+            if (input.length() != 1) {
+                System.out.println("Please enter a single character input.");
+                continue;
+            } else {
+                ai = new Ai(input, FIELD_SIZE);
+                validInput = true;
+                break;
+            }
+        }
+    }
+
+    /**
+     * This method gets the player's symbol.
+     * @param scannerino the scanner that is used to get the input.
+     */
+    public static void getPlayerShipSymbol(Scanner scannerino) {
+        String input;]]></codefragment>
+   </duplication>
+   <duplication lines="33" tokens="82">
+      <file column="9" endcolumn="5" endline="114" line="82"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Ai.java"/>
+      <file column="9" endcolumn="5" endline="493" line="461"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[        return AI_SHIPS_NUMBER;
+    }
+
+    /**
+     * Method that generates a random X coordinate
+     * for the AI.
+     * @return the random X coordinate.
+     */
+    public int generateRandomAiXCoordinate() {
+        Random random = new Random();
+        return random.nextInt(FIELD_SIZE);
+    }
+
+    /**
+     * Method that generates a random Y coordinate for the AI.
+     * @return the random Y coordinate.
+     */
+    public int generateRandomAiYCoordinate() {
+        Random random = new Random();
+        return random.nextInt(FIELD_SIZE);
+    }
+
+
+    /**
+     * Method that generates a random move for the AI.
+     * @return the random move (i.e. its coordinates).
+     */
+    public int[] generateAiMove() {
+        int[] randomMove = new int[2]; // an array with two elements, x and y coordinates
+        randomMove[0] = generateRandomAiXCoordinate(); // set x coordinate randomly
+        randomMove[1] = generateRandomAiYCoordinate(); // set y coordinate randomly
+        return randomMove;
+    }]]></codefragment>
+   </duplication>
+   <duplication lines="23" tokens="80">
+      <file column="13" endcolumn="56" endline="243" line="221"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="56" endline="322" line="300"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="56" endline="360" line="339"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[            }
+        }
+        return col;
+    }
+
+    /**
+     * Method that asks the user in which row shall the ship be placed.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the row number where the ship shall be placed as an integer
+     */
+    // WHERE DOES THE PLAYER WANT TO PUT THEIR SHIP (row)
+    public int inWhichRowToPutShip(Scanner scannerino) {
+        int row = 0; // row number
+        int col = 0; // column number
+        boolean valid = false; // boolean to check if the input is valid
+        // the input is valid if the input is a number between 0 and 9
+        while (valid == false) { // while the input is not valid
+            // print the message to the user
+            System.out.println("Enter the row number you want to place your ship: ");
+            if (scannerino.hasNextInt()) { // if the input is an integer
+                int input = scannerino.nextInt(); // get the input
+                if (input < 0 || input > this.fieldLength - 1) { // if the input is not between 0 and 9
+                    System.out.println("Invalid input.");]]></codefragment>
+   </duplication>
+   <duplication lines="27" tokens="78">
+      <file column="17" endcolumn="10" endline="271" line="245"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="17" endcolumn="10" endline="311" line="284"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="17" endcolumn="10" endline="387" line="361"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[                } // if the input is between 0 and 9
+                row = input; // set the row number
+                valid = true; // set the boolean to true
+            } else if (scannerino.hasNextLine()) { // if the input is a string
+                scannerino.nextLine(); // get the input
+                int bufferLength = 0; // buffer length
+                try { // try to get the length of the input
+                    bufferLength = System.in.available(); // checks if the system.in buffer is empty
+                } catch (IOException ex) { // if something goes wrong
+                    ex.printStackTrace(); // print the stack trace
+                }
+                if (bufferLength > 0) { // if the input is not empty
+                    scannerino.nextLine(); // get the input
+                }
+                // print the message to the user
+                System.out.println("Invalid input.");
+            }
+        }
+        return row;
+    }
+
+    /**
+     * Method that asks the user in which column shall the ship be placed.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the column number where the ship shall be placed as an integer
+     */
+    public int inWhichRowToPutShipForSecondPlayer(Scanner scannerino) {]]></codefragment>
+   </duplication>
+   <duplication lines="25" tokens="76">
+      <file column="10" endcolumn="31" endline="363" line="339"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <file column="64" endcolumn="36" endline="408" line="394"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <codefragment><![CDATA[        });
+
+        restart.addMouseListener(new java.awt.event.MouseAdapter() {
+            /**
+             * Invoked when the mouse button is hovering over the button.
+             *
+             * @param evt the event to be processed
+             */
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                restart.setBackground(ORANGE);
+                restart.setForeground(GREEN);
+            }
+
+            /**
+             * Invoked when the mouse button is no longer hovering over the button.
+             *
+             * @param evt the event to be processed
+             */
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                restart.setForeground(BLACK);
+                restart.setBackground(CYAN);
+            }
+        });
+
+        quit.addActionListener(e -> quitGame(1));]]></codefragment>
+   </duplication>
+   <duplication lines="13" tokens="74">
+      <file column="36" endcolumn="15" endline="247" line="235"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <file column="11" endcolumn="19" endline="272" line="261"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <codefragment><![CDATA[        JPanel panel3 = new JPanel();
+        JButton restart = new JButton("Restart");
+
+        restart.setFont(new Font("Comfortaa", Font.PLAIN, 30));
+        restart.setBackground(PINK);
+        restart.setForeground(BLACK);
+
+        JButton quit = new JButton("Quit");
+        quit.setFont(new Font("Comfortaa", Font.PLAIN, 30));
+        quit.setBackground(CYAN);
+        quit.setForeground(RED);
+
+        JButton rules = new JButton("Rules");]]></codefragment>
+   </duplication>
+   <duplication lines="25" tokens="74">
+      <file column="9" endcolumn="12" endline="363" line="339"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <file column="9" endcolumn="17" endline="474" line="461"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <codefragment><![CDATA[        });
+
+        restart.addMouseListener(new java.awt.event.MouseAdapter() {
+            /**
+             * Invoked when the mouse button is hovering over the button.
+             *
+             * @param evt the event to be processed
+             */
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                restart.setBackground(ORANGE);
+                restart.setForeground(GREEN);
+            }
+
+            /**
+             * Invoked when the mouse button is no longer hovering over the button.
+             *
+             * @param evt the event to be processed
+             */
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                restart.setForeground(BLACK);
+                restart.setBackground(CYAN);
+            }
+        });
+
+        quit.addActionListener(e -> quitGame(1));]]></codefragment>
+   </duplication>
+   <duplication lines="15" tokens="73">
+      <file column="64" endcolumn="18" endline="408" line="394"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <file column="10" endcolumn="17" endline="474" line="461"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <codefragment><![CDATA[            button.addActionListener(e1 -> rulesFrame.dispose());
+            button.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    button.setBackground(RED);
+                    button.setForeground(GREEN);
+                }
+
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    button.setForeground(RED);
+                    button.setBackground(GREEN);
+                }
+            });
+
+            // set the button's size
+            button.setPreferredSize(new Dimension(100, 100));]]></codefragment>
+   </duplication>
+   <duplication lines="12" tokens="72">
+      <file column="37" endcolumn="13" endline="514" line="503"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Field.java"/>
+      <file column="20" endcolumn="17" endline="522" line="514"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Field.java"/>
+      <codefragment><![CDATA[        for (int i = 1; i < 5; i++) {
+            final int x = random.nextInt(10); // x coordinate
+            final int y = random.nextInt(10); // y coordinate
+            final int dir = random.nextInt(4); // direction
+            // generate a random length number for the ship in the range from 2 to 5
+            final int len = random.nextInt(2);
+            // final int len = arrayListOfShips.get(i).getShipLength();
+            // the above line this produces array index out of bounds exception
+            if (canPlaceShip(x, y, dir, len)) {
+                setCellTrue(x, y);
+                insertShipAtValidCoords(x, y, dir, len);
+            } else {]]></codefragment>
+   </duplication>
+   <duplication lines="26" tokens="71">
+      <file column="13" endcolumn="10" endline="192" line="167"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="10" endline="387" line="364"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[            } else if (scannerino.hasNextLine()) { // if the input is a string
+                scannerino.nextLine(); // get the input
+                int bufferLength = 0; // buffer length
+                try { // try to get the length of the input
+                    bufferLength = System.in.available(); // checks if the system.in buffer is empty
+                    // TODO: Fix empty catch block
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                if (bufferLength > 0) { // if the input is not empty
+                    scannerino.nextLine(); // get the input
+                }
+                // print the message to the user
+                System.out.println("Invalid input. Please enter a number between 0 and 9.");
+            }
+        }
+        return row;
+    }
+
+    /**
+     * Method that lets the player shoot a column.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the column that the player wants to shoot as an integer
+     */
+    // similar to above, now attack the column instead
+    public int shootPlayerCol(Scanner scannerino) {]]></codefragment>
+   </duplication>
+   <duplication lines="19" tokens="70">
+      <file column="17" endcolumn="49" endline="389" line="371"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="17" endcolumn="34" endline="412" line="394"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[                int rx = gamePlayers.generateRandomXCoordinateForSecondPlayer(); // Generate a random y coord
+                int ry = gamePlayers.generateRandomYCoordinateForSecondPlayer(); // Generate a random y coordinate.
+                String direction = gamePlayers.generateRandomDirectionForSecondPlayer(); // Randomly choose a direction.
+
+                if (field.isValidPlacementForShip(rx, ry, size, direction, false)) { // If the ship can be placed.
+                    field.directionOnWhereToSetShip(rx, ry, direction, size, player.getSymbol()); // Set the ship.
+                    // isFree = true; // The ship is placed.
+                    break; // Break the loop.
+                }
+            }
+        }
+    }
+
+    /**
+     * This method is used to place the ships randomly on the field for the second (left) ai.
+     * @param field the field on which the ships will be placed.
+     * @param gamePlayers the game players to place the ship on.
+     */
+    public static void placeShipRandomlySecondAi(Field field, GamePlayers gamePlayers) {]]></codefragment>
+   </duplication>
+   <duplication lines="11" tokens="68">
+      <file column="32" endcolumn="10" endline="261" line="251"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <file column="38" endcolumn="10" endline="282" line="272"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <file column="33" endcolumn="10" endline="361" line="341"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <file column="36" endcolumn="14" endline="405" line="395"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <file column="35" endcolumn="10" endline="473" line="463"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <codefragment><![CDATA[        rules.addMouseListener((new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                rules.setBackground(BLACK);
+                rules.setForeground(PINK);
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                rules.setForeground(BLACK);
+                rules.setBackground(GREEN);
+            }
+        }));]]></codefragment>
+   </duplication>
+   <duplication lines="22" tokens="68">
+      <file column="5" endcolumn="22" endline="220" line="199"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="5" endcolumn="22" endline="248" line="228"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[    }
+
+    /**
+     * This method asks the player to set the ships manually or randomly,
+     * and then set the ships accordingly.
+     * @param scannerino the scanner object that is used to get the user input.
+     */
+    public static void setPlayerShips(Scanner scannerino) {
+        while (true) {
+            // typing yes will set the ships manually, typing no will set the ships randomly
+            System.out.println("Would you like to set your ships manually or randomly?"
+                    +
+                    "\nType 'y' or 'Y' for manual placement "
+                    +
+                    "or 'n' or 'N' for random.");
+            String answer = scannerino.nextLine();
+            if ("y".equals(answer)
+                    || "Y".equals(answer)) { // if the player wants to set the ships manually
+                setPlayerShipsManually(scannerino);
+                break;
+            } else if ("n".equals(answer)
+                    || "N".equals(answer)) { // if the player wants to set the ships randomly]]></codefragment>
+   </duplication>
+   <duplication lines="19" tokens="68">
+      <file column="83" endcolumn="27" endline="376" line="358"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Ship.java"/>
+      <file column="83" endcolumn="27" endline="395" line="378"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Ship.java"/>
+      <file column="84" endcolumn="27" endline="414" line="397"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Ship.java"/>
+      <file column="81" endcolumn="27" endline="433" line="416"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Ship.java"/>
+      <codefragment><![CDATA[            int[] shipCoordinates = checkWhetherShipCanBePlacedInGrid(destroyer, 2);
+            int x1 = shipCoordinates[0];
+            int y1 = shipCoordinates[1];
+            boolean dir = true;
+            if (shipCoordinates[2] == 0) {
+                dir = false;
+            } else {
+                dir = true;
+            }
+            destroyer.placeShipGUI(x1, y1, dir, destroyer);
+        }
+    }
+
+
+    /**
+     * Method that places the submarine ship.
+     */
+    public static void placeSubmarine() {
+        for (int i = 0; i < 3; i++) {]]></codefragment>
+   </duplication>
+   <duplication lines="22" tokens="64">
+      <file column="13" endcolumn="38" endline="202" line="181"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="38" endline="242" line="221"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[            }
+        }
+        return row;
+    }
+
+    /**
+     * Method that lets the player shoot a column.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the column that the player wants to shoot as an integer
+     */
+    // similar to above, now attack the column instead
+    public int shootPlayerCol(Scanner scannerino) {
+        int row = 0; // row number
+        int col = 0; // column number
+        boolean valid = false; // boolean to check if the input is valid
+        // the input is valid if the input is a number between 0 and 9
+        while (valid == false) { // while the input is not valid
+            // print the message to the user
+            System.out.println("Enter the column number you want to attack: ");
+            if (scannerino.hasNextInt()) { // if the input is an integer
+                int input = scannerino.nextInt(); // get the input
+                if (input < 0 || input >= this.fieldLength) { // if the input is not between 0 and 9]]></codefragment>
+   </duplication>
+   <duplication lines="18" tokens="60">
+      <file column="5" endcolumn="38" endline="161" line="144"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="5" endcolumn="38" endline="242" line="224"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="5" endcolumn="38" endline="281" line="264"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="5" endcolumn="38" endline="321" line="303"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="5" endcolumn="38" endline="359" line="342"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[    }
+
+    /**
+     * Method that lets the player shoot a row.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the row that the player wants to shoot as an integer
+     */
+    public int shootPlayerRow(Scanner scannerino) {
+        int row = 0; // row number
+        int col = 0; // column number
+        boolean valid = false; // boolean to check if the input is valid
+        // the input is valid if the input is a number between 0 and 9
+        while (valid == false) { // while the input is not valid
+            // print the message to the user
+            System.out.println("Enter the row number you want to attack: ");
+            if (scannerino.hasNextInt()) { // if the input is an integer
+                int input = scannerino.nextInt(); // get the input
+                if (input < 0 || input >= this.fieldLength) { // if the input is not between 0 and 9]]></codefragment>
+   </duplication>
+   <duplication lines="8" tokens="59">
+      <file column="9" endcolumn="18" endline="133" line="126"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="9" endcolumn="19" endline="142" line="135"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[        System.out.println("VVVVVVVV           VVVVVVVVIIIIIIIIII      CCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTT     OOOOOOOOO     RRRRRRRRRRRRRRRRR   YYYYYYY       YYYYYYY !!!");
+        System.out.println("V::::::V           V::::::VI::::::::I   CCC::::::::::::CT:::::::::::::::::::::T   OO:::::::::OO   R::::::::::::::::R  Y:::::Y       Y:::::Y!!:!!");
+        System.out.println("V::::::V           V::::::VI::::::::I CC:::::::::::::::CT:::::::::::::::::::::T OO:::::::::::::OO R::::::RRRRRR:::::R Y:::::Y       Y:::::Y!:::!");
+        System.out.println("V::::::V           V::::::VII::::::IIC:::::CCCCCCCC::::CT:::::TT:::::::TT:::::TO:::::::OOO:::::::ORR:::::R     R:::::RY::::::Y     Y::::::Y!:::!");
+        System.out.println("V:::::V           V:::::V   I::::I C:::::C       CCCCCCTTTTTT  T:::::T  TTTTTTO::::::O   O::::::O  R::::R     R:::::RYYY:::::Y   Y:::::YYY!:::!");
+        System.out.println("V:::::V         V:::::V    I::::IC:::::C                      T:::::T        O:::::O     O:::::O  R::::R     R:::::R   Y:::::Y Y:::::Y   !:::!");
+        System.out.println("V:::::V       V:::::V     I::::IC:::::C                      T:::::T        O:::::O     O:::::O  R::::RRRRRR:::::R     Y:::::Y:::::Y    !:::!");
+        System.out.println("V:::::V     V:::::V      I::::IC:::::C                      T:::::T        O:::::O     O:::::O  R:::::::::::::RR       Y:::::::::Y     !:::!");]]></codefragment>
+   </duplication>
+   <duplication lines="18" tokens="58">
+      <file column="42" endcolumn="38" endline="711" line="694"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="42" endcolumn="39" endline="751" line="734"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[                        Thread.sleep(1000);
+                        System.out.println("Your ship was not hit at position " + x + "," + y + ".");
+                        playerField.setMissed(x1, y1); // update the player field
+                        aiField.setMissed(x1, y1); // update the AI field
+                    }
+                    hit = true;
+                }
+            }
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    /**
+     * This method asks the player to make a move.
+     */
+    public static void makePlayerMove() {]]></codefragment>
+   </duplication>
+   <duplication lines="10" tokens="56">
+      <file column="13" endcolumn="41" endline="217" line="208"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="41" endline="257" line="248"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="41" endline="296" line="287"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="41" endline="335" line="326"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="41" endline="373" line="364"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[            } else if (scannerino.hasNextLine()) { // if the input is a string
+                scannerino.nextLine(); // get the input
+                int bufferLength = 0; // buffer length
+                try { // try to get the length of the input
+                    bufferLength = System.in.available(); // checks if the system.in buffer is empty
+                } catch (IOException ex) { // if something goes wrong
+                    ex.printStackTrace(); // print the stack trace
+                }
+                if (bufferLength > 0) { // if the input is not empty
+                    scannerino.nextLine(); // get the input}]]></codefragment>
+   </duplication>
+   <duplication lines="12" tokens="55">
+      <file column="20" endcolumn="17" endline="178" line="167"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="20" endcolumn="17" endline="258" line="248"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="20" endcolumn="17" endline="297" line="287"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="20" endcolumn="17" endline="336" line="326"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="20" endcolumn="17" endline="374" line="364"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="17" endline="400" line="390"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="17" endline="441" line="431"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[            } else if (scannerino.hasNextLine()) { // if the input is a string
+                scannerino.nextLine(); // get the input
+                int bufferLength = 0; // buffer length
+                try { // try to get the length of the input
+                    bufferLength = System.in.available(); // checks if the system.in buffer is empty
+                    // TODO: Fix empty catch block
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                if (bufferLength > 0) { // if the input is not empty
+                    scannerino.nextLine(); // get the input
+                }]]></codefragment>
+   </duplication>
+   <duplication lines="18" tokens="55">
+      <file column="83" endcolumn="17" endline="375" line="358"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Ship.java"/>
+      <file column="84" endcolumn="17" endline="413" line="397"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Ship.java"/>
+      <file column="81" endcolumn="17" endline="432" line="416"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Ship.java"/>
+      <file column="81" endcolumn="17" endline="454" line="435"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Ship.java"/>
+      <codefragment><![CDATA[            int[] shipCoordinates = checkWhetherShipCanBePlacedInGrid(destroyer, 2);
+            int x1 = shipCoordinates[0];
+            int y1 = shipCoordinates[1];
+            boolean dir = true;
+            if (shipCoordinates[2] == 0) {
+                dir = false;
+            } else {
+                dir = true;
+            }
+            destroyer.placeShipGUI(x1, y1, dir, destroyer);
+        }
+    }
+
+
+    /**
+     * Method that places the submarine ship.
+     */
+    public static void placeSubmarine() {]]></codefragment>
+   </duplication>
+   <duplication lines="8" tokens="54">
+      <file column="38" endcolumn="28" endline="119" line="112"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/JWelcome.java"/>
+      <file column="38" endcolumn="30" endline="126" line="119"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/JWelcome.java"/>
+      <codefragment><![CDATA[        labelOne.setBounds(-120, -250, 1920, 1080);
+        panel.add(labelOne);
+
+        JLabel labelTwo = new JLabel("© Likollari Kelvin - Kaymak Ilker");
+        labelTwo.setHorizontalAlignment(SwingConstants.CENTER);
+        labelTwo.setForeground(RED);
+        labelTwo.setFont(new Font(font, Font.BOLD, 50));
+        labelTwo.setBounds(-110, -120, 1920, 1080);]]></codefragment>
+   </duplication>
+   <duplication lines="10" tokens="54">
+      <file column="20" endcolumn="41" endline="217" line="208"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="41" endline="399" line="390"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="13" endcolumn="41" endline="440" line="431"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[            } else if (scannerino.hasNextLine()) { // if the input is a string
+                scannerino.nextLine(); // get the input
+                int bufferLength = 0; // buffer length
+                try { // try to get the length of the input
+                    bufferLength = System.in.available(); // checks if the system.in buffer is empty
+                } catch (IOException ex) { // if something goes wrong
+                    ex.printStackTrace(); // print the stack trace
+                }
+                if (bufferLength > 0) { // if the input is not empty
+                    scannerino.nextLine(); // get the input}]]></codefragment>
+   </duplication>
+   <duplication lines="20" tokens="53">
+      <file column="69" endcolumn="13" endline="634" line="615"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="47" endcolumn="13" endline="672" line="654"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="85" endcolumn="13" endline="961" line="945"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[                        System.out.println("Ship Missed! Try again!");
+                        aiFieldForPlayer.setMissed(x1, y1); // Set the missed on the player's field.
+                        aiFieldForAi.setMissed(x1, y1); // Set the missed on the ai's field.
+                    }
+                    isValid = true; // The move is valid.
+                }
+            }
+        } catch (Exception ex) { // if the move is not valid
+            System.out.println(ex.getMessage()); // print the error message
+        }
+    }
+
+
+
+
+    /**
+     * This method asks the ai to make a move.
+     */
+    public static void aiTurnToMakeAMove() {
+        try {  // try to make a move]]></codefragment>
+   </duplication>
+   <duplication lines="9" tokens="53">
+      <file column="13" endcolumn="30" endline="685" line="677"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="13" endcolumn="30" endline="725" line="717"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="13" endcolumn="30" endline="972" line="965"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[            int[] move;
+            while (hit) {
+                move = ai.generateAiMove();
+                x1 = move[0];
+                y1 = move[1];
+                // if valid move
+                if (playerField.isValidMoveV2(x1, y1)) {
+                    if (playerField.checkWhetherHitWasSuccessful(x1, y1)) {
+                        System.out.println("AI hit a ship!");]]></codefragment>
+   </duplication>
+   <duplication lines="12" tokens="52">
+      <file column="32" endcolumn="21" endline="899" line="888"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="23" endcolumn="21" endline="911" line="899"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[            System.out.println("You won the game with a score of "
+                    + playerScore
+                    + " to " + aiScore
+                    + ".");
+        } else if (playerScore < aiScore) {
+            System.out.println("You lost the game with a score of "
+                    + playerScore
+                    + " to " + aiScore
+                    + ".");
+        } else if (playerScore > secondPlayerScore) {
+            System.out.println("Player 1 won the game "
+                    + "with a score of "]]></codefragment>
+   </duplication>
+   <duplication lines="7" tokens="51">
+      <file column="9" endcolumn="18" endline="132" line="126"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="9" endcolumn="19" endline="142" line="136"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[        System.out.println("VVVVVVVV           VVVVVVVVIIIIIIIIII      CCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTT     OOOOOOOOO     RRRRRRRRRRRRRRRRR   YYYYYYY       YYYYYYY !!!");
+        System.out.println("V::::::V           V::::::VI::::::::I   CCC::::::::::::CT:::::::::::::::::::::T   OO:::::::::OO   R::::::::::::::::R  Y:::::Y       Y:::::Y!!:!!");
+        System.out.println("V::::::V           V::::::VI::::::::I CC:::::::::::::::CT:::::::::::::::::::::T OO:::::::::::::OO R::::::RRRRRR:::::R Y:::::Y       Y:::::Y!:::!");
+        System.out.println("V::::::V           V::::::VII::::::IIC:::::CCCCCCCC::::CT:::::TT:::::::TT:::::TO:::::::OOO:::::::ORR:::::R     R:::::RY::::::Y     Y::::::Y!:::!");
+        System.out.println("V:::::V           V:::::V   I::::I C:::::C       CCCCCCTTTTTT  T:::::T  TTTTTTO::::::O   O::::::O  R::::R     R:::::RYYY:::::Y   Y:::::YYY!:::!");
+        System.out.println("V:::::V         V:::::V    I::::IC:::::C                      T:::::T        O:::::O     O:::::O  R::::R     R:::::R   Y:::::Y Y:::::Y   !:::!");
+        System.out.println("V:::::V       V:::::V     I::::IC:::::C                      T:::::T        O:::::O     O:::::O  R::::RRRRRR:::::R     Y:::::Y:::::Y    !:::!");]]></codefragment>
+   </duplication>
+   <duplication lines="11" tokens="50">
+      <file column="9" endcolumn="14" endline="897" line="887"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="16" endcolumn="14" endline="919" line="909"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[        if (playerScore > aiScore) {
+            System.out.println("You won the game with a score of "
+                    + playerScore
+                    + " to " + aiScore
+                    + ".");
+        } else if (playerScore < aiScore) {
+            System.out.println("You lost the game with a score of "
+                    + playerScore
+                    + " to " + aiScore
+                    + ".");
+        } else if (playerScore > secondPlayerScore) {]]></codefragment>
+   </duplication>
+   <duplication lines="9" tokens="47">
+      <file column="35" endcolumn="23" endline="141" line="133"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/JWelcome.java"/>
+      <file column="43" endcolumn="25" endline="158" line="149"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/JWelcome.java"/>
+      <codefragment><![CDATA[        quit.setFont(new Font(font, Font.BOLD, 30));
+        quit.setBorderPainted(true);
+        quit.setOpaque(true);
+        quit.setBorder(null);
+
+        quit.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent event) {
+                System.exit(0);]]></codefragment>
+   </duplication>
+   <duplication lines="28" tokens="46">
+      <file column="9" endcolumn="10" endline="109" line="82"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Ai.java"/>
+      <file column="9" endcolumn="10" endline="149" line="125"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Ai.java"/>
+      <file column="9" endcolumn="10" endline="488" line="461"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[        return AI_SHIPS_NUMBER;
+    }
+
+    /**
+     * Method that generates a random X coordinate
+     * for the AI.
+     * @return the random X coordinate.
+     */
+    public int generateRandomAiXCoordinate() {
+        Random random = new Random();
+        return random.nextInt(FIELD_SIZE);
+    }
+
+    /**
+     * Method that generates a random Y coordinate for the AI.
+     * @return the random Y coordinate.
+     */
+    public int generateRandomAiYCoordinate() {
+        Random random = new Random();
+        return random.nextInt(FIELD_SIZE);
+    }
+
+
+    /**
+     * Method that generates a random move for the AI.
+     * @return the random move (i.e. its coordinates).
+     */
+    public int[] generateAiMove() {]]></codefragment>
+   </duplication>
+   <duplication lines="7" tokens="46">
+      <file column="36" endcolumn="30" endline="645" line="639"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="23" endcolumn="30" endline="685" line="678"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="23" endcolumn="30" endline="725" line="718"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[            while (isValid == false) {
+                move = ai.generateAiMove(); // get the move
+                x1 = move[0]; // x coordinate
+                y1 = move[1]; // y coordinate
+                if (playerFieldForPlayer.isValidMoveV2(x1, y1)) { // If the move of the player is valid.
+                    if (playerFieldForPlayer.checkWhetherHitWasSuccessful(x1, y1)) { // If the move of the player is a hit.
+                        String str = String.format("The Machine has hit your ship at row %d, column %d.\n", x1, y1);]]></codefragment>
+   </duplication>
+   <duplication lines="15" tokens="45">
+      <file column="27" endcolumn="65" endline="234" line="220"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="28" endcolumn="67" endline="262" line="248"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[                    || "N".equals(answer)) { // if the player wants to set the ships randomly
+                System.out.println("You have chosen to set your ships randomly.");
+                placeShipRandomlyV2(playerFieldForPlayer, player);
+                break;
+            } else {
+                System.out.println("Your answer was not recognized");
+            }
+        }
+    }
+
+    /**
+     * This method is used to set the SECOND PLAYER's ships automatically.
+     * @param scannerino the scanner object that is used to get the user input.
+     */
+    public static void setSecondPlayerShips(Scanner scannerino) {]]></codefragment>
+   </duplication>
+   <duplication lines="7" tokens="44">
+      <file column="29" endcolumn="28" endline="112" line="106"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/JWelcome.java"/>
+      <file column="27" endcolumn="28" endline="119" line="113"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/JWelcome.java"/>
+      <file column="27" endcolumn="30" endline="126" line="120"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/JWelcome.java"/>
+      <codefragment><![CDATA[        panel.setLayout(null);
+
+        JLabel labelOne = new JLabel("Welcome to Battleship: Call of Ships!");
+        labelOne.setHorizontalAlignment(SwingConstants.CENTER);
+        labelOne.setForeground(PINK);
+        labelOne.setFont(new Font(font, Font.BOLD, 50));
+        labelOne.setBounds(-120, -250, 1920, 1080);]]></codefragment>
+   </duplication>
+   <duplication lines="30" tokens="44">
+      <file column="5" endcolumn="32" endline="603" line="574"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <file column="5" endcolumn="22" endline="647" line="634"
+            path="/Users/cuenc/Documents/PF2-Project/src/gui/Main.java"/>
+      <codefragment><![CDATA[    }
+
+    /**
+     * This method restarts the game.
+     *
+     * @param mode the mode of the game, should be an integer
+     */
+    public static void restartGame(int mode) {
+        if (mode == 1) {
+            // ask the user whether he truly wants to restart the game
+            int restart = JOptionPane.showConfirmDialog(null, "Are you sure you want to restart the game?", "Restart Game", JOptionPane.YES_NO_OPTION);
+            if (restart == JOptionPane.YES_OPTION) {
+                // if yes, we will reset the game
+                //                hideCheatMode();
+                //                for (int i = 0; i < 10; i++) {
+                //                    for (int j = 0; j < 10; j++) {
+                //                        // we will reset the grid
+                //                        ships[i][j] = new ResettedGrid(0);
+                //                        if (!cellButtons[i][j].isEnabled()) {
+                //                            cellButtons[i][j].setEnabled(true);
+                //                            cellButtons[i][j].setBackground(Color.CYAN);
+                //                        }
+                //                    }
+                //                }
+                //                totalNumberOfMoves = 0;
+                //                totalMoves.setText("Total Moves: " + totalNumberOfMoves);
+                //                sunkShips = 0;
+                //                score = 0;
+                //                // todo: specify player 1 and player 2 score. + Add more things to reset
+                restartGameLoops(1);]]></codefragment>
+   </duplication>
+   <duplication lines="8" tokens="43">
+      <file column="20" endcolumn="59" endline="31" line="24"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="20" endcolumn="65" endline="33" line="25"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="20" endcolumn="51" endline="35" line="27"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="20" endcolumn="61" endline="37" line="29"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="18" endcolumn="59" endline="30" line="24"
+            path="/Users/cuenc/Documents/PF2-Project/src/tui/TuiUtil.java"/>
+      <codefragment><![CDATA[    private static Field playerField = new Field(); // player field
+    private static Field aiField = new Field(); // ai field
+
+    private static Field aiFieldForPlayer = new Field(); // ai field for player
+
+    private static Field aiFieldForSecondAi = new Field(); // ai field for AI2
+
+    private static Field playerFieldForPlayer = new Field(); // player field for player]]></codefragment>
+   </duplication>
+   <duplication lines="11" tokens="43">
+      <file column="38" endcolumn="30" endline="571" line="561"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <file column="38" endcolumn="36" endline="584" line="576"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Game.java"/>
+      <codefragment><![CDATA[                    Thread.sleep(3000);
+                    System.out.println("Finally, a real person has won the game.");
+                    player.wonTheGame(); // The player won the game.
+
+
+                    break;
+                case "ai":
+                    System.out.println("Wow");
+                    Thread.sleep(1000);
+                    System.out.println("The computer has");
+                    System.out.println("won the game.");]]></codefragment>
+   </duplication>
+   <duplication lines="6" tokens="43">
+      <file column="9" endcolumn="18" endline="131" line="126"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <file column="9" endcolumn="19" endline="142" line="137"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Player.java"/>
+      <codefragment><![CDATA[        System.out.println("VVVVVVVV           VVVVVVVVIIIIIIIIII      CCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTT     OOOOOOOOO     RRRRRRRRRRRRRRRRR   YYYYYYY       YYYYYYY !!!");
+        System.out.println("V::::::V           V::::::VI::::::::I   CCC::::::::::::CT:::::::::::::::::::::T   OO:::::::::OO   R::::::::::::::::R  Y:::::Y       Y:::::Y!!:!!");
+        System.out.println("V::::::V           V::::::VI::::::::I CC:::::::::::::::CT:::::::::::::::::::::T OO:::::::::::::OO R::::::RRRRRR:::::R Y:::::Y       Y:::::Y!:::!");
+        System.out.println("V::::::V           V::::::VII::::::IIC:::::CCCCCCCC::::CT:::::TT:::::::TT:::::TO:::::::OOO:::::::ORR:::::R     R:::::RY::::::Y     Y::::::Y!:::!");
+        System.out.println("V:::::V           V:::::V   I::::I C:::::C       CCCCCCTTTTTT  T:::::T  TTTTTTO::::::O   O::::::O  R::::R     R:::::RYYY:::::Y   Y:::::YYY!:::!");
+        System.out.println("V:::::V         V:::::V    I::::IC:::::C                      T:::::T        O:::::O     O:::::O  R::::R     R:::::R   Y:::::Y Y:::::Y   !:::!");]]></codefragment>
+   </duplication>
+   <duplication lines="10" tokens="43">
+      <file column="17" endcolumn="74" endline="74" line="65"
+            path="/Users/cuenc/Documents/PF2-Project/src/tui/TuiUtil.java"/>
+      <file column="28" endcolumn="72" endline="96" line="81"
+            path="/Users/cuenc/Documents/PF2-Project/src/tui/TuiUtil.java"/>
+      <codefragment><![CDATA[                "╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░░░░╚═╝░░░╚══════╝╚══════╝╚═════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░");
+        System.out.println("\n");
+        System.out.println("Welcome to Battleship : Call of Ships \n"
+                + "© By Kelvin Likollari & Ilker Kaymak \n");
+        System.out.println("\n");
+
+//        Thread.sleep(2000);
+        System.out.println("BattleShip is a game where you try to sink the enemy's ships");
+//        Thread.sleep(2000);
+        System.out.println("The goal is to sink all of the enemy's ships.");]]></codefragment>
+   </duplication>
+   <duplication lines="9" tokens="41">
+      <file column="22" endcolumn="10" endline="27" line="19"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Battleship.java"/>
+      <file column="19" endcolumn="10" endline="28" line="20"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Carrier.java"/>
+      <file column="19" endcolumn="10" endline="27" line="19"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Cruiser.java"/>
+      <file column="21" endcolumn="10" endline="27" line="19"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Destroyer.java"/>
+      <file column="24" endcolumn="10" endline="28" line="19"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/ResettedGrid.java"/>
+      <file column="21" endcolumn="10" endline="27" line="19"
+            path="/Users/cuenc/Documents/PF2-Project/src/model/Submarine.java"/>
+      <codefragment><![CDATA[    public Battleship(int size, int positionX, int positionY, boolean isshot, boolean issunk, boolean isHidden, boolean isHit) {
+        super(size, positionX, positionY, isshot, issunk, isHidden, isHit);
+    }
+    
+    /**
+     * Constructor of class Battleship.
+     * @param identifier is used to identify a Battleship
+     */
+    public Battleship(int identifier) {]]></codefragment>
+   </duplication>
+</pmd-cpd>

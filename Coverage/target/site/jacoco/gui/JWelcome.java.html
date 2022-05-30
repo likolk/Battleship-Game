@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JWelcome.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">project</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">JWelcome.java</span></div><h1>JWelcome.java</h1><pre class="source lang-java linenums">package gui;
+
+// Commented the ones below because i'm given error: Too many static imports may lead to messy code
+// if we remove the *
+import static java.awt.Color.BLACK;
+import static java.awt.Color.MAGENTA;
+import static java.awt.Color.PINK;
+import static java.awt.Color.RED;
+import static java.awt.Color.YELLOW;
+
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.EmptyBorder;
+
+
+
+/**
+ * This class is the welcome screen for the game.
+ * @author kelvin.likollari@usi.ch
+ */
+public class JWelcome extends JFrame {
+
+    /**
+     * Launch the application.
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+<span class="nc" id="L39">        new JWelcome().setVisible(true);</span>
+<span class="nc" id="L40">    }</span>
+
+
+    /**
+     * The following constructor creates the frame.
+     */
+    public JWelcome() {
+<span class="nc" id="L47">        super();</span>
+<span class="nc" id="L48">        EventQueue.invokeLater(new Runnable() {</span>
+            public void run() {
+                try {
+<span class="nc" id="L51">                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());</span>
+<span class="nc" id="L52">                } catch (ClassNotFoundException</span>
+                         | InstantiationException
+                         | IllegalAccessException
+                         | UnsupportedLookAndFeelException ex) {
+<span class="nc" id="L56">                    ex.printStackTrace();</span>
+<span class="nc" id="L57">                }</span>
+
+                //JFrame frame = new JFrame(&quot;Battleship: Call Of Ships&quot;);
+                //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                //frame.pack();
+                //frame.setLocationRelativeTo(null);
+                //frame.setVisible(true);
+<span class="nc" id="L64">            }</span>
+        });
+<span class="nc" id="L66">        clickOnWelcome();</span>
+<span class="nc" id="L67">        setJwelcomeWindowStuff();</span>
+<span class="nc" id="L68">    }</span>
+
+    /**
+     * ClickOnWelcome method containing the key event listeners.
+     */
+    public void clickOnWelcome() {
+
+<span class="nc" id="L75">        addKeyListener(new KeyAdapter() {</span>
+            @Override
+            public void keyPressed(KeyEvent event) {
+
+<span class="nc bnc" id="L79" title="All 2 branches missed.">                if (event.getKeyCode() == KeyEvent.VK_ENTER) {</span>
+<span class="nc" id="L80">                    JWelcome.this.dispose(); // closes the frame</span>
+                    // and open the src/gui/Main.java class
+<span class="nc" id="L82">                    new JWelcome().setVisible(true);</span>
+                }
+<span class="nc" id="L84">            }</span>
+        });
+<span class="nc" id="L86">    }</span>
+
+    /**
+     * Method that sets the window for the jwelcome window.
+     */
+    public void setJwelcomeWindowStuff() {
+
+<span class="nc" id="L93">        final String font = &quot;Comfortaa&quot;;</span>
+
+<span class="nc" id="L95">        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L96">        setBounds(00, 00, 1920, 1080);</span>
+<span class="nc" id="L97">        JPanel contentPane = new JPanel();</span>
+<span class="nc" id="L98">        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));</span>
+<span class="nc" id="L99">        setContentPane(contentPane);</span>
+<span class="nc" id="L100">        contentPane.setLayout(null);</span>
+
+<span class="nc" id="L102">        JPanel panel = new JPanel();</span>
+<span class="nc" id="L103">        panel.setBackground(BLACK);</span>
+<span class="nc" id="L104">        panel.setBounds(00, 00, 1920, 1080);</span>
+<span class="nc" id="L105">        contentPane.add(panel);</span>
+<span class="nc" id="L106">        panel.setLayout(null);</span>
+
+<span class="nc" id="L108">        JLabel labelOne = new JLabel(&quot;Welcome to Battleship: Call of Ships!&quot;);</span>
+<span class="nc" id="L109">        labelOne.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L110">        labelOne.setForeground(PINK);</span>
+<span class="nc" id="L111">        labelOne.setFont(new Font(font, Font.BOLD, 50));</span>
+<span class="nc" id="L112">        labelOne.setBounds(-120, -250, 1920, 1080);</span>
+<span class="nc" id="L113">        panel.add(labelOne);</span>
+
+<span class="nc" id="L115">        JLabel labelTwo = new JLabel(&quot;© Likollari Kelvin - Kaymak Ilker&quot;);</span>
+<span class="nc" id="L116">        labelTwo.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L117">        labelTwo.setForeground(RED);</span>
+<span class="nc" id="L118">        labelTwo.setFont(new Font(font, Font.BOLD, 50));</span>
+<span class="nc" id="L119">        labelTwo.setBounds(-110, -120, 1920, 1080);</span>
+<span class="nc" id="L120">        panel.add(labelTwo);</span>
+
+<span class="nc" id="L122">        JLabel labelThree = new JLabel(&quot;What would you like to do?&quot;);</span>
+<span class="nc" id="L123">        labelThree.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L124">        labelThree.setForeground(YELLOW);</span>
+<span class="nc" id="L125">        labelThree.setFont(new Font(font, Font.BOLD, 50));</span>
+<span class="nc" id="L126">        labelThree.setBounds(-70, 0, 1920, 1080);</span>
+<span class="nc" id="L127">        panel.add(labelThree);</span>
+
+<span class="nc" id="L129">        JButton quit = new JButton(&quot;Quit&quot;);</span>
+<span class="nc" id="L130">        quit.setBounds(630, 620, 100, 50);</span>
+<span class="nc" id="L131">        quit.setBackground(MAGENTA);</span>
+<span class="nc" id="L132">        quit.setForeground(BLACK);</span>
+<span class="nc" id="L133">        quit.setFont(new Font(font, Font.BOLD, 30));</span>
+<span class="nc" id="L134">        quit.setBorderPainted(true);</span>
+<span class="nc" id="L135">        quit.setOpaque(true);</span>
+<span class="nc" id="L136">        quit.setBorder(null);</span>
+
+<span class="nc" id="L138">        quit.addMouseListener(new MouseAdapter() {</span>
+            @Override
+            public void mouseClicked(MouseEvent event) {
+<span class="nc" id="L141">                System.exit(0);</span>
+<span class="nc" id="L142">            }</span>
+        });
+
+<span class="nc" id="L145">        JButton start = new JButton(&quot;Start Playing&quot;);</span>
+<span class="nc" id="L146">        start.setBounds(820, 620, 250, 50);</span>
+<span class="nc" id="L147">        start.setBackground(MAGENTA);</span>
+<span class="nc" id="L148">        start.setForeground(BLACK);</span>
+<span class="nc" id="L149">        start.setFont(new Font(&quot;Comfortaa&quot;, Font.BOLD, 30));</span>
+<span class="nc" id="L150">        start.setBorderPainted(true);</span>
+<span class="nc" id="L151">        start.setOpaque(true);</span>
+<span class="nc" id="L152">        start.setBorder(null);</span>
+
+<span class="nc" id="L154">        start.addMouseListener(new MouseAdapter() {</span>
+            @Override
+            public void mouseClicked(MouseEvent event) {
+                // dispose this frame
+<span class="nc" id="L158">                JWelcome.this.dispose();</span>
+                // closes the frame
+                // and open the src/gui/Main.java class
+<span class="nc" id="L161">                new Main().setVisible(true);</span>
+
+<span class="nc" id="L163">            }</span>
+        });
+<span class="nc" id="L165">        panel.add(quit);</span>
+<span class="nc" id="L166">        panel.add(start);</span>
+<span class="nc" id="L167">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

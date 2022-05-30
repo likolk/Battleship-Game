@@ -1,0 +1,52 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+project,tui,TuiUtil,224,0,6,0,72,0,6,0,3,0
+project,model,DisplayField,26,369,4,16,4,53,4,14,0,8
+project,model,ShipTypeTest,5,0,0,0,4,0,3,0,3,0
+project,model,Game,1563,287,169,16,433,84,121,24,29,22
+project,model,FieldTest,0,299,0,0,0,72,0,17,0,17
+project,model,Destroyer,10,7,0,0,2,3,1,2,1,2
+project,model,CoordinatesTest,0,148,0,0,0,41,0,12,0,12
+project,model,Cell,14,74,0,0,6,23,3,10,3,10
+project,model,DisplayFieldTest,0,28,0,0,0,10,0,4,0,4
+project,model,SubmarineTest,0,15,0,0,0,7,0,4,0,4
+project,model,ShipType,19,46,6,0,9,9,8,2,3,2
+project,model,GameTest,15,548,4,2,3,171,3,43,0,43
+project,model,AiTest,0,24,0,0,0,10,0,5,0,5
+project,model,Player,574,75,100,0,210,20,62,11,12,11
+project,model,GamePlayersTest,0,448,0,6,0,151,0,36,0,33
+project,model,ShipTest,0,289,0,0,0,57,0,17,0,17
+project,model,Ship,527,213,48,10,115,61,36,26,9,24
+project,model,CellTest,0,57,0,0,0,21,0,8,0,8
+project,model,DestroyerTest,0,15,0,0,0,7,0,4,0,4
+project,model,StateTest,5,0,0,0,4,0,3,0,3,0
+project,model,BattleshipTest,5,0,0,0,4,0,3,0,3,0
+project,model,Coordinates,31,72,4,6,5,19,6,9,2,8
+project,model,Field,392,508,95,77,86,105,72,49,10,25
+project,model,PlayerTest,0,144,0,0,0,45,0,12,0,12
+project,model,Submarine,10,7,0,0,2,3,1,2,1,2
+project,model,Carrier,10,7,0,0,2,3,1,2,1,2
+project,model,ResettedGridTest,0,15,0,0,0,7,0,4,0,4
+project,model,State,33,0,0,0,6,0,1,0,1,0
+project,model,GamePlayers,53,103,6,0,18,32,8,21,5,21
+project,model,Battleship,10,7,0,0,2,3,1,2,1,2
+project,model,CarrierTest,0,15,0,0,0,7,0,4,0,4
+project,model,Cruiser,0,17,0,0,0,5,0,3,0,3
+project,model,ResettedGrid,10,7,0,0,2,3,1,2,1,2
+project,model,Ai,0,112,0,2,0,35,0,14,0,13
+project,model,CruiserTest,5,0,0,0,4,0,3,0,3,0
+project,gui,Main,1655,0,107,0,365,0,77,0,22,0
+project,gui,Main.new ActionListener() {...},50,0,6,0,12,0,5,0,2,0
+project,gui,Main.new ActionListener() {...},50,0,6,0,12,0,5,0,2,0
+project,gui,Main.new MouseAdapter() {...},27,0,0,0,7,0,3,0,3,0
+project,gui,Button,22,0,0,0,5,0,2,0,2,0
+project,gui,Main.new MouseAdapter() {...},27,0,0,0,7,0,3,0,3,0
+project,gui,Main.new MouseAdapter() {...},27,0,0,0,7,0,3,0,3,0
+project,gui,Main.new MouseAdapter() {...},27,0,0,0,7,0,3,0,3,0
+project,gui,JWelcome.new KeyAdapter() {...},19,0,2,0,5,0,3,0,2,0
+project,gui,JWelcome.new MouseAdapter() {...},9,0,0,0,3,0,2,0,2,0
+project,gui,JWelcome.new Runnable() {...},13,0,0,0,6,0,2,0,2,0
+project,gui,JWelcome.new MouseAdapter() {...},15,0,0,0,4,0,2,0,2,0
+project,gui,Main.new MouseAdapter() {...},21,0,4,0,7,0,4,0,2,0
+project,gui,Main.new MouseAdapter() {...},27,0,0,0,7,0,3,0,3,0
+project,gui,Main.new MouseAdapter() {...},29,0,0,0,6,0,2,0,2,0
+project,gui,JWelcome,251,0,0,0,60,0,4,0,4,0

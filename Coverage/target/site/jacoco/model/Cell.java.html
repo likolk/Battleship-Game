@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cell.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">project</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">Cell.java</span></div><h1>Cell.java</h1><pre class="source lang-java linenums">package model;
+
+/**
+ * This class represents a cell in the Field (Board) of the Battleship game.
+ * Considering that we have a 10x10 grid, we are supposed to have 100 cells, numbered from 0 to 99.
+ * @author kelvin.likollari@usi.ch
+ */
+
+public class Cell {
+<span class="fc" id="L10">    private boolean isOccupied = false; // true if the cell is occupied by a ship</span>
+<span class="fc" id="L11">    private boolean isHit = false; // true if the cell has been hit by a shot</span>
+    private int cellNumber; // the cell number (0-99)
+<span class="fc" id="L13">    private String symbol = &quot;Χ&quot;; // the symbol to be displayed in the cell TODO: Initialize it to something</span>
+<span class="fc" id="L14">    private String hitSymbol = RED_COLOR + &quot;X&quot; + RESET_COLOR; // the hit symbol. TODO: Initialize it to something</span>
+<span class="fc" id="L15">    private String missSymbol = GREEN_COLOR + &quot;O&quot; + RESET_COLOR; // the miss symbol. TODO: Initialize it to something</span>
+    private static final String RESET_COLOR = &quot;\u001B[0m&quot;;
+    private static final String RED_COLOR = &quot;\u001B[31m&quot;;
+    private static final String GREEN_COLOR = &quot;\u001B[32m&quot;;
+
+    /**
+     * Constructor of the class Cell.
+     * @param cellNumber the cell number (0-99)
+     */
+<span class="fc" id="L24">    public Cell(int cellNumber) {</span>
+<span class="fc" id="L25">        this.cellNumber = cellNumber;</span>
+<span class="fc" id="L26">    }</span>
+
+    /**
+     * Empty constructor of the class Cell.
+     * Empty constructors in Java are used to create objects without initializing their attributes.
+     */
+    public Cell() {
+<span class="fc" id="L33">        super();</span>
+<span class="fc" id="L34">    }</span>
+
+    /**
+     * Getter for the cell number.
+     * @return the cell number (0-99)
+     */
+    public int getCellNumber() {
+<span class="fc" id="L41">        return cellNumber;</span>
+    }
+
+    /**
+     * Getter for the isOccupied attribute.
+     * @return true if the cell is occupied by a ship
+     */
+    public boolean isOccupied() {
+<span class="fc" id="L49">        return isOccupied;</span>
+    }
+
+    /**
+     * Setter for the isOccupied attribute.
+     * @param isOccupied true if the cell is occupied by a ship
+     */
+    public void setOccupied(boolean isOccupied) {
+<span class="fc" id="L57">        this.isOccupied = isOccupied;</span>
+<span class="fc" id="L58">    }</span>
+
+    /**
+     * Getter for the isHit attribute.
+     * @return true if the cell has been hit by a shot
+     */
+    public boolean isHit() {
+<span class="fc" id="L65">        return isHit;</span>
+    }
+
+    /**
+     * Setter for the isHit attribute.
+     */
+    public void setHit() {
+<span class="fc" id="L72">        this.isHit = true;</span>
+<span class="fc" id="L73">        this.symbol = hitSymbol;</span>
+<span class="fc" id="L74">    }</span>
+
+    /**
+     * Set that the cell is not occupied by a ship.
+     */
+    public void setMissed() {
+<span class="fc" id="L80">        this.isHit = true;</span>
+<span class="fc" id="L81">        this.symbol = missSymbol;</span>
+<span class="fc" id="L82">    }</span>
+
+    /**
+     * Set the symbol of a player/ai.
+     * @param symbol the symbol to be set.
+     */
+    public void setSymbol(String symbol) {
+<span class="nc" id="L89">        this.symbol = symbol;</span>
+<span class="nc" id="L90">    }</span>
+
+    /**
+     * Getter for the symbol.
+     * @return the symbol as a string
+     */
+    public String getSymbol() {
+<span class="fc" id="L97">        return symbol;</span>
+    }
+
+    /**
+     * ToString method for the class Cell.
+     * @return the symbol of the cell as a string.
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L106">        return symbol;</span>
+    }
+
+    /**
+     * boolean method returning true if a cell is occupied by a ship.
+     * @return true if the cell is occupied by a ship, false otherwise
+     */
+    public boolean isOccupiedByShip() {
+<span class="fc" id="L114">        return this.isOccupied;</span>
+    }
+
+    /**
+     * Method that sets a cell to be occupied by a ship.
+     * @param symbol the symbol to set the cell.
+     */
+    public void setOccupiedByShip(String symbol) {
+<span class="nc" id="L122">        this.isOccupied = true;</span>
+<span class="nc" id="L123">        this.setSymbol(symbol);</span>
+
+<span class="nc" id="L125">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

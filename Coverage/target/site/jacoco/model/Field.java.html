@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Field.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">project</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">Field.java</span></div><h1>Field.java</h1><pre class="source lang-java linenums">package model;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
+/**
+ * Field class containing the information of the grids on which the game is played.
+ * We have 2 types of grids: one for the player and one for the computer.
+ * This is a 10x10 grid, containing 5 ships of different sizes.
+ * @author kelvin.likollari@usi.ch
+ */
+public class Field {
+    public static final int FIELD_SIZE = 10;
+<span class="fc" id="L17">    private boolean[][] arrayfield = new boolean[FIELD_SIZE][FIELD_SIZE];</span>
+<span class="fc" id="L18">    private static int toggleNum = 0; // toggle number</span>
+    /**
+     * Cells field denoting the 100 cells of the grid.
+     */
+<span class="fc" id="L22">    private static final Cell[][] cells = new Cell[10][10];</span>
+    /**
+     * Ship field containing the ships of the game.
+     */
+<span class="fc" id="L26">    private static final Ship[][] SHIPS_PRESENT = new Ship[10][10];</span>
+
+<span class="fc" id="L28">    private static final JButton[][] CELL_BUTTONS = new JButton[10][10];</span>
+
+    /**
+     * Constructor for objects of class Field.
+     */
+<span class="fc" id="L33">    public Field() {</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        for (int i = 0; i &lt; FIELD_SIZE; i++) {</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">            for (int j = 0; j &lt; FIELD_SIZE; j++) {</span>
+<span class="fc" id="L36">                cells[i][j] = new Cell();</span>
+            }
+        }
+<span class="fc" id="L39">    }</span>
+
+
+    /**
+     * Constructor created explicitly for testing purposes.
+     *
+     * @param iindex the i value of the arrayField.
+     * @param jindex the j value of the arrayField.
+     */
+<span class="fc" id="L48">    public Field(int iindex, int jindex) {</span>
+
+        // Array is stored directly, so we use Arrays.copyOf()
+        // this.arrayfield = new boolean[iindex][jindex];
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        for (int i = 0; i &lt; iindex; i++) {</span>
+<span class="fc" id="L53">            this.arrayfield[i] = Arrays.copyOf(arrayfield[i], jindex);</span>
+        }
+
+<span class="fc" id="L56">    }</span>
+
+    /**
+     * Method to set the value of the arrayField.
+     *
+     * @param arrayfield the arrayField to set.
+     */
+    public void setArrayField(boolean[][] arrayfield) {
+        // The user-supplied array 'arrayfield' is stored directly.
+        // so we wrap it in an array of the same type.
+<span class="nc" id="L66">        this.arrayfield = Arrays.copyOf(arrayfield, arrayfield.length);</span>
+<span class="nc" id="L67">    }</span>
+
+    /**
+     * Method to set the value of the arrayField.
+     * Method created explicitly for testing purposes. TODO: Might have to be removed.
+     *
+     * @param arrayfield the arrayField to set.
+     */
+    public void setArrayFieldV2(Field arrayfield) {
+<span class="fc" id="L76">        this.arrayfield = arrayfield.getArrayField();</span>
+<span class="fc" id="L77">    }</span>
+
+    /**
+     * Method to get the value of the arrayField.
+     * @return arrayField the arrayField.
+     */
+    public boolean[][] getArrayField() {
+        // Returning 'arrayfield' may expose an internal array so we copy it.
+<span class="fc" id="L85">        return Arrays.copyOf(arrayfield, arrayfield.length);</span>
+    }
+
+    /**
+     * Method to set the value of a specific cell in the arrayField.
+     * @param x1    the x coordinate of the cell
+     * @param y1    the y coordinate of the cell
+     * @param value the value to set
+     */
+    public void setCellValue(int x1, int y1, boolean value) {
+<span class="fc" id="L95">        this.arrayfield[x1][y1] = value;</span>
+<span class="fc" id="L96">    }</span>
+
+    /**
+     * Method to get the value of a specific cell in the arrayField.
+     * @param x1 the x coordinate of the cell
+     * @param y1 the y coordinate of the cell
+     * @return value of the cell
+     */
+    public boolean getCellValue(final int x1, final int y1) {
+<span class="fc" id="L105">        return this.arrayfield[x1][y1];</span>
+    }
+
+    /**
+     * This method is used to know the content of a cell in the 2D array.
+     *
+     * @param x1 the x coordinate of the cell.
+     * @param y1 the y coordinate of the cell.
+     * @return boolean true if the cell is occupied, false otherwise.
+     */
+    public boolean getCell(final int x1, final int y1) {
+<span class="fc" id="L116">        return this.arrayfield[x1][y1];</span>
+    }
+
+
+    /**
+     * Method to check if the arrayField is full.
+     *
+     * @return boolean true if the arrayField is full, false otherwise
+     */
+    public boolean isFull() {
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        for (int i = 0; i &lt; 10; i++) {</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">            for (int j = 0; j &lt; 10; j++) {</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">                if (!(this.arrayfield[i][j])) {</span>
+<span class="fc" id="L129">                    return false;</span>
+                }
+            }
+        }
+<span class="nc" id="L133">        return true;</span>
+    }
+
+    /**
+     * Method to check if the arrayField is empty.
+     *
+     * @return boolean true if the arrayField is empty, false otherwise
+     */
+    public boolean isEmpty() {
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">        for (int i = 0; i &lt; 10; i++) {</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">            for (int j = 0; j &lt; 10; j++) {</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">                if (this.arrayfield[i][j]) {</span>
+<span class="fc" id="L145">                    return false;</span>
+                }
+            }
+        }
+<span class="nc" id="L149">        return true;</span>
+    }
+
+    /**
+     * Method to check if the arrayField is valid.
+     *
+     * @return boolean true if the arrayField is valid, false otherwise.
+     */
+    public boolean isValid() {
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">        for (int i = 0; i &lt; 10; i++) {</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">            for (int j = 0; j &lt; 10; j++) {</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">                if (this.arrayfield[i][j]) {</span>
+                    // TODO: Check if this is correct.
+<span class="fc" id="L162">                    return false;</span>
+                }
+            }
+        }
+<span class="nc" id="L166">        return true;</span>
+    }
+
+    /**
+     * Method to get the field (board) of the Battleship game.
+     * @return the field (board) of the Battleship game.
+     */
+    public String[][] getField() {
+        // produces a null pointer exception if the arrayfield is not initialized
+<span class="fc" id="L175">        String[][] field = new String[10][10];</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        for (int i = 0; i &lt; FIELD_SIZE; i++) {</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">            for (int j = 0; j &lt; FIELD_SIZE; j++) {</span>
+<span class="fc" id="L178">                field[i][j] = cells[i][j].getSymbol();</span>
+            }
+        }
+<span class="fc" id="L181">        return field;</span>
+    }
+
+    // ----------------------- SHOOT METHODS --------------------------------
+
+
+    /**
+     * This method is used to check whether the player has hit a cell
+     * that has already been hit before.
+     * Also, we print a corresponding message to the player.
+     *
+     * @param x1 the x coordinate of the cell.
+     * @param y1 the y coordinate of the cell.
+     */
+
+    // was boolean, changed to void
+    public void shootGrid(final int x1, final int y1) {
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">        if (arrayfield[y1][x1]) {</span>
+<span class="nc" id="L199">            System.out.println(&quot;You already shot in position &quot; + x1 + &quot;,&quot; + y1 + &quot;.&quot;);</span>
+        } else {
+<span class="fc" id="L201">            setCellTrue(x1, y1);</span>
+            //cells[x1][y1].setSymbol(&quot;X&quot;);
+        }
+<span class="fc" id="L204">    }</span>
+
+    /**
+     * This method shoots at a cell.
+     *
+     * @param x1 the x coordinate of the cell.
+     * @param y1 the y coordinate of the cell.
+     * @return true if you hit a ship, false in any other case.
+     */
+    public boolean shootAtCell(final int x1, final int y1) {
+<span class="fc" id="L214">        boolean hasShot = false; // boolean to check if the cell has been shot - in the beginning it is false.</span>
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">        if (getCell(x1, y1)) {</span>
+<span class="nc" id="L216">            removeShip(x1, y1);</span>
+<span class="nc" id="L217">            System.out.println(&quot;You hit a ship!&quot;);</span>
+<span class="nc" id="L218">            hasShot = true;</span>
+        } else {
+<span class="fc" id="L220">            System.out.println(&quot;You missed!&quot;);</span>
+        }
+
+<span class="fc" id="L223">        checkWhetherFieldEmpty();</span>
+<span class="fc" id="L224">        return hasShot;</span>
+    }
+
+    /**
+     * Method that checks if the player has sunk all ships.
+     */
+    public void checkWhetherFieldEmpty() {
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">        if (checkEmptyField()) {</span>
+<span class="nc" id="L232">            System.out.println(&quot;You sank all the ships! You have won the game, Congratulations!&quot;);</span>
+        }
+<span class="fc" id="L234">    }</span>
+
+    // ----------------------- SHOOT METHODS ----
+
+    /**
+     * This method sets the cell given to true.
+     *
+     * @param x1 the x coordinate of the cell.
+     * @param y1 the y coordinate of the cell.
+     */
+    public void setCellTrue(final int x1, final int y1) {
+<span class="fc" id="L245">        this.arrayfield[y1][x1] = true;</span>
+<span class="fc" id="L246">    }</span>
+
+
+    /**
+     * This method removes a ship from the Field.
+     *
+     * @param x1 the x coordinate of the ship.
+     * @param y1 the y coordinate of the ship.
+     */
+    public void removeShip(final int x1, final int y1) {
+<span class="nc" id="L256">        this.arrayfield[x1][y1] = false;</span>
+<span class="nc" id="L257">    }</span>
+
+
+    /**
+     * Check whether the coordinates are valid.
+     *
+     * @param x1 the x coordinate of the cell.
+     * @param y1 the y coordinate of the cell.
+     * @return true if the coordinates are valid, false otherwise.
+     */
+    public boolean isValidCoordinate(final int x1, final int y1) {
+<span class="pc bpc" id="L268" title="4 of 8 branches missed.">        return x1 &gt;= 0 &amp;&amp; x1 &lt; 10 &amp;&amp; y1 &gt;= 0 &amp;&amp; y1 &lt; 10;</span>
+    }
+
+    /**
+     * This method checks whether the ship placement is valid (i.e the ship placement is in bounds
+     * and does not overlap with other ships).
+     * @param x1        the x coordinate of the cell.
+     * @param y1        the y coordinate of the cell.
+     * @param direction the direction of the ship.
+     * @param length    the length of the ship.
+     * @return true if the ship placement is valid, false otherwise.
+     */
+    public boolean checkCorrectPlacement(final int x1, final int y1, final int direction, final int length) {
+        // if the ship is horizontal, points to the right,
+        // and length is bigger than 10, the ship is not in bounds.
+<span class="pc bpc" id="L283" title="2 of 16 branches missed.">        return (direction != 0 || x1 + length &lt;= 10)</span>
+                // if the ship is vertical, points to the bottom,
+                // and length is bigger than 10, the ship is not in bounds.
+                &amp;&amp; (direction != 1 || y1 + length &lt;= 10)
+                // if the ship is horizontal, points to the left,
+                // and length is bigger than 10, the ship is not in bounds.
+                &amp;&amp; (direction != 2 || x1 - length &gt;= 0)
+                // if the ship is vertical, points to the top,
+                // and length is bigger than 10, the ship is not in bounds.
+                &amp;&amp; (direction != 3 || y1 - length &gt;= 0);
+    }
+
+    /**
+     * This method is used to check whether there is any ship placed in some cells of the field.
+     * @return boolean true if there is a ship in the field, false otherwise.
+     */
+    public boolean checkEmptyField() {
+<span class="fc" id="L300">        boolean checkEmptyField = false; // boolean to check if there is a ship in the field.</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">        for (int x = 0; x &lt; 10; x++) { // check if there is a ship in the cell - x axis</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">            for (int y = 0; y &lt; 10; y++) { // check if there is a ship in the cell - y axis</span>
+<span class="fc bfc" id="L303" title="All 4 branches covered.">                checkEmptyField = checkEmptyField || arrayfield[y][x];</span>
+            }
+        }
+<span class="pc bpc" id="L306" title="1 of 2 branches missed.">        return !checkEmptyField; // return true if there is no ship in the field, false otherwise.</span>
+    }
+
+    /**
+     * This method checks whether a ship can be placed in the given position.
+     * If the ship can be placed, the ship is placed in the field.
+     * If the ship cannot be placed, the method returns false.
+     * If the ship can be placed, the method returns true.
+     *
+     * @param x1        the x coordinate of the ship.
+     * @param y1        the y coordinate of the ship.
+     * @param direction the direction of the ship.
+     * @param length    the length of the ship.
+     * @return boolean true if the ship can be placed, false otherwise.
+     */
+    public boolean canPlaceShip(final int x1, final int y1, final int direction, final int length) {
+<span class="pc bpc" id="L322" title="1 of 2 branches missed.">        if (!isValidCoordinate(x1, y1)) {</span>
+<span class="nc" id="L323">            System.out.println(&quot;Illegal coordinates. The coordinates must be between 0 and 9.&quot;);</span>
+<span class="nc" id="L324">            return false;</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">        } else if (!checkCorrectPlacement(x1, y1, direction, length)) {</span>
+<span class="fc" id="L326">            System.out.println(&quot;Illegal placement. The ship cannot be placed in this position.&quot;);</span>
+<span class="fc" id="L327">            return false;</span>
+<span class="fc bfc" id="L328" title="All 2 branches covered.">        } else if (getCell(x1, y1)) {</span>
+<span class="fc" id="L329">            System.out.println(&quot;Illegal placement. The ship cannot be placed in this position &quot;</span>
+                    +
+                    &quot;since there is already a ship here at position (&quot; + x1 + &quot;, &quot; + y1 + &quot;).&quot;);
+<span class="fc" id="L332">            return false;</span>
+        } else {
+            // placeShip(x1, y1, direction, length);
+<span class="fc" id="L335">            return true;</span>
+        }
+    }
+
+    /**
+     * This method checks whether a shot can
+     * be performed in a given position.
+     *
+     * @param x1 the x coordinate of the shot.
+     * @param y1 the y coordinate of the shot.
+     * @return boolean true if the shot can be performed, false otherwise.
+     */
+    public boolean isValidMoveV2(int x1, int y1) {
+<span class="pc bpc" id="L348" title="4 of 8 branches missed.">        if (x1 &lt; 0 || x1 &gt; 9 || y1 &lt; 0 || y1 &gt; 9) {</span>
+<span class="nc" id="L349">            return false;</span>
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">        } else if (cells[x1][y1].isHit()) {</span>
+<span class="nc" id="L351">            System.out.println(&quot;You have already hit this cell.&quot;);</span>
+<span class="nc" id="L352">            return false;</span>
+        }
+<span class="fc" id="L354">        return true;</span>
+    }
+
+    /**
+     * This method marks a cell of the field as hit.
+     *
+     * @param x1 the x coordinate of the shot.
+     * @param y1 the y coordinate of the shot.
+     */
+    public void setHit(int x1, int y1) {
+<span class="nc" id="L364">        cells[x1][y1].setHit();</span>
+<span class="nc" id="L365">    }</span>
+
+    /**
+     * This method marks a cell of the field after a shot as missed.
+     *
+     * @param x1 the x coordinate of the shot.
+     * @param y1 the y coordinate of the shot.
+     */
+    public void setMissed(int x1, int y1) {
+<span class="fc" id="L374">        cells[x1][y1].setMissed();</span>
+<span class="fc" id="L375">    }</span>
+
+
+    /**
+     * The following method check whether a ship can be placed in a given position.
+     *
+     * @param x1         the x coordinate of the ship.
+     * @param y1         the y coordinate of the ship.
+     * @param size       the size of the ship.
+     * @param direction  the direction of the ship.
+     * @param horizontal boolean true if the ship is horizontal, false otherwise.
+     * @return boolean true if the ship can be placed, false otherwise.
+     */
+    public boolean isValidPlacementForShip(int x1, int y1, int size, String direction, boolean horizontal) {
+<span class="nc bnc" id="L389" title="All 8 branches missed.">        if (x1 &lt; 0 || x1 &gt; 9 || y1 &lt; 0 || y1 &gt; 9) {</span>
+<span class="nc" id="L390">            return false;</span>
+            // we position the literal first in string comparisons
+<span class="nc bnc" id="L392" title="All 2 branches missed.">        } else if (&quot;v&quot;.equals(direction)) { // vertical</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">            if (x1 + size - 1 &gt;= 10) {</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">                if (horizontal) { // if horizontal is true</span>
+<span class="nc" id="L395">                    System.out.println(&quot;The ship can't be placed in this position &quot;</span>
+                            +
+                            &quot;as it is outside the bounds.&quot;);
+                }
+<span class="nc" id="L399">                return false;</span>
+            } else {
+<span class="nc bnc" id="L401" title="All 2 branches missed.">                for (int i = x1; i &lt; x1 + size; i++) {</span>
+<span class="nc bnc" id="L402" title="All 2 branches missed.">                    if (cells[i][y1].isOccupiedByShip()) {</span>
+<span class="nc bnc" id="L403" title="All 2 branches missed.">                        if (horizontal) { // if horizontal is true</span>
+<span class="nc" id="L404">                            System.out.println(&quot;The ship cannot be placed in this position &quot;</span>
+                                    +
+                                    &quot;as it is overlapping with another ship.&quot;);
+                        }
+<span class="nc" id="L408">                        return false;</span>
+                    }
+                }
+            }
+
+<span class="nc bnc" id="L413" title="All 2 branches missed.">        } else if (&quot;h&quot;.equals(direction)) { // horizontal direction</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">            if (y1 + size - 1 &gt;= 10) {</span>
+<span class="nc bnc" id="L415" title="All 2 branches missed.">                if (horizontal) {</span>
+                    // the ship goes out of the bounds
+<span class="nc" id="L417">                    System.out.println(&quot;The ship cannot be placed in this position &quot;</span>
+                            +
+                            &quot;as it is outside the bounds.&quot;);
+                }
+<span class="nc" id="L421">                return false;</span>
+            } else {
+<span class="nc bnc" id="L423" title="All 2 branches missed.">                for (int i = y1; i &lt; y1 + size; i++) {</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">                    if (cells[x1][i].isOccupiedByShip()) {</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">                        if (horizontal) {</span>
+                            // the ship overlaps with another ship
+<span class="nc" id="L427">                            System.out.println(&quot;The ship cannot be placed in this position &quot;</span>
+                                    +
+                                    &quot;as it is overlapping with another ship.&quot;);
+                        }
+<span class="nc" id="L431">                        return false;</span>
+                    }
+                }
+            }
+        }
+<span class="nc" id="L436">        return true;</span>
+    }
+
+
+    /**
+     * The following method sets ships of various sizes 2 to 5 in the field.
+     *
+     * @param x1        the x coordinate of where the ship is placed.
+     * @param y1        the y coordinate of where the ship is placed.
+     * @param direction the direction of the ship.
+     * @param size      the size of the ship.
+     * @param symbol    the symbol of the ship.
+     */
+    public void setShipOfDifferentSize(int x1, int y1, String direction, int size, String symbol) {
+
+<span class="nc bnc" id="L451" title="All 2 branches missed.">        if (&quot;v&quot;.equals(direction)) { // vertical</span>
+<span class="nc bnc" id="L452" title="All 2 branches missed.">            for (int i = 0; i &lt; size; i++) {</span>
+<span class="nc" id="L453">                cells[x1 + i][y1].setOccupiedByShip(symbol);</span>
+            }
+<span class="nc bnc" id="L455" title="All 2 branches missed.">        } else if (&quot;h&quot;.equals(direction)) { // horizontal</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">            for (int j = 0; j &lt; size; j++) {</span>
+<span class="nc" id="L457">                cells[x1][y1 + j].setOccupiedByShip(symbol);</span>
+            }
+        }
+<span class="nc" id="L460">    }</span>
+
+    /**
+     * The following method checks whether a shot is valid or not.
+     *
+     * @param x1 x coordinate of the shot.
+     * @param y1 y coordinate of the shot.
+     * @return true if the shot is valid, false otherwise.
+     */
+    public boolean checkWhetherHitWasSuccessful(int x1, int y1) {
+        // if the cell is occupied by a ship and not hit yet
+<span class="pc bpc" id="L471" title="3 of 4 branches missed.">        return cells[x1][y1].isOccupiedByShip() &amp;&amp; !cells[x1][y1].isHit();</span>
+    }
+
+    /**
+     * The following method checks the direction of where to place the ship.
+     *
+     * @param x1        x coordinate of the ship.
+     * @param y1        y coordinate of the ship.
+     * @param direction direction of the ship.
+     * @param size      size of the ship.
+     * @param symbol    symbol of the ship.
+     */
+    public void directionOnWhereToSetShip(int x1, int y1, String direction, int size, String symbol) {
+<span class="nc bnc" id="L484" title="All 2 branches missed.">        if (&quot;v&quot;.equals(direction)) { // vertical</span>
+            //
+<span class="nc bnc" id="L486" title="All 2 branches missed.">            for (int j = 0; j &lt; size; j++) {</span>
+<span class="nc" id="L487">                cells[x1 + j][y1].setOccupiedByShip(symbol);</span>
+            }
+<span class="nc bnc" id="L489" title="All 2 branches missed.">        } else if (&quot;h&quot;.equals(direction)) { // horizontal</span>
+<span class="nc bnc" id="L490" title="All 2 branches missed.">            for (int k = 0; k &lt; size; k++) {</span>
+<span class="nc" id="L491">                cells[x1][y1 + k].setOccupiedByShip(symbol);</span>
+            }
+        }
+<span class="nc" id="L494">    }</span>
+
+    /**
+     * Method that places a ship randomly.
+     */
+    public void placeShipRandomly() {
+        // we want to place only 5 ships in the field
+
+<span class="fc" id="L502">        Random random = new Random();</span>
+<span class="fc bfc" id="L503" title="All 2 branches covered.">        for (int i = 1; i &lt; 5; i++) {</span>
+<span class="fc" id="L504">            final int x = random.nextInt(10); // x coordinate</span>
+<span class="fc" id="L505">            final int y = random.nextInt(10); // y coordinate</span>
+<span class="fc" id="L506">            final int dir = random.nextInt(4); // direction</span>
+            // generate a random length number for the ship in the range from 2 to 5
+<span class="fc" id="L508">            final int len = random.nextInt(2);</span>
+            // final int len = arrayListOfShips.get(i).getShipLength();
+            // the above line this produces array index out of bounds exception
+<span class="fc bfc" id="L511" title="All 2 branches covered.">            if (canPlaceShip(x, y, dir, len)) {</span>
+<span class="fc" id="L512">                setCellTrue(x, y);</span>
+<span class="fc" id="L513">                insertShipAtValidCoords(x, y, dir, len);</span>
+            } else {
+<span class="fc" id="L515">                final int xTemp = random.nextInt(10);</span>
+<span class="fc" id="L516">                final int yTemp = random.nextInt(10);</span>
+<span class="fc" id="L517">                final int d2 = random.nextInt(4);</span>
+<span class="fc" id="L518">                final int lenTemp = random.nextInt(2);</span>
+<span class="fc bfc" id="L519" title="All 2 branches covered.">                if (canPlaceShip(xTemp, yTemp, d2, lenTemp)) {</span>
+<span class="fc" id="L520">                    setCellTrue(xTemp, yTemp);</span>
+<span class="fc" id="L521">                    insertShipAtValidCoords(xTemp, yTemp, d2, lenTemp);</span>
+                }
+            }
+        }
+<span class="fc" id="L525">    }</span>
+
+
+    /**
+     * The following method inserts a ship at a valid position.
+     * @param xx        x coordinate of the ship.
+     * @param yy        y coordinate of the ship.
+     * @param direction direction of the ship.
+     * @param len      size of the ship.
+     */
+    private void insertShipAtValidCoords(int xx, int yy, int direction, int len) {
+<span class="fc bfc" id="L536" title="All 2 branches covered.">        if (direction == 0) { // if vertical</span>
+<span class="fc" id="L537">            int x1 = xx; // x coordinate of the ship</span>
+<span class="fc" id="L538">            int length = len; // length of the ship</span>
+<span class="pc bpc" id="L539" title="1 of 2 branches missed.">            while (length &gt; 1) { // while the length of the ship is greater than 1</span>
+<span class="nc" id="L540">                x1++; // increment x coordinate</span>
+<span class="nc" id="L541">                setCellTrue(x1, yy);// set the cell to true</span>
+<span class="nc" id="L542">                length--; // decrement the length of the ship</span>
+            }
+<span class="fc bfc" id="L544" title="All 2 branches covered.">        } else if (direction == 1) { // if horizontal</span>
+<span class="fc" id="L545">            int y1 = yy; // y coordinate of the ship</span>
+<span class="fc" id="L546">            int length = len; // length of the ship</span>
+<span class="pc bpc" id="L547" title="1 of 2 branches missed.">            while (length &gt; 1) { // while the length of the ship is greater than 1</span>
+<span class="nc" id="L548">                y1++; // increment y coordinate</span>
+<span class="nc" id="L549">                setCellTrue(xx, y1); // set the cell to true</span>
+<span class="nc" id="L550">                length--; // decrement the length of the ship</span>
+            }
+<span class="fc bfc" id="L552" title="All 2 branches covered.">        } else if (direction == 2) { // if diagonal down</span>
+<span class="fc" id="L553">            int x1 = xx; // x coordinate of the ship</span>
+<span class="fc" id="L554">            int length = len; // length of the ship</span>
+<span class="pc bpc" id="L555" title="1 of 2 branches missed.">            while (length &gt; 1) { // while the length of the ship is greater than 1</span>
+<span class="nc" id="L556">                x1--; // increment x coordinate</span>
+<span class="nc" id="L557">                setCellTrue(x1, yy); // set the cell to true</span>
+<span class="nc" id="L558">                length--; // decrement the length of the ship</span>
+            }
+<span class="fc" id="L560">        } else {</span>
+<span class="fc" id="L561">            int y1 = yy; // y coordinate of the ship</span>
+<span class="fc" id="L562">            int length = len; // length of the ship</span>
+<span class="pc bpc" id="L563" title="1 of 2 branches missed.">            while (length &gt; 1) { // while the length of the ship is greater than 1</span>
+<span class="nc" id="L564">                y1--; // increment y coordinate</span>
+<span class="nc" id="L565">                setCellTrue(xx, y1); // set the cell to true</span>
+<span class="nc" id="L566">                length--; // decrement the length of the ship</span>
+
+            }
+        }
+<span class="fc" id="L570">    }</span>
+
+    /**
+     * Method that enables cheat mode.
+     */
+    public static void toggleCheatMode() {
+<span class="nc bnc" id="L576" title="All 2 branches missed.">        if (toggleNum % 2 == 0) {</span>
+<span class="nc" id="L577">            revealShips();</span>
+        } else {
+<span class="nc" id="L579">            hideCheatMode();</span>
+        }
+<span class="nc" id="L581">        toggleNum++;</span>
+<span class="nc" id="L582">    }</span>
+
+    /**
+     * Method that hides the ship.
+     */
+    public static void hideCheatMode() {
+<span class="nc bnc" id="L588" title="All 2 branches missed.">        for (int i = 0; i &lt; 10; i++) {</span>
+<span class="nc bnc" id="L589" title="All 2 branches missed.">            for (int j = 0; j &lt; 10; j++) {</span>
+<span class="nc bnc" id="L590" title="All 2 branches missed.">                if (cells[i][j].isOccupiedByShip()) {</span>
+<span class="nc" id="L591">                    cells[i][j].setOccupiedByShip(&quot;X&quot;);</span>
+                }
+            }
+        }
+<span class="nc" id="L595">    }</span>
+
+    /**
+     * Method that reveals the ships on the grid.
+     */
+    public static void revealShips() {
+<span class="nc" id="L601">        String path = &quot;/Users/cuenc/Documents/PF2-Project/src/gui/Images/click-me.jpg&quot;;</span>
+<span class="nc" id="L602">        ImageIcon pict = new ImageIcon(Field.class.getClassLoader().getResource(path));</span>
+<span class="nc bnc" id="L603" title="All 2 branches missed.">        for (int i = 0; i &lt; 10; i++) {</span>
+<span class="nc bnc" id="L604" title="All 2 branches missed.">            for (int j = 0; j &lt; 10; j++) {</span>
+<span class="nc bnc" id="L605" title="All 2 branches missed.">                if (isOccupiedByShip(i, j)) {</span>
+<span class="nc" id="L606">                    CELL_BUTTONS[i][j].setIcon(pict);</span>
+                }
+            }
+        }
+<span class="nc" id="L610">    }</span>
+
+    /**
+     * Method that checks if a cell is occupied by a ship.
+     * @param index1 represents the coordinate on the x axis.
+     * @param index2 represents the coordinate on the y axis.
+     * @return boolean that represents whether the cell is occupied or not.
+     */
+    public static boolean isOccupiedByShip(int index1, int index2) {
+<span class="nc bnc" id="L619" title="All 2 branches missed.">        return !SHIPS_PRESENT[index1][index2].getTypeOfShip().equals(&quot;empty&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

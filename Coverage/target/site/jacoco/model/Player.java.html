@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">project</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">package model;
+
+import static model.Field.FIELD_SIZE;
+
+import java.io.IOException;
+import java.util.Random;
+import java.util.Scanner;
+
+
+
+/**
+ * The second player in the game.
+ * Note(!) The computer opponent (AI class) is a totally different class.
+ * Player subclass that inherits from GamePlayers.
+ * @author kelvin.likollari@usi.ch and ilker.kaymak@usi.ch
+ */
+public class Player extends GamePlayers {
+
+    private String name;
+<span class="fc" id="L20">    private int score = 0; // initially the score is 0.</span>
+    private int playernumber;
+
+<span class="fc" id="L23">    private final int shipsnumber = 5;</span>
+
+    public static final String BLUE_COLOR = &quot;B&quot;;
+
+    /**
+     * Player constructor.
+     * @param symbol The symbol of the player.
+     * @param fieldLength The length of the field.
+     */
+    public Player(String symbol, int fieldLength) {
+<span class="fc" id="L33">        super(fieldLength);</span>
+<span class="fc" id="L34">        this.setSymbol(symbol);</span>
+<span class="fc" id="L35">    }</span>
+
+    /**
+     * Empty Constructor for the Player class.
+     * Empty constructors are used to create objects without initializing their fields.
+     */
+<span class="fc" id="L41">    public Player() {</span>
+        // dummy constructor so that the game.java constructor works.
+<span class="fc" id="L43">    }</span>
+
+    /**
+     * Dummy constructor to help for testing purposes.
+     * @param name The name of the player.
+     */
+<span class="fc" id="L49">    public Player(String name) {</span>
+<span class="fc" id="L50">        this.name = name;</span>
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * Returns the name of the player.
+     * @return The name of the player as a string.
+     */
+    public String getName() {
+<span class="fc" id="L58">        return name;</span>
+    }
+
+    /**
+     * Returns the player number.
+     * @return The player number
+     */
+    public int getPlayerNumber() {
+<span class="fc" id="L66">        return playernumber;</span>
+    }
+
+
+    /**
+     * Returns the score of the player.
+     * @return The score of the player.
+     */
+    public int getScore() {
+<span class="fc" id="L75">        return score;</span>
+    }
+
+    /**
+     * Sets the score of the player.
+     * @param points The points to be added to the score
+     */
+    public void setScore(int points) {
+<span class="fc" id="L83">        score += points;</span>
+<span class="fc" id="L84">    }</span>
+
+    /**
+     * Returns the name of the player as a string.
+     * @return The name of the player as a string representation.
+     */
+    public String toString() {
+<span class="fc" id="L91">        return name;</span>
+    }
+
+
+    /**
+     * This method is used to get the number of ships of the player.
+     * @return The number of ships of the player.
+     */
+    public int getShips() {
+<span class="fc" id="L100">        return shipsnumber;</span>
+    }
+
+
+    /**
+     * This method is used to set the player's/ai's name.
+     * @param player The name of the player/ai
+     */
+    public void setName(String player) {
+<span class="fc" id="L109">        this.name = player;</span>
+<span class="fc" id="L110">    }</span>
+
+
+    /**
+     * This method gets the symbol of the player.
+     * @return The symbol of the player.
+     */
+    public String getSymbol() {
+<span class="fc" id="L118">        return this.BLUE_COLOR + this.symbol + this.RESET_COLOR;</span>
+    }
+
+
+    /**
+     * Method tha signifies that the player has won the game.
+     */
+    public void wonTheGame() {
+<span class="nc" id="L126">        System.out.println(&quot;VVVVVVVV           VVVVVVVVIIIIIIIIII      CCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTT     OOOOOOOOO     RRRRRRRRRRRRRRRRR   YYYYYYY       YYYYYYY !!!&quot;);</span>
+<span class="nc" id="L127">        System.out.println(&quot;V::::::V           V::::::VI::::::::I   CCC::::::::::::CT:::::::::::::::::::::T   OO:::::::::OO   R::::::::::::::::R  Y:::::Y       Y:::::Y!!:!!&quot;);</span>
+<span class="nc" id="L128">        System.out.println(&quot;V::::::V           V::::::VI::::::::I CC:::::::::::::::CT:::::::::::::::::::::T OO:::::::::::::OO R::::::RRRRRR:::::R Y:::::Y       Y:::::Y!:::!&quot;);</span>
+<span class="nc" id="L129">        System.out.println(&quot;V::::::V           V::::::VII::::::IIC:::::CCCCCCCC::::CT:::::TT:::::::TT:::::TO:::::::OOO:::::::ORR:::::R     R:::::RY::::::Y     Y::::::Y!:::!&quot;);</span>
+<span class="nc" id="L130">        System.out.println(&quot;V:::::V           V:::::V   I::::I C:::::C       CCCCCCTTTTTT  T:::::T  TTTTTTO::::::O   O::::::O  R::::R     R:::::RYYY:::::Y   Y:::::YYY!:::!&quot;);</span>
+<span class="nc" id="L131">        System.out.println(&quot;V:::::V         V:::::V    I::::IC:::::C                      T:::::T        O:::::O     O:::::O  R::::R     R:::::R   Y:::::Y Y:::::Y   !:::!&quot;);</span>
+<span class="nc" id="L132">        System.out.println(&quot;V:::::V       V:::::V     I::::IC:::::C                      T:::::T        O:::::O     O:::::O  R::::RRRRRR:::::R     Y:::::Y:::::Y    !:::!&quot;);</span>
+<span class="nc" id="L133">        System.out.println(&quot;V:::::V     V:::::V      I::::IC:::::C                      T:::::T        O:::::O     O:::::O  R:::::::::::::RR       Y:::::::::Y     !:::!&quot;);</span>
+<span class="nc" id="L134">        System.out.println(&quot;V:::::V   V:::::V       I::::IC:::::C                      T:::::T        O:::::O     O:::::O  R::::RRRRRR:::::R       Y:::::::Y      !:::!&quot;);</span>
+<span class="nc" id="L135">        System.out.println(&quot;V:::::V V:::::V        I::::IC:::::C                      T:::::T        O:::::O     O:::::O  R::::R     R:::::R       Y:::::Y       !:::!&quot;);</span>
+<span class="nc" id="L136">        System.out.println(&quot;V:::::V:::::V         I::::IC:::::C                      T:::::T        O:::::O     O:::::O  R::::R     R:::::R       Y:::::Y       !!:!!&quot;);</span>
+<span class="nc" id="L137">        System.out.println(&quot;V:::::::::V          I::::I C:::::C       CCCCCC        T:::::T        O::::::O   O::::::O  R::::R     R:::::R       Y:::::Y        !!! &quot;);</span>
+<span class="nc" id="L138">        System.out.println(&quot;V:::::::V         II::::::IIC:::::CCCCCCCC::::C      TT:::::::TT      O:::::::OOO:::::::ORR:::::R     R:::::R       Y:::::Y&quot;);</span>
+<span class="nc" id="L139">        System.out.println(&quot;V:::::V          I::::::::I CC:::::::::::::::C      T:::::::::T       OO:::::::::::::OO R::::::R     R:::::R    YYYY:::::YYYY     !!!&quot;);</span>
+<span class="nc" id="L140">        System.out.println(&quot;V:::V           I::::::::I   CCC::::::::::::C      T:::::::::T         OO:::::::::OO   R::::::R     R:::::R    Y:::::::::::Y    !!:!!&quot;);</span>
+<span class="nc" id="L141">        System.out.println(&quot;VVV            IIIIIIIIII      CCCCCCCCCCCCC      TTTTTTTTTTT           OOOOOOOOO     RRRRRRRR     RRRRRRR    YYYYYYYYYYYYY     !!!&quot;);</span>
+<span class="nc" id="L142">        System.exit(0);</span>
+
+<span class="nc" id="L144">    }</span>
+
+    /**
+     * Method that lets the player shoot a row.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the row that the player wants to shoot as an integer
+     */
+    public int shootPlayerRow(Scanner scannerino) {
+<span class="nc" id="L152">        int row = 0; // row number</span>
+<span class="nc" id="L153">        int col = 0; // column number</span>
+<span class="nc" id="L154">        boolean valid = false; // boolean to check if the input is valid</span>
+        // the input is valid if the input is a number between 0 and 9
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        while (valid == false) { // while the input is not valid</span>
+            // print the message to the user
+<span class="nc" id="L158">            System.out.println(&quot;Enter the row number you want to attack: &quot;);</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">            if (scannerino.hasNextInt()) { // if the input is an integer</span>
+<span class="nc" id="L160">                int input = scannerino.nextInt(); // get the input</span>
+<span class="nc bnc" id="L161" title="All 4 branches missed.">                if (input &lt; 0 || input &gt;= this.fieldLength) { // if the input is not between 0 and 9</span>
+<span class="nc" id="L162">                    System.out.println(&quot;Invalid input. Please enter a number between 0 and 9.&quot;);</span>
+                } else { // if the input is between 0 and 9
+<span class="nc" id="L164">                    row = input; // set the row number</span>
+<span class="nc" id="L165">                    valid = true; // set the boolean to true</span>
+                }
+<span class="nc bnc" id="L167" title="All 2 branches missed.">            } else if (scannerino.hasNextLine()) { // if the input is a string</span>
+<span class="nc" id="L168">                scannerino.nextLine(); // get the input</span>
+<span class="nc" id="L169">                int bufferLength = 0; // buffer length</span>
+                try { // try to get the length of the input
+<span class="nc" id="L171">                    bufferLength = System.in.available(); // checks if the system.in buffer is empty</span>
+                    // TODO: Fix empty catch block
+<span class="nc" id="L173">                } catch (IOException ex) {</span>
+<span class="nc" id="L174">                    ex.printStackTrace();</span>
+<span class="nc" id="L175">                }</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">                if (bufferLength &gt; 0) { // if the input is not empty</span>
+<span class="nc" id="L177">                    scannerino.nextLine(); // get the input</span>
+                }
+                // print the message to the user
+<span class="nc" id="L180">                System.out.println(&quot;Invalid input. Please enter a number between 0 and 9.&quot;);</span>
+<span class="nc" id="L181">            }</span>
+        }
+<span class="nc" id="L183">        return row;</span>
+    }
+
+    /**
+     * Method that lets the player shoot a column.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the column that the player wants to shoot as an integer
+     */
+    // similar to above, now attack the column instead
+    public int shootPlayerCol(Scanner scannerino) {
+<span class="nc" id="L193">        int row = 0; // row number</span>
+<span class="nc" id="L194">        int col = 0; // column number</span>
+<span class="nc" id="L195">        boolean valid = false; // boolean to check if the input is valid</span>
+        // the input is valid if the input is a number between 0 and 9
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        while (valid == false) { // while the input is not valid</span>
+            // print the message to the user
+<span class="nc" id="L199">            System.out.println(&quot;Enter the column number you want to attack: &quot;);</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">            if (scannerino.hasNextInt()) { // if the input is an integer</span>
+<span class="nc" id="L201">                int input = scannerino.nextInt(); // get the input</span>
+<span class="nc bnc" id="L202" title="All 4 branches missed.">                if (input &lt; 0 || input &gt;= this.fieldLength) { // if the input is not between 0 and 9</span>
+<span class="nc" id="L203">                    System.out.println(&quot;Invalid input. Please enter a number between 0 and 9.&quot;);</span>
+                } else { // if the input is between 0 and 9
+<span class="nc" id="L205">                    col = input; // set the row number</span>
+<span class="nc" id="L206">                    valid = true; // set the boolean to true</span>
+                }
+<span class="nc bnc" id="L208" title="All 2 branches missed.">            } else if (scannerino.hasNextLine()) { // if the input is a string</span>
+<span class="nc" id="L209">                scannerino.nextLine(); // get the input</span>
+<span class="nc" id="L210">                int bufferLength = 0; // buffer length</span>
+                try { // try to get the length of the input
+<span class="nc" id="L212">                    bufferLength = System.in.available(); // checks if the system.in buffer is empty</span>
+<span class="nc" id="L213">                } catch (IOException ex) { // if something goes wrong</span>
+<span class="nc" id="L214">                    ex.printStackTrace(); // print the stack trace</span>
+<span class="nc" id="L215">                }</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">                if (bufferLength &gt; 0) { // if the input is not empty</span>
+<span class="nc" id="L217">                    scannerino.nextLine(); // get the input}</span>
+                    // print the message to the user
+<span class="nc" id="L219">                    System.out.println(&quot;Invalid input. Please enter a number between 0 and 9.&quot;);</span>
+                }
+<span class="nc" id="L221">            }</span>
+        }
+<span class="nc" id="L223">        return col;</span>
+    }
+
+    /**
+     * Method that asks the user in which row shall the ship be placed.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the row number where the ship shall be placed as an integer
+     */
+    // WHERE DOES THE PLAYER WANT TO PUT THEIR SHIP (row)
+    public int inWhichRowToPutShip(Scanner scannerino) {
+<span class="nc" id="L233">        int row = 0; // row number</span>
+<span class="nc" id="L234">        int col = 0; // column number</span>
+<span class="nc" id="L235">        boolean valid = false; // boolean to check if the input is valid</span>
+        // the input is valid if the input is a number between 0 and 9
+<span class="nc bnc" id="L237" title="All 2 branches missed.">        while (valid == false) { // while the input is not valid</span>
+            // print the message to the user
+<span class="nc" id="L239">            System.out.println(&quot;Enter the row number you want to place your ship: &quot;);</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">            if (scannerino.hasNextInt()) { // if the input is an integer</span>
+<span class="nc" id="L241">                int input = scannerino.nextInt(); // get the input</span>
+<span class="nc bnc" id="L242" title="All 4 branches missed.">                if (input &lt; 0 || input &gt; this.fieldLength - 1) { // if the input is not between 0 and 9</span>
+<span class="nc" id="L243">                    System.out.println(&quot;Invalid input.&quot;);</span>
+<span class="nc" id="L244">                    continue;</span>
+                } // if the input is between 0 and 9
+<span class="nc" id="L246">                row = input; // set the row number</span>
+<span class="nc" id="L247">                valid = true; // set the boolean to true</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">            } else if (scannerino.hasNextLine()) { // if the input is a string</span>
+<span class="nc" id="L249">                scannerino.nextLine(); // get the input</span>
+<span class="nc" id="L250">                int bufferLength = 0; // buffer length</span>
+                try { // try to get the length of the input
+<span class="nc" id="L252">                    bufferLength = System.in.available(); // checks if the system.in buffer is empty</span>
+<span class="nc" id="L253">                } catch (IOException ex) { // if something goes wrong</span>
+<span class="nc" id="L254">                    ex.printStackTrace(); // print the stack trace</span>
+<span class="nc" id="L255">                }</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">                if (bufferLength &gt; 0) { // if the input is not empty</span>
+<span class="nc" id="L257">                    scannerino.nextLine(); // get the input</span>
+                }
+                // print the message to the user
+<span class="nc" id="L260">                System.out.println(&quot;Invalid input.&quot;);</span>
+<span class="nc" id="L261">            }</span>
+        }
+<span class="nc" id="L263">        return row;</span>
+    }
+
+    /**
+     * Method that asks the user in which column shall the ship be placed.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the column number where the ship shall be placed as an integer
+     */
+    public int inWhichRowToPutShipForSecondPlayer(Scanner scannerino) {
+<span class="nc" id="L272">        int row = 0; // row number</span>
+<span class="nc" id="L273">        int col = 0; // column number</span>
+<span class="nc" id="L274">        boolean valid = false; // boolean to check if the input is valid</span>
+        // the input is valid if the input is a number between 0 and 9
+<span class="nc bnc" id="L276" title="All 2 branches missed.">        while (valid == false) { // while the input is not valid</span>
+            // print the message to the user
+<span class="nc" id="L278">            System.out.println(&quot;Enter the row number you want to place your ship: &quot;);</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">            if (scannerino.hasNextInt()) { // if the input is an integer</span>
+<span class="nc" id="L280">                int input = scannerino.nextInt(); // get the input</span>
+<span class="nc bnc" id="L281" title="All 4 branches missed.">                if (input &lt; 0 || input &gt; this.fieldLength - 1) { // if the input is not between 0 and 9</span>
+<span class="nc" id="L282">                    System.out.println(&quot;Invalid input.&quot;);</span>
+<span class="nc" id="L283">                    continue;</span>
+                } // if the input is between 0 and 9
+<span class="nc" id="L285">                row = input; // set the row number</span>
+<span class="nc" id="L286">                valid = true; // set the boolean to true</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">            } else if (scannerino.hasNextLine()) { // if the input is a string</span>
+<span class="nc" id="L288">                scannerino.nextLine(); // get the input</span>
+<span class="nc" id="L289">                int bufferLength = 0; // buffer length</span>
+                try { // try to get the length of the input
+<span class="nc" id="L291">                    bufferLength = System.in.available(); // checks if the system.in buffer is empty</span>
+<span class="nc" id="L292">                } catch (IOException ex) { // if something goes wrong</span>
+<span class="nc" id="L293">                    ex.printStackTrace(); // print the stack trace</span>
+<span class="nc" id="L294">                }</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">                if (bufferLength &gt; 0) { // if the input is not empty</span>
+<span class="nc" id="L296">                    scannerino.nextLine(); // get the input</span>
+                }
+                // print the message to the user
+<span class="nc" id="L299">                System.out.println(&quot;Invalid input.&quot;);</span>
+<span class="nc" id="L300">            }</span>
+        }
+<span class="nc" id="L302">        return row;</span>
+    }
+
+    /**
+     * Method that asks the user in which column shall the ship be placed.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the column number where the ship shall be placed as an integer
+     */
+    // WHERE DOES THE PLAYER WANT TO PUT THEIR SHIP (column)
+    public int inWhichColToPutShip(Scanner scannerino) {
+<span class="nc" id="L312">        int row = 0; // row number</span>
+<span class="nc" id="L313">        int col = 0; // column number</span>
+<span class="nc" id="L314">        boolean valid = false; // boolean to check if the input is valid</span>
+        // the input is valid if the input is a number between 0 and 9
+<span class="nc bnc" id="L316" title="All 2 branches missed.">        while (valid == false) { // while the input is not valid</span>
+            // print the message to the user
+<span class="nc" id="L318">            System.out.println(&quot;Enter the column number you want to place your ship: &quot;);</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">            if (scannerino.hasNextInt()) { // if the input is an integer</span>
+<span class="nc" id="L320">                int input = scannerino.nextInt(); // get the input</span>
+<span class="nc bnc" id="L321" title="All 4 branches missed.">                if (input &lt; 0 || input &gt; this.fieldLength - 1) { // if the input is not between 0 and 9</span>
+<span class="nc" id="L322">                    System.out.println(&quot;Invalid input.&quot;);</span>
+                }
+<span class="nc" id="L324">                col = input; // set the row number</span>
+<span class="nc" id="L325">                valid = true; // set the boolean to true</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">            } else if (scannerino.hasNextLine()) { // if the input is a string</span>
+<span class="nc" id="L327">                scannerino.nextLine(); // get the input</span>
+<span class="nc" id="L328">                int bufferLength = 0; // buffer length</span>
+                try { // try to get the length of the input
+<span class="nc" id="L330">                    bufferLength = System.in.available(); // checks if the system.in buffer is empty</span>
+<span class="nc" id="L331">                } catch (IOException ex) { // if something goes wrong</span>
+<span class="nc" id="L332">                    ex.printStackTrace(); // print the stack trace</span>
+<span class="nc" id="L333">                }</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">                if (bufferLength &gt; 0) { // if the input is not empty</span>
+<span class="nc" id="L335">                    scannerino.nextLine(); // get the input</span>
+                }
+                // print the message to the user
+<span class="nc" id="L338">                System.out.println(&quot;Invalid input.&quot;);</span>
+<span class="nc" id="L339">            }</span>
+        }
+<span class="nc" id="L341">        return col;</span>
+    }
+
+    /**
+     * Method that asks the user in which column shall the ship be placed.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the column number where the ship shall be placed as an integer
+     */
+    public int inWhichColToPutShipForSecondPlayer(Scanner scannerino) {
+<span class="nc" id="L350">        int row = 0; // row number</span>
+<span class="nc" id="L351">        int col = 0; // column number</span>
+<span class="nc" id="L352">        boolean valid = false; // boolean to check if the input is valid</span>
+        // the input is valid if the input is a number between 0 and 9
+<span class="nc bnc" id="L354" title="All 2 branches missed.">        while (valid == false) { // while the input is not valid</span>
+            // print the message to the user
+<span class="nc" id="L356">            System.out.println(&quot;Enter the column number you want to place your ship: &quot;);</span>
+<span class="nc bnc" id="L357" title="All 2 branches missed.">            if (scannerino.hasNextInt()) { // if the input is an integer</span>
+<span class="nc" id="L358">                int input = scannerino.nextInt(); // get the input</span>
+<span class="nc bnc" id="L359" title="All 4 branches missed.">                if (input &lt; 0 || input &gt; this.fieldLength - 1) { // if the input is not between 0 and 9</span>
+<span class="nc" id="L360">                    System.out.println(&quot;Invalid input.&quot;);</span>
+                }
+<span class="nc" id="L362">                col = input; // set the row number</span>
+<span class="nc" id="L363">                valid = true; // set the boolean to true</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">            } else if (scannerino.hasNextLine()) { // if the input is a string</span>
+<span class="nc" id="L365">                scannerino.nextLine(); // get the input</span>
+<span class="nc" id="L366">                int bufferLength = 0; // buffer length</span>
+                try { // try to get the length of the input
+<span class="nc" id="L368">                    bufferLength = System.in.available(); // checks if the system.in buffer is empty</span>
+<span class="nc" id="L369">                } catch (IOException ex) { // if something goes wrong</span>
+<span class="nc" id="L370">                    ex.printStackTrace(); // print the stack trace</span>
+<span class="nc" id="L371">                }</span>
+<span class="nc bnc" id="L372" title="All 2 branches missed.">                if (bufferLength &gt; 0) { // if the input is not empty</span>
+<span class="nc" id="L373">                    scannerino.nextLine(); // get the input</span>
+                }
+                // print the message to the user
+<span class="nc" id="L376">                System.out.println(&quot;Invalid input.&quot;);</span>
+<span class="nc" id="L377">            }</span>
+        }
+<span class="nc" id="L379">        return col;</span>
+    }
+
+    /**
+     * Method that after having placed the ships, asks for the user to specify the direction of the ship.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the direction of the ship as a string
+     */
+    public String whichDirectionToPutShip(Scanner scannerino) {
+        String direction;
+        while (true) {
+<span class="nc bnc" id="L390" title="All 2 branches missed.">            if (scannerino.hasNextLine()) { // if the input is a string</span>
+<span class="nc" id="L391">                scannerino.nextLine(); // get the input</span>
+<span class="nc" id="L392">                int bufferLength = 0; // buffer length</span>
+                try { // try to get the length of the input
+<span class="nc" id="L394">                    bufferLength = System.in.available(); // checks if the system.in buffer is empty</span>
+<span class="nc" id="L395">                } catch (IOException ex) { // if something goes wrong</span>
+<span class="nc" id="L396">                    ex.printStackTrace(); // print the stack trace</span>
+<span class="nc" id="L397">                }</span>
+<span class="nc bnc" id="L398" title="All 2 branches missed.">                if (bufferLength &gt; 0) { // if the input is not empty</span>
+<span class="nc" id="L399">                    scannerino.nextLine(); // get the input</span>
+                }
+            }
+            // print the message to the user
+<span class="nc" id="L403">            System.out.println(&quot;Enter the direction you want to place your ship: &quot;);</span>
+            // Thread.sleep(1000); // wait 1 second
+<span class="nc" id="L405">            System.out.println(&quot;(H)orizontally or (V)ertically? &quot;);</span>
+            // Thread.sleep(1000); // wait 1 second
+<span class="nc bnc" id="L407" title="All 2 branches missed.">            if (scannerino.hasNextLine()) { // if the input is a string</span>
+<span class="nc" id="L408">                String input = scannerino.nextLine(); // get the input</span>
+<span class="nc bnc" id="L409" title="All 4 branches missed.">                if (input.equals(&quot;H&quot;) || input.equals(&quot;h&quot;)) { // if the input is H or h</span>
+<span class="nc" id="L410">                    direction = input; // set the direction to input</span>
+<span class="nc" id="L411">                    break; // break the loop</span>
+<span class="nc bnc" id="L412" title="All 4 branches missed.">                } else if (input.equals(&quot;V&quot;) || input.equals(&quot;v&quot;)) { // if the input is V or v</span>
+<span class="nc" id="L413">                    direction = input; // set the direction to input</span>
+<span class="nc" id="L414">                    break; // break the loop</span>
+                } else { // if the input is not H or h or V or v
+<span class="nc" id="L416">                    System.out.println(&quot;Invalid input &quot; + input + &quot;.&quot;);</span>
+                }
+<span class="nc" id="L418">            }</span>
+        }
+<span class="nc" id="L420">        return direction;</span>
+    }
+
+    /**
+     * Method that asks the user in which direction shall the ship point to.
+     * @param scannerino the scanner that will be used to get the input from the user
+     * @return the direction where the ship shall point as a string.
+     */
+    public String whichDirectionToPutShipForSecondPlayer(Scanner scannerino) {
+        String direction;
+        while (true) {
+<span class="nc bnc" id="L431" title="All 2 branches missed.">            if (scannerino.hasNextLine()) { // if the input is a string</span>
+<span class="nc" id="L432">                scannerino.nextLine(); // get the input</span>
+<span class="nc" id="L433">                int bufferLength = 0; // buffer length</span>
+                try { // try to get the length of the input
+<span class="nc" id="L435">                    bufferLength = System.in.available(); // checks if the system.in buffer is empty</span>
+<span class="nc" id="L436">                } catch (IOException ex) { // if something goes wrong</span>
+<span class="nc" id="L437">                    ex.printStackTrace(); // print the stack trace</span>
+<span class="nc" id="L438">                }</span>
+<span class="nc bnc" id="L439" title="All 2 branches missed.">                if (bufferLength &gt; 0) { // if the input is not empty</span>
+<span class="nc" id="L440">                    scannerino.nextLine(); // get the input</span>
+                }
+            }
+            // print the message to the user
+<span class="nc" id="L444">            System.out.println(&quot;Enter the direction you want to place your ship: &quot;);</span>
+            // Thread.sleep(1000); // wait 1 second
+<span class="nc" id="L446">            System.out.println(&quot;(H)orizontally or (V)ertically? &quot;);</span>
+            // Thread.sleep(1000); // wait 1 second
+<span class="nc bnc" id="L448" title="All 2 branches missed.">            if (scannerino.hasNextLine()) { // if the input is a string</span>
+<span class="nc" id="L449">                String input = scannerino.nextLine(); // get the input</span>
+<span class="nc bnc" id="L450" title="All 4 branches missed.">                if (input.equals(&quot;H&quot;) || input.equals(&quot;h&quot;)) { // if the input is H or h</span>
+<span class="nc" id="L451">                    direction = input; // set the direction to input</span>
+<span class="nc" id="L452">                    break; // break the loop</span>
+<span class="nc bnc" id="L453" title="All 4 branches missed.">                } else if (input.equals(&quot;V&quot;) || input.equals(&quot;v&quot;)) { // if the input is V or v</span>
+<span class="nc" id="L454">                    direction = input; // set the direction to input</span>
+<span class="nc" id="L455">                    break; // break the loop</span>
+                } else { // if the input is not H or h or V or v
+<span class="nc" id="L457">                    System.out.println(&quot;Invalid input &quot; + input + &quot;.&quot;);</span>
+                }
+<span class="nc" id="L459">            }</span>
+        }
+<span class="nc" id="L461">        return direction;</span>
+    }
+
+    /**
+     * Method that generates a random X coordinate for the player's ship.
+     * @return the random X coordinate
+     */
+    public int generateRandomPlayerXCoordinate() {
+<span class="nc" id="L469">        Random random = new Random();</span>
+<span class="nc" id="L470">        return random.nextInt(FIELD_SIZE);</span>
+    }
+
+    /**
+     * Method that generates a random Y coordinate for the player's ship.
+     * @return the random Y coordinate
+     */
+    public int generateRandomPlayerYCoordinate() {
+<span class="nc" id="L478">        Random random = new Random();</span>
+<span class="nc" id="L479">        return random.nextInt(FIELD_SIZE);</span>
+    }
+
+
+    /**
+     * Method that generates a random player move.
+     * @return the random player move as a 2D array containing the X and Y coordinates.
+     */
+    // generate random move for the AI
+    public int[] generateRandomPlayerMove() {
+<span class="nc" id="L489">        int[] randomMove = new int[2]; // an array with two elements, x and y coordinates</span>
+<span class="nc" id="L490">        randomMove[0] = generateRandomPlayerXCoordinate(); // set x coordinate randomly</span>
+<span class="nc" id="L491">        randomMove[1] = generateRandomPlayerYCoordinate(); // set y coordinate randomly</span>
+<span class="nc" id="L492">        return randomMove;</span>
+    }
+
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

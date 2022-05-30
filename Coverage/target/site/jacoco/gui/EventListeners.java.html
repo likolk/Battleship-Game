@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EventListeners.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">project</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">EventListeners.java</span></div><h1>EventListeners.java</h1><pre class="source lang-java linenums">package gui;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import static model.Game.setPlayerShipsManually;
+
+public class EventListeners extends JPanel implements ActionListener {
+
+    // this class is going to be used to store all the event listeners
+    // for the GUI
+
+<span class="nc" id="L16">    JPanel panel = new JPanel();</span>
+<span class="nc" id="L17">    public EventListeners() {</span>
+
+
+<span class="nc" id="L20">    }</span>
+
+    public void mouseclicks() {
+        // we will use an event listener to do this
+<span class="nc" id="L24">        panel.addMouseListener(new MouseAdapter() {</span>
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // we will use the x and y coordinates of the mouse to place the ships
+<span class="nc" id="L28">                int x = e.getX();</span>
+<span class="nc" id="L29">                int y = e.getY();</span>
+                // we will use the x and y coordinates of the mouse to place the ships
+<span class="nc" id="L31">                setPlayerShipsManually(x, y);</span>
+<span class="nc" id="L32">            }</span>
+        });
+<span class="nc" id="L34">    }</span>
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L38">        JButton btn = (JButton) e.getSource();</span>
+<span class="nc" id="L39">        System.out.println(&quot;clicked column &quot; + btn.getClientProperty(&quot;column&quot;)</span>
+<span class="nc" id="L40">                + &quot;, row &quot; + btn.getClientProperty(&quot;row&quot;));</span>
+<span class="nc" id="L41">    }</span>
+
+
+
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

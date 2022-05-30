@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Frame.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">project</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">Frame.java</span></div><h1>Frame.java</h1><pre class="source lang-java linenums">package gui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.GridLayout;
+
+import javax.swing.*;
+
+// this code adds two panels to the frame
+// prototype for the frame
+
+public class Frame extends JFrame {
+
+<span class="nc" id="L15">    private JFrame frame = new JFrame();</span>
+<span class="nc" id="L16">    private JLayeredPane lpane = new JLayeredPane();</span>
+<span class="nc" id="L17">    private JPanel panelBlue = new JPanel();</span>
+<span class="nc" id="L18">    private JPanel panelGreen = new JPanel();</span>
+
+
+<span class="nc" id="L21">    public Frame() {</span>
+<span class="nc" id="L22">        setTitle(&quot;Two panels&quot;);</span>
+<span class="nc" id="L23">        setSize(new Dimension(1980,1080));</span>
+<span class="nc" id="L24">        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+
+        //Here goes your code
+<span class="nc" id="L27">        JPanel p = (JPanel) getContentPane();</span>
+<span class="nc" id="L28">        p.setLayout(new GridLayout(1,2)); //set your own layout</span>
+<span class="nc" id="L29">        p.add(new MyPanel(Color.BLUE)); //add panel with blue border</span>
+<span class="nc" id="L30">        p.add(new MyPanel(Color.GREEN));//add panel with green border</span>
+
+<span class="nc" id="L32">    }</span>
+    public static void main(String[] args) {
+<span class="nc" id="L34">        EventQueue.invokeLater(new Runnable() {</span>
+            @Override
+            public void run() {
+<span class="nc" id="L37">                Frame f= new Frame();</span>
+<span class="nc" id="L38">                f.setVisible(true);</span>
+<span class="nc" id="L39">            }</span>
+        });
+<span class="nc" id="L41">    }</span>
+}
+
+class MyPanel extends JPanel {
+<span class="nc" id="L45">    public MyPanel(Color color) {</span>
+<span class="nc" id="L46">        setBorder(BorderFactory.createLineBorder(color));</span>
+<span class="nc" id="L47">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

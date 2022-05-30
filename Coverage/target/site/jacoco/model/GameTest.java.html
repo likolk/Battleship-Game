@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">project</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">GameTest.java</span></div><h1>GameTest.java</h1><pre class="source lang-java linenums">package model;
+
+import static model.Game.*;
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import javax.naming.Name;
+import java.io.*;
+import java.util.*;
+
+/**
+ * The test class GameTest.
+ * @author kelvin.likollari@usi.ch
+ */
+public class GameTest {
+    /**
+     * Default constructor for test class GameTest
+     */
+    public GameTest() {
+<span class="fc" id="L23">    }</span>
+<span class="fc" id="L24"></span>
+    /**
+     * Sets up the test fixture.
+     * Called before every test case method.
+     */
+    @Before
+    public void setUp() {
+    }
+
+<span class="fc" id="L33">    /**</span>
+     * Tears down the test fixture.
+     * Called after every test case method.
+     */
+    @After
+    public void tearDown() {
+    }
+
+    @Test
+<span class="fc" id="L42">    public void testGame() {</span>
+        Game game = new Game();
+        assertNotNull(game);
+    }
+<span class="fc" id="L46"></span>
+<span class="fc" id="L47">    @Test</span>
+<span class="fc" id="L48">    public void testIsGameOver() {</span>
+        Game game = new Game();
+        assertFalse(game.isGameOver());
+    }
+<span class="fc" id="L52"></span>
+<span class="fc" id="L53">    @Test</span>
+<span class="fc" id="L54">    public void testIsGameWon() {</span>
+        Game game = new Game();
+        assertFalse(game.isGameWon());
+    }
+<span class="fc" id="L58"></span>
+<span class="fc" id="L59">    @Test</span>
+<span class="fc" id="L60">    public void testIsGameLost() {</span>
+        Game game = new Game();
+        assertFalse(game.isGameLost());
+    }
+<span class="fc" id="L64"></span>
+<span class="fc" id="L65">    @Test</span>
+<span class="fc" id="L66">    public void testGameOver() {</span>
+        Game game = new Game();
+        Player player = new Player(&quot;P&quot;, 4);
+        Ship ship = new Ship(2);
+<span class="fc" id="L70">        assertFalse(game.isGameOver());</span>
+<span class="fc" id="L71"></span>
+<span class="fc" id="L72">    }</span>
+<span class="fc" id="L73"></span>
+    @Test
+<span class="fc" id="L75">    public void testGameOver1() {</span>
+        Game game = new Game();
+        Player player = new Player(&quot;P&quot;, 4);
+        Ai ai = new Ai(&quot;A&quot;, 4);
+<span class="fc" id="L79">        Ship ship = new Ship(2);</span>
+<span class="fc" id="L80">//        if (player.getShips() == 0 &amp;&amp; ai.getShips() == 0) {</span>
+<span class="fc" id="L81">//            game.gameOver();</span>
+<span class="fc" id="L82">//            assertTrue(game.isGameOver());</span>
+//        }
+        // since there are still ships left, the game is not over
+        assertFalse(game.isGameOver());
+    }
+
+<span class="fc" id="L88">    @Test</span>
+<span class="fc" id="L89">    public void testGameNotOver() {</span>
+        Game game = new Game();
+        assertFalse(game.isGameOver());
+    }
+<span class="fc" id="L93"></span>
+<span class="fc" id="L94">    @Test</span>
+<span class="fc" id="L95">    public void testGameWon() {</span>
+        Game game = new Game();
+        // game.gameIsWon(); // we need to implement a gameIsWon for this to work.
+        assertFalse(game.isGameWon()); // TODO: To turn to true when the above line gets fixed.
+<span class="fc" id="L99">    }</span>
+
+<span class="fc" id="L101"></span>
+<span class="fc" id="L102"></span>
+
+    @Test
+    public void testGetPlayerName() {
+<span class="fc" id="L106">        Player player = new Player(&quot;P&quot;, 4);</span>
+<span class="fc" id="L107">        player.setName(&quot;P&quot;);</span>
+<span class="fc" id="L108">        assertEquals(&quot;P&quot;, player.getName());</span>
+    }
+
+
+<span class="fc" id="L112"></span>
+<span class="fc" id="L113"></span>
+<span class="fc" id="L114">    @Test //added in 29.04.2022</span>
+    public void testChangeTurn() {
+        Game game = new Game();
+        assertEquals(false, game.changeTurn());
+    }
+
+<span class="fc" id="L120">    @Test //added in 29.04.2022</span>
+<span class="fc" id="L121">    public void testChangeTurnv2() {</span>
+<span class="fc" id="L122">        Game game = new Game();</span>
+        game.changeTurn();
+        assertEquals(true, game.changeTurn());
+    }
+<span class="fc" id="L126"></span>
+<span class="fc" id="L127">    @Test</span>
+<span class="fc" id="L128">    public void testAiTurnToMakeAMove() {</span>
+        Game game = new Game();
+        game.aiTurnToMakeAMove();
+        assertEquals(false, game.changeTurn());
+<span class="fc" id="L132">    }</span>
+<span class="fc" id="L133"></span>
+<span class="fc" id="L134">    @Test</span>
+<span class="fc" id="L135">    public void testAiTurnToMakeAMovev2() {</span>
+        Game game = new Game();
+        game.aiTurnToMakeAMove();
+        game.changeTurn();
+<span class="fc" id="L139">        assertEquals(true, game.changeTurn());</span>
+<span class="fc" id="L140">    }</span>
+<span class="fc" id="L141"></span>
+<span class="fc" id="L142">    @Test</span>
+    public void testAiTurnToMakeAMovev3() {
+        Game game = new Game();
+        game.aiTurnToMakeAMove();
+<span class="fc" id="L146">        game.changeTurn();</span>
+<span class="fc" id="L147">        game.changeTurn();</span>
+<span class="fc" id="L148">        assertEquals(false, game.changeTurn());</span>
+    }
+
+    @Test
+<span class="fc" id="L152">    public void testGetX() {</span>
+<span class="fc" id="L153">        Game game = new Game();</span>
+<span class="fc" id="L154">        assertEquals(0, game.getX());</span>
+<span class="fc" id="L155">    }</span>
+
+    @Test
+    public void testGetY() {
+<span class="fc" id="L159">        Game game = new Game();</span>
+<span class="fc" id="L160">        assertEquals(0, game.getY());</span>
+<span class="fc" id="L161">    }</span>
+<span class="fc" id="L162"></span>
+    @Test
+    public void testGetXv2() {
+        Game game = new Game();
+<span class="fc" id="L166">        game.setX(1);</span>
+<span class="fc" id="L167">        assertEquals(1, game.getX());</span>
+<span class="fc" id="L168">    }</span>
+<span class="fc" id="L169"></span>
+<span class="fc" id="L170">    @Test</span>
+    public void testGetYv2() {
+        Game game = new Game();
+        game.setY(1);
+<span class="fc" id="L174">        assertEquals(1, game.getY());</span>
+<span class="fc" id="L175">    }</span>
+<span class="fc" id="L176"></span>
+<span class="fc" id="L177">    @Test</span>
+<span class="fc" id="L178">    public void testGetXv3() {</span>
+<span class="fc" id="L179">        Game game = new Game();</span>
+        game.setX(1);
+        game.setY(1);
+        assertEquals(1, game.getX());
+<span class="fc" id="L183"></span>
+<span class="fc" id="L184">    }</span>
+<span class="fc" id="L185"></span>
+    @Test
+    public void updateGameDisplay() {
+        Game game = new Game();
+<span class="fc" id="L189">        Field field = new Field();</span>
+<span class="fc" id="L190">        Field field2 = new Field();</span>
+<span class="fc" id="L191">        game.updateGameDisplay(field, field2);</span>
+        assertEquals(0, game.getX());
+        assertEquals(0, game.getY());
+    }
+<span class="fc" id="L195"></span>
+<span class="fc" id="L196">    @Test</span>
+<span class="fc" id="L197">    public void testShipSizesHelpful() {</span>
+<span class="fc" id="L198">        int[] shipSizes = new int[5];</span>
+        shipSizes[0] = 1;
+        shipSizes[1] = 2;
+        shipSizes[2] = 3;
+<span class="fc" id="L202">        shipSizes[3] = 4;</span>
+<span class="fc" id="L203">        shipSizes[4] = 5;</span>
+<span class="fc" id="L204">        assertEquals(1, shipSizes[0]);</span>
+<span class="fc" id="L205">        assertEquals(2, shipSizes[1]);</span>
+        assertEquals(3, shipSizes[2]);
+        assertEquals(4, shipSizes[3]);
+        assertEquals(5, shipSizes[4]);
+<span class="fc" id="L209">    }</span>
+<span class="fc" id="L210"></span>
+<span class="fc" id="L211">//    @Test</span>
+<span class="fc" id="L212">//    public void testWelcomingInstructions() {</span>
+//        Scanner scanner = new Scanner(System.in);
+<span class="fc" id="L214">//        System.out.println(&quot;Everything good? (y/n)&quot;);</span>
+//        String input = scanner.nextLine();
+//        while (input != &quot;y&quot;) {
+//            System.out.println(&quot;Please enter y to continue.&quot;);
+<span class="fc" id="L218">//            input = scanner.nextLine();</span>
+<span class="fc" id="L219">//            if (input == &quot;y&quot;) {</span>
+<span class="fc" id="L220">//                Game.welcomingInstructions(scanner);</span>
+<span class="fc" id="L221">//            }</span>
+<span class="fc" id="L222">//        }</span>
+<span class="fc" id="L223">//    }</span>
+<span class="fc" id="L224"></span>
+//    @Test
+//    public void testSetPlayerShips() {
+//        // to test this we must first get input from the user
+<span class="fc" id="L228">//        // and then call the method.</span>
+<span class="fc" id="L229">//        Field playerFieldForPlayer = new Field();</span>
+<span class="fc" id="L230">//        Player player = new Player();</span>
+<span class="fc" id="L231">//        Game game = new Game();</span>
+<span class="fc" id="L232">//        Scanner scanner = new Scanner(System.in);</span>
+<span class="fc" id="L233">//        // select whether you'd like to set the ships manually or automatically</span>
+<span class="fc" id="L234">//        System.out.println(&quot;Would you like to set the ships manually or automatically? (m/a)&quot;);</span>
+<span class="fc" id="L235">//        String input = scanner.nextLine();</span>
+<span class="fc" id="L236">//        while (input != &quot;m&quot; &amp;&amp; input != &quot;a&quot;) {</span>
+<span class="fc" id="L237">//            System.out.println(&quot;Please enter m or a to continue.&quot;);</span>
+<span class="fc" id="L238">//            input = scanner.nextLine();</span>
+<span class="fc" id="L239">//            if (Objects.equals(input, &quot;m&quot;)) {</span>
+//                game.setPlayerShips(scanner);
+//            }
+//            if (input == &quot;a&quot;) {
+//                placeShipRandomlyV2(playerFieldForPlayer, player);
+//            }
+//        }
+//        game.setPlayerShips(scanner);
+//        assertEquals(0, game.getX());
+//        assertEquals(0, game.getY());
+//    }
+
+
+
+
+    @Test
+    public void testSetSecondAiShips() {
+        Field aiFieldForSecondAi = new Field();
+        Ai ai2 = new Ai(); // made public static to be acc
+        placeShipRandomlyV2(aiFieldForSecondAi, ai2);
+    }
+
+    @Test
+    public void testSetThirdAiShips() {
+        Field aiFieldForThirdAi = new Field();
+        Ai ai3 = new Ai(); // made public static to be acc
+        placeShipRandomlyV2(aiFieldForThirdAi, ai3);
+    }
+
+    @Test
+    public void testStartGamePVSAI() {
+        // TODO: Test this method
+
+    }
+
+    @Test
+    public void testcheckIfTheGameIsOverAIVAI() {
+        Game game = new Game();
+        assertEquals(false, game.checkIfTheGameIsOverAIvsAI());
+    }
+
+    @Test
+    public void testcheckIfTheGameIsOverAIVAIV2() {
+        Game game = new Game();
+<span class="fc" id="L283">        game.checkIfTheGameIsOverAIvsAI();</span>
+<span class="fc" id="L284">        assertEquals(false, game.checkIfTheGameIsOverAIvsAI());</span>
+<span class="fc" id="L285">    }</span>
+<span class="fc" id="L286"></span>
+    @Test
+    public void testcheckIfTheGameIsOverAIVAIV3() {
+        Game game = new Game();
+<span class="fc" id="L290">        int secondAiRoomsLeft = 0;</span>
+<span class="fc" id="L291">        int aiRoomsLeft = 0;</span>
+<span class="fc" id="L292">        game.checkIfTheGameIsOverAIvsAI();</span>
+<span class="fc" id="L293">        assertEquals(false, game.checkIfTheGameIsOverAIvsAI());</span>
+
+    }
+
+<span class="fc" id="L297">    // TODO: Test the true case of the above</span>
+<span class="fc" id="L298"></span>
+<span class="fc" id="L299">    @Test</span>
+<span class="fc" id="L300">    public void testDeclareWinner() {</span>
+        Game game = new Game();
+        String lastTurn = &quot;&quot;;
+        if (lastTurn == &quot;a&quot;) {
+            game.declareWinner(lastTurn);
+        } else {
+<span class="fc" id="L306">            game.declareWinner(lastTurn);</span>
+        }
+    }
+
+<span class="fc" id="L310">    @Test</span>
+<span class="fc" id="L311">    public void getAiShipSymbol() {</span>
+<span class="fc" id="L312">        String symbol = &quot;&quot;;</span>
+        Game game = new Game();
+        assertEquals(&quot;&quot;, symbol);
+    }
+<span class="fc" id="L316"></span>
+<span class="fc" id="L317">    @Test</span>
+<span class="fc" id="L318">    public void getAiShipSymbolv2() {</span>
+<span class="fc" id="L319">        String symbol = &quot;k&quot;;</span>
+        Game game = new Game();
+        assertEquals(&quot;k&quot;, symbol);
+    }
+<span class="fc" id="L323"></span>
+<span class="fc" id="L324">    @Test</span>
+<span class="fc" id="L325">    public void getAiShipSymbolv3() {</span>
+<span class="pc bpc" id="L326" title="3 of 4 branches missed.">        String symbol = null;</span>
+<span class="fc" id="L327">        Game game = new Game();</span>
+        assertNull(symbol);
+<span class="nc" id="L329">    }</span>
+<span class="nc" id="L330"></span>
+    @Test
+    public void getPlayerShipSymbol() {
+        String symbol = &quot;&quot;;
+        Game game = new Game();
+        assertEquals(&quot;&quot;, symbol);
+<span class="fc" id="L336">    }</span>
+<span class="fc" id="L337"></span>
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">    @Test</span>
+<span class="nc" id="L339">    public void getPlayerShipSymbolv2() {</span>
+        String symbol = &quot;k&quot;;
+<span class="fc" id="L341">        Game game = new Game();</span>
+        assertEquals(&quot;k&quot;, symbol);
+<span class="fc" id="L343">    }</span>
+
+    @Test
+    public void testSecondAiTurnToMakeAMove() {
+<span class="fc" id="L347">        Game game = new Game();</span>
+<span class="fc" id="L348">        Field aiFieldForSecondAi = new Field();</span>
+<span class="fc" id="L349">        Ai ai2 = new Ai();</span>
+<span class="fc" id="L350">        placeShipRandomlyV2(aiFieldForSecondAi, ai2);</span>
+        game.secondAiTurnToMakeAMove();
+        assertEquals(0, game.getX());
+        assertEquals(0, game.getY());
+<span class="fc" id="L354">    }</span>
+<span class="fc" id="L355"></span>
+<span class="fc" id="L356">    @Test</span>
+<span class="fc" id="L357">    public void testShipSizesHelpfulv2() {</span>
+        int[] shipSizes = new int[5];
+        shipSizes[0] = 1;
+        shipSizes[1] = 2;
+<span class="fc" id="L361">        shipSizes[2] = 3;</span>
+<span class="fc" id="L362">        shipSizes[3] = 4;</span>
+<span class="fc" id="L363">        shipSizes[4] = 5;</span>
+<span class="fc" id="L364">        assertEquals(1, shipSizes[0]);</span>
+        assertEquals(2, shipSizes[1]);
+        assertEquals(3, shipSizes[2]);
+        assertEquals(4, shipSizes[3]);
+<span class="fc" id="L368">        assertEquals(5, shipSizes[4]);</span>
+<span class="fc" id="L369">    }</span>
+<span class="fc" id="L370"></span>
+<span class="fc" id="L371">    @Test</span>
+    public void testGetAiShipSymbol() {
+        String symbol = &quot;&quot;;
+        Game game = new Game();
+<span class="fc" id="L375">        assertEquals(&quot;&quot;, symbol);</span>
+<span class="fc" id="L376">    }</span>
+<span class="fc" id="L377"></span>
+<span class="fc" id="L378">//    @Test</span>
+//    public void testSetAiShips() {
+//        // to test this we must first get input from the user
+//        // and then call the method.
+<span class="fc" id="L382">//        Field aiFieldForSecondAi = new Field();</span>
+<span class="fc" id="L383">//        Ai ai2 = new Ai(); // made public static to be acc</span>
+<span class="fc" id="L384">//        placeShipRandomlyV2(aiFieldForSecondAi, ai2);</span>
+<span class="fc" id="L385">//        assertEquals(0, ai2.generateRandomAiYCoordinate());</span>
+<span class="fc" id="L386">//        assertEquals(0, ai2.generateRandomAiXCoordinate());</span>
+<span class="fc" id="L387">//    }</span>
+<span class="fc" id="L388"></span>
+<span class="fc" id="L389">//    @Test</span>
+//    public void testSetSecondAiShips2() {
+//        Field aiFieldForSecondAi = new Field();
+//        Ai ai2 = new Ai(); // made public static to be acc
+//        placeShipRandomlyV2(aiFieldForSecondAi, ai2);
+//        assertEquals(0, ai2.generateRandomAiYCoordinate());
+//        assertEquals(0, ai2.generateRandomAiXCoordinate());
+//    }
+
+    @Test
+    public void getSecondAiShipSymbol() {
+        String symbol = &quot;&quot;;
+        Game game = new Game();
+        assertEquals(&quot;&quot;, symbol);
+    }
+
+    @Test
+    public void testShoot() {
+        int x = 0;
+        int y = 0;
+        Game game = new Game();
+        game.shoot(x, y);
+        assertEquals(0, game.getX());
+        assertEquals(0, game.getY());
+    }
+
+//    @Test
+//    public void testShoot2() {
+//        int x = -1;
+//        int y = -1;
+//        Game game = new Game();
+//        game.shoot(x, y);
+//        assertEquals(-1, game.getX());
+//        assertEquals(-1, game.getY());
+//    }
+
+    @Test
+    public void testShoot3() {
+        int x = 0;
+        int y = 0;
+        int shipsShot = 0;
+        Game game = new Game();
+        game.shoot(x, y);
+        shipsShot++;
+        assertEquals(true, shipsShot &gt; 0);
+    }
+
+
+
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Ai.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">project</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">Ai.java</span></div><h1>Ai.java</h1><pre class="source lang-java linenums">package model;
+
+
+import static model.Field.FIELD_SIZE; // this should be before any other import and separated by a blank line
+
+import java.util.Random;
+
+
+
+/**
+ * AI class used to represent the opponent of the game, which in this case is the computer itself.
+ * This is the class AI that inherits from GamePlayer.
+ * @author kelvin.likollari@usi.ch and ilker.kaymak@usi.ch
+ */
+public class Ai extends GamePlayers
+{
+
+<span class="fc" id="L18">    private int aiscore = 0;</span>
+    private static final String AI_NAME = &quot;Mr. Computer  ( ͡° ͜ʖ ͡°)&quot;;
+
+    private static final int AI_SHIPS_NUMBER = 5;
+
+    /**
+     * Constructor for objects of class Ai.
+     * @param name the name of the Ai.
+     * @param fieldLength the length of the field.
+     */
+    public Ai(String name, int fieldLength)
+    {
+<span class="fc" id="L30">        super(fieldLength);</span>
+<span class="fc" id="L31">        String symbol = generateRandomSymbol(name);</span>
+<span class="fc" id="L32">        this.setSymbol(symbol); // from GamePlayer class</span>
+<span class="fc" id="L33">    }</span>
+
+    /**
+     * Constructor added for line 13 of model/main.java to be able to create an Ai object.
+     */
+    public Ai() {
+<span class="fc" id="L39">        super();</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * The following method generates a random symbol for the Ai.
+     * @param name the name of the Ai.
+     * @return the random symbol for the Ai.
+      */
+    public String generateRandomSymbol(String name) {
+<span class="fc" id="L48">        String symbol = &quot;&quot;;</span>
+<span class="fc" id="L49">        Random rand = new Random();</span>
+<span class="fc" id="L50">        int random = rand.nextInt(2);</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (random == 0) {</span>
+<span class="fc" id="L52">            symbol = &quot;X&quot;;</span>
+        } else {
+<span class="fc" id="L54">            symbol = &quot;O&quot;;</span>
+        }
+<span class="fc" id="L56">        return symbol;</span>
+    }
+
+    /**
+     * This method is used to set the score of the Ai.
+     * @return the score of the Ai.
+     */
+    public int getAiScore()
+    {
+<span class="fc" id="L65">        return aiscore;</span>
+    }
+
+    /**
+     * This method is used to set the name of the Ai.
+     * @return the name of the Ai.
+     */
+    public String getAiName() {
+<span class="fc" id="L73">        return AI_NAME;</span>
+    }
+
+
+    /**
+     * This method is used to get the number of ships of the ai.
+     * @return The number of ships of the ai.
+     */
+    public int getShips() {
+<span class="fc" id="L82">        return AI_SHIPS_NUMBER;</span>
+    }
+
+    /**
+     * Method that generates a random X coordinate
+     * for the AI.
+     * @return the random X coordinate.
+     */
+    public int generateRandomAiXCoordinate() {
+<span class="fc" id="L91">        Random random = new Random();</span>
+<span class="fc" id="L92">        return random.nextInt(FIELD_SIZE);</span>
+    }
+
+    /**
+     * Method that generates a random Y coordinate for the AI.
+     * @return the random Y coordinate.
+     */
+    public int generateRandomAiYCoordinate() {
+<span class="fc" id="L100">        Random random = new Random();</span>
+<span class="fc" id="L101">        return random.nextInt(FIELD_SIZE);</span>
+    }
+
+
+    /**
+     * Method that generates a random move for the AI.
+     * @return the random move (i.e. its coordinates).
+     */
+    public int[] generateAiMove() {
+<span class="fc" id="L110">        int[] randomMove = new int[2]; // an array with two elements, x and y coordinates</span>
+<span class="fc" id="L111">        randomMove[0] = generateRandomAiXCoordinate(); // set x coordinate randomly</span>
+<span class="fc" id="L112">        randomMove[1] = generateRandomAiYCoordinate(); // set y coordinate randomly</span>
+<span class="fc" id="L113">        return randomMove;</span>
+    }
+
+    /**
+     * Method that generates a random move for the second AI (the AI that replaces the player,
+     * so that now we have an AI vs AI game).
+     * @return the random move (i.e. its coordinates).
+     */
+    public int[] generateAiMoveForSecondAi() {
+<span class="fc" id="L122">        int[] randomMove = new int[2]; // an array with two elements, x and y coordinates</span>
+<span class="fc" id="L123">        randomMove[0] = generateRandomSecondAiXCoordinate(); // set x coordinate randomly</span>
+<span class="fc" id="L124">        randomMove[1] = generateRandomSecondAiYCoordinate(); // set y coordinate randomly</span>
+<span class="fc" id="L125">        return randomMove;</span>
+    }
+    
+    /**
+     * Method that generates a random x coordinate for the AI.
+     * @return An int representing the x coordinate.
+     */
+    public int generateRandomSecondAiXCoordinate() {
+<span class="fc" id="L133">        Random random = new Random();</span>
+<span class="fc" id="L134">        return random.nextInt(FIELD_SIZE);</span>
+    }
+    
+    /**
+     * Method that generates a random y coordinate for the AI.
+     * @return An int representing the y coordinate.
+     */
+    public int generateRandomSecondAiYCoordinate() {
+<span class="fc" id="L142">        Random random = new Random();</span>
+<span class="fc" id="L143">        return random.nextInt(FIELD_SIZE);</span>
+    }
+
+    /**
+     * Method signifying that the AI has won the game.
+     */
+    public void wonTheGameAI() {
+<span class="fc" id="L150">        System.out.println(</span>
+                &quot;░░░░░░░░░░░░▄▄▄▄░░░░░░░░░░░░░░░░░░░░░░░▄▄▄▄▄\n&quot;
+                        +
+                        &quot;░░░█░░░░▄▀█▀▀▄░░▀▀▀▄░░░░▐█░░░░░░░░░▄▀█▀▀▄░░░▀█▄\n&quot;
+                        +
+                        &quot;░░█░░░░▀░▐▌( ͡° ͜ʖ ͡°)▐▌░░░▀░░░▐█░░░░░░░░▀░▐▌( ͡° ͜ʖ ͡°)▐▌░░█▀\n&quot;
+                        +
+                        &quot;░▐▌░░░░░░░▀▄▄▀░░░░░░░░░░▐█▄▄░░░░░░░░░▀▄▄▀░░░░░▐▌\n&quot;
+                        +
+                        &quot;░█░░░░░░░░░░░░░░░░░░░░░░░░░▀█░░░░░░░░░░░░░░░░░░█\n&quot;
+                        +
+                        &quot;▐█░░░░░░░░░░░░░░░░░░░░░░░░░░█▌░░░░░░░░░░░░░░░░░█\n&quot;
+                        +
+                        &quot;▐█░░░░░░░░░░░░░░░░░░░░░░░░░░█▌░░░░░░░░░░░░░░░░░█\n&quot;
+                        +
+                        &quot;░█░░░░░░░░░░░░░░░░░░░░█▄░░░▄█░░░░░░░░░░░░░░░░░░█\n&quot;
+                        +
+                        &quot;░▐▌░░░░░░░░░░░░░░░░░░░░▀███▀░░░░░░░░░░░░░░░░░░▐▌\n&quot;
+                        +
+                        &quot;░░█░░░░░░░░░░░░░░░░░▀▄░░░░░░░░░░▄▀░░░░░░░░░░░░█\n&quot;
+                        +
+                        &quot;░░░█░░░░░░░░░░░░░░░░░░▀▄▄▄▄▄▄▄▀▀░░░░░░░░░░░░░█\n&quot;
+                        +
+                        &quot;░░░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█\n&quot;
+                        +
+                        &quot;░░░░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█\n&quot;
+                        +
+                        &quot;░░░░░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█\n&quot;
+                        +
+                        &quot;░░░░░░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█\n&quot;
+                        +
+                        &quot;░░░░░░░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█\n&quot;
+                        +
+                               &quot;░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█\n&quot;
+                        +
+                        &quot;░░░░░░░░░░░░░░░░░░░░░░░░░█\n&quot;
+                        + &quot;░░░░░░░░░░░░░░░░░░░░░░░░░█\n&quot;
+        );
+<span class="fc" id="L188">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

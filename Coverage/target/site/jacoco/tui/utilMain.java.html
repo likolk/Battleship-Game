@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>utilMain.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">project</a> &gt; <a href="index.source.html" class="el_package">tui</a> &gt; <span class="el_source">utilMain.java</span></div><h1>utilMain.java</h1><pre class="source lang-java linenums">package tui;
+
+import model.Field;
+import model.Game;
+import model.Player;
+import model.Ship;
+
+import java.util.Scanner;
+// was -&gt; import java.util.*
+
+
+/**
+ * Text-User-Interface for the Battleship game.
+ * This class represents the Battleship game and provides a TUI.
+ * @author kelvin.likollari@usi.ch
+ */
+<span class="nc" id="L17">public class utilMain {</span>
+<span class="nc" id="L18">    private static Player player = new Player();</span>
+    public static final int FIELD_SIZE = 10;
+    public static final int NUMBER_OF_SHIPS = 5;
+<span class="nc" id="L21">    private static String name = &quot;&quot;;</span>
+
+<span class="nc" id="L23">    static final Game GAME = new Game();</span>
+    
+<span class="nc" id="L25">    private static Field aiFieldForPlayer = new Field(); // AI field for player</span>
+<span class="nc" id="L26">    private static Field aiFieldForAi = new Field(); // AI field for AI</span>
+
+<span class="nc" id="L28">    private static Field aiFieldForSecondAi = new Field(); // AI field for AI</span>
+<span class="nc" id="L29">    private static Field playerFieldForPlayer = new Field(); // Player field for player</span>
+
+<span class="nc" id="L31">    public static Field secondPlayerFieldForPlayer = new Field(); // second player field for player</span>
+
+    // line below added 06/05/22
+<span class="nc" id="L34">    private static Ship ship = new Ship(1, 1, 1,</span>
+            false, false, false, false);
+
+    // --------------------------------------------------------------------------------------
+
+
+    /**
+     * run method - This is the main method of the TUI.
+     * @throws InterruptedException if the thread is interrupted
+     */
+    public static void run() throws InterruptedException {
+
+<span class="nc" id="L46">        System.out.println(&quot;Hi, kindly enter your name to proceed.&quot;);</span>
+<span class="nc" id="L47">        final Scanner scanner = new Scanner(System.in);</span>
+<span class="nc" id="L48">        final String name = scanner.nextLine();</span>
+<span class="nc" id="L49">        System.out.println(&quot;Hey &quot; + name + &quot;! Welcome to&quot;);</span>
+<span class="nc" id="L50">        System.out.println(&quot;&quot;</span>
+                +
+                &quot;\n&quot;
+                +
+                &quot;██████╗░░█████╗░████████╗████████╗██╗░░░░░███████╗░██████╗██╗░░██╗██╗██████╗░\n&quot;
+                +
+                &quot;██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██║░░░░░██╔════╝██╔════╝██║░░██║██║██╔══██╗\n&quot;
+                +
+                &quot;██████╦╝███████║░░░██║░░░░░░██║░░░██║░░░░░█████╗░░╚█████╗░███████║██║██████╔╝\n&quot;
+                +
+                &quot;██╔══██╗██╔══██║░░░██║░░░░░░██║░░░██║░░░░░██╔══╝░░░╚═══██╗██╔══██║██║██╔═══╝░\n&quot;
+                +
+                &quot;██████╦╝██║░░██║░░░██║░░░░░░██║░░░███████╗███████╗██████╔╝██║░░██║██║██║░░░░░\n&quot;
+                +
+                &quot;╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░░░░╚═╝░░░╚══════╝╚══════╝╚═════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░&quot;);
+<span class="nc" id="L65">        System.out.println(&quot;\n&quot;);</span>
+<span class="nc" id="L66">        System.out.println(&quot;Welcome to Battleship : Call of Ships \n&quot;</span>
+                + &quot;© By Kelvin Likollari &amp; Ilker Kaymak \n&quot;);
+<span class="nc" id="L68">        System.out.println(&quot;\n&quot;);</span>
+
+//        Thread.sleep(2000);
+<span class="nc" id="L71">        System.out.println(&quot;BattleShip is a game where you try to sink the enemy's ships&quot;);</span>
+//        Thread.sleep(2000);
+<span class="nc" id="L73">        System.out.println(&quot;The goal is to sink all of the enemy's ships.&quot;);</span>
+//        Thread.sleep(2000);
+<span class="nc" id="L75">        System.out.println(&quot;The game is played on a 10x10 grid.&quot;</span>
+                +
+                &quot;The grid is divided into 10 rows and 10 columns.&quot;
+                + &quot;The grid is numbered from 0 to 9.&quot;);
+//        Thread.sleep(2000);
+<span class="nc" id="L80">        System.out.println(&quot;Everything clear up to this point?&quot;);</span>
+//        Thread.sleep(2000);
+
+<span class="nc" id="L83">        System.out.println(&quot;The player who sinks all of the enemy's ships wins.&quot;);</span>
+//        Thread.sleep(2000);
+<span class="nc" id="L85">        System.out.println(&quot;You can either set your ships manually or randomly.&quot;</span>
+                +
+                &quot;Clear up to this point?&quot;);
+//        Thread.sleep(2000);
+<span class="nc" id="L89">        System.out.println(&quot;After that, you will have to also specify the direction of your ships.&quot;);</span>
+//        Thread.sleep(2000);
+
+<span class="nc" id="L92">        System.out.println(&quot;When shooting, you will enter the coordinates of where you want to shoot.&quot;);</span>
+//        Thread.sleep(2000);
+
+<span class="nc" id="L95">        System.out.println(&quot;The coordinates are in the form of X and Y &quot;</span>
+                +
+                &quot;and they range from 0 to 9 (both included).&quot;);
+//        Thread.sleep(2000);
+        // create a scanner to read from the user
+<span class="nc" id="L100">        Scanner scannerino = new Scanner(System.in);</span>
+
+
+<span class="nc" id="L103">        Game.shipSizesHelpful(); // Comment this one if you wanna play with 1 ships, else use the one below.</span>
+        // Game.shipSizesHelpful1(); // also uncomment the corresponding method in Game class
+
+<span class="nc" id="L106">        Game.welcomingInstructions(scannerino);</span>
+        // printing instructions finishes here
+
+        // At this point we must ask the user what game mode they want to play in.
+        // we will get their input
+<span class="nc" id="L111">        Scanner scanner2 = new Scanner(System.in);</span>
+<span class="nc" id="L112">        System.out.println(&quot;What game mode do you want to play in?&quot;);</span>
+<span class="nc" id="L113">        System.out.println(&quot;1. PvP&quot;);</span>
+<span class="nc" id="L114">        System.out.println(&quot;2. PvA&quot;);</span>
+<span class="nc" id="L115">        System.out.println(&quot;3. AvA&quot;);</span>
+
+        
+<span class="nc" id="L118">        int gameMode = scanner2.nextInt();</span>
+
+        // we will now check if the user entered a valid game mode
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (gameMode == 1) {</span>
+            // if the user entered 1, we will start a PvP game
+            // start off by asking the user's symbol
+<span class="nc" id="L124">            System.out.println(&quot;Hey Player 1, what symbol would you like to use?&quot;);</span>
+<span class="nc" id="L125">            Game.getPlayerShipSymbol(scannerino);</span>
+
+            // also the second player's symbol
+<span class="nc" id="L128">            System.out.println(&quot;Hey Player 2, what symbol would you like to use?&quot;);</span>
+<span class="nc" id="L129">            Game.getSecondPlayerShipSymbol(scannerino);</span>
+            // after we have set the symbols, we will create the game
+<span class="nc" id="L131">            Game.updateGameDisplay(playerFieldForPlayer, secondPlayerFieldForPlayer);</span>
+            // now that we have updated the game display, we will ask the user to set the ships
+<span class="nc" id="L133">            Game.setPlayerShips(scannerino);</span>
+            // update the game display
+<span class="nc" id="L135">            Game.updateGameDisplay(playerFieldForPlayer, secondPlayerFieldForPlayer);</span>
+            // now we will ask the user to set the ships for the second player
+<span class="nc" id="L137">            Game.setSecondPlayerShips(scannerino);</span>
+            // now that we have also set the ships for the second player, update the game display
+<span class="nc" id="L139">            Game.updateGameDisplay(playerFieldForPlayer, secondPlayerFieldForPlayer);</span>
+
+            // now we start the game
+<span class="nc" id="L142">            Game.startGamePVP(scannerino);</span>
+
+<span class="nc" id="L144">            Game.printHighestScore(scannerino);</span>
+
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        } else if (gameMode == 2) {</span>
+            // if the user entered 2, we will start a PvA game
+            // start off by asking the user's symbol
+<span class="nc" id="L149">            System.out.println(&quot;Hey Player, what symbol do you want to use?&quot;);</span>
+<span class="nc" id="L150">            Game.getPlayerShipSymbol(scannerino);</span>
+
+<span class="nc" id="L152">            Game.getAiShipSymbol(player.getSymbol());</span>
+            // now that we have set the symbols, we will create the game
+<span class="nc" id="L154">            Game.updateGameDisplay(playerFieldForPlayer, aiFieldForPlayer);</span>
+            // now that we have updated the game display, we will ask the user to set the ships
+<span class="nc" id="L156">            Game.setPlayerShips(scannerino);</span>
+            // update the board
+<span class="nc" id="L158">            Game.updateGameDisplay(playerFieldForPlayer, aiFieldForPlayer);</span>
+            // now we will ask the user to set the ships for the second player
+<span class="nc" id="L160">            Game.setAiShips();</span>
+            // now that we have also set the ships for the second player, update the game display
+<span class="nc" id="L162">            Game.updateGameDisplay(playerFieldForPlayer, aiFieldForPlayer);</span>
+
+            // now we start the game
+<span class="nc" id="L165">            Game.startGamePvsAI(scannerino);</span>
+<span class="nc" id="L166">            Game.printHighestScore(scannerino);</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">        } else if (gameMode == 3) {</span>
+            // if the user entered 3, we will start an AvA game
+<span class="nc" id="L169">            Game.getAiShipSymbol(player.getSymbol());</span>
+<span class="nc" id="L170">            Game.updateGameDisplay(aiFieldForSecondAi, aiFieldForPlayer);</span>
+<span class="nc" id="L171">            Game.getSecondAiShipSymbol(player.getSymbol());</span>
+            // now that we have added the symbols, we will create the game
+<span class="nc" id="L173">            Game.updateGameDisplay(aiFieldForSecondAi, aiFieldForAi);</span>
+            // now that we have updated the game display, we will ask the ai to set the ships
+<span class="nc" id="L175">            Game.setAiShips();</span>
+<span class="nc" id="L176">            Game.updateGameDisplay(aiFieldForSecondAi, aiFieldForAi);</span>
+
+
+            // now we will ask the ai to set the ships for the second player
+<span class="nc" id="L180">            Game.setSecondAiShips();</span>
+            // now that we have also set the ships for the second player, update the game display
+<span class="nc" id="L182">            Game.updateGameDisplay(aiFieldForSecondAi, aiFieldForAi);</span>
+            // now we start the game
+<span class="nc" id="L184">            Game.startGameAIvsAI(scannerino);</span>
+<span class="nc" id="L185">            Game.printHighestScore(scannerino);</span>
+        }
+
+        // close the scanner
+<span class="nc" id="L189">        scannerino.close();</span>
+<span class="nc" id="L190">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

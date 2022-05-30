@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">project</a> &gt; <a href="index.source.html" class="el_package">gui</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">package gui;
+
+import static java.awt.Color.BLACK;
+import static java.awt.Color.BLUE;
+import static java.awt.Color.CYAN;
+import static java.awt.Color.GREEN;
+import static java.awt.Color.ORANGE;
+import static java.awt.Color.PINK;
+import static java.awt.Color.RED;
+import static java.awt.Color.WHITE;
+import static java.awt.Color.YELLOW;
+import static java.lang.String.valueOf;
+import static javax.swing.BorderFactory.createDashedBorder;
+import static model.Field.hideCheatMode;
+import static model.Field.isOccupiedByShip;
+import static model.Game.setPlayerShipsManually;
+
+import model.Field;
+import model.Game;
+import model.GamePlayers;
+import model.ResettedGrid;
+import model.Ship;
+
+import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+
+
+
+/**
+ * The Graphical User Interface of the BattleShip game is going to include the 2
+ * fields of the game, the board of the player and the board of the opponent.
+ * The board of the player is going to be a grid of 10x10 squares. The board of
+ * the opponent is going to be a grid of 10x10 squares.
+ * The player is going to be able to place his ships on the board of the player.
+ * The player is going to be able to attack the board of the opponent.
+ * We will also have a button to start the game, a button to reset the game,
+ * a button to quit the game and a button to show the rules of the game.
+ * @author kelvin.likollari@usi.ch
+ * @author ilker.kaymak@usi.ch
+ */
+public class Main extends JFrame implements ActionListener {
+
+    // sizes of the window
+<span class="nc" id="L53">    private static int frameSizeX = 1920;</span>
+<span class="nc" id="L54">    private static int frameSizeY = 1080;</span>
+    JFrame frame;
+    private JPanel panel;
+    private static ActionListener ButtonListener;
+
+    private static Ship[][] ships;
+<span class="nc" id="L60">    private static int totalNumberOfMoves = 0; // total number of moves</span>
+
+    private static JLabel totalMoves;
+    private GridBagLayout grid;
+<span class="nc" id="L64">    private static JButton[][] cellButtons = new JButton[10][10];</span>
+
+    private static int score;
+    private static int sunkShips;
+
+    private static int s1;
+    private static int s2;
+
+    private static GridBagConstraints constraints;
+<span class="nc" id="L73">    private static Game g = new Game();</span>
+<span class="nc" id="L74">    private static GamePlayers player = new GamePlayers();</span>
+<span class="nc" id="L75">    private static GamePlayers opponent = new GamePlayers();</span>
+
+<span class="nc" id="L77">    private static int numberOfClicks = 0;</span>
+
+    //private JButton toggleCheat; // button to toggle cheat mode
+    //private int toggleNum = 0; // toggle number
+
+    /**
+     * The main method used to start the application.
+     *
+     * @param args the command line arguments
+     */
+
+    public static void main(String[] args) throws IOException, UnsupportedLookAndFeelException {
+<span class="nc" id="L89">        EventQueue.invokeLater(() -&gt; {</span>
+            try {
+<span class="nc" id="L91">                UIManager.setLookAndFeel(new MetalLookAndFeel()); // used on macs to change the color of a button after</span>
+                // clicking it
+<span class="nc" id="L93">                Main main = new Main(); // create the main class</span>
+<span class="nc" id="L94">                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());</span>
+<span class="nc" id="L95">                main.setVisible(true); // make the main class visible</span>
+<span class="nc" id="L96">            } catch (ClassNotFoundException</span>
+                     | InstantiationException
+                     | IllegalAccessException
+                     | UnsupportedLookAndFeelException exception) {
+<span class="nc" id="L100">                exception.printStackTrace(); // print the exception</span>
+<span class="nc" id="L101">            }</span>
+<span class="nc" id="L102">        });</span>
+<span class="nc" id="L103">    }</span>
+
+    /**
+     * Main constructor used to create the main class.
+     */
+<span class="nc" id="L108">    public Main() {</span>
+<span class="nc" id="L109">        grid = new GridBagLayout();</span>
+<span class="nc" id="L110">        constraints = new GridBagConstraints();</span>
+<span class="nc" id="L111">        ships = new Ship[10][10];</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        for (int i = 0; i &lt; 10; i++) {</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            for (int j = 0; j &lt; 10; j++) {</span>
+<span class="nc" id="L114">                ships[i][j] = new ResettedGrid(0);</span>
+            }
+        }
+<span class="nc" id="L117">        final JFrame frame = new JFrame(&quot;Battleship: Call of Ships - Water Wars&quot;);</span>
+<span class="nc" id="L118">        JLabel title = new JLabel(&quot;Battleship 2022&quot;);</span>
+<span class="nc" id="L119">        title.setFont(new Font(&quot;Comfortaa&quot;, Font.BOLD, 50));</span>
+<span class="nc" id="L120">        title.setForeground(BLACK);</span>
+<span class="nc" id="L121">        title.setHorizontalAlignment(JLabel.CENTER);</span>
+<span class="nc" id="L122">        title.setVerticalAlignment(JLabel.CENTER);</span>
+<span class="nc" id="L123">        title.setOpaque(true);</span>
+<span class="nc" id="L124">        title.setBackground(GREEN);</span>
+<span class="nc" id="L125">        title.setPreferredSize(new Dimension(200, 200));</span>
+<span class="nc" id="L126">        title.requestFocus();</span>
+<span class="nc" id="L127">        title.revalidate();</span>
+
+<span class="nc" id="L129">        JPanel panel2 = new JPanel();</span>
+<span class="nc" id="L130">        panel2.setLayout(new GridLayout(10, 10, 1, 1));</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        for (int x = 0; x &lt; 10; x++) {</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">            for (int y = 0; y &lt; 10; y++) {</span>
+<span class="nc" id="L133">                constraints.gridx = x + 1;</span>
+<span class="nc" id="L134">                constraints.gridy = y + 1;</span>
+<span class="nc" id="L135">                final Button button = new Button(x, y);</span>
+<span class="nc" id="L136">                cellButtons[x][y] = button;</span>
+<span class="nc" id="L137">                cellButtons[x][y].setBackground(CYAN);</span>
+<span class="nc" id="L138">                cellButtons[x][y].setEnabled(true);</span>
+<span class="nc" id="L139">                cellButtons[x][y].addActionListener(ButtonListener);</span>
+<span class="nc" id="L140">                cellButtons[x][y].setActionCommand(valueOf(x) + valueOf(y));</span>
+<span class="nc" id="L141">                cellButtons[x][y].setPreferredSize(new Dimension(30, 30));</span>
+<span class="nc" id="L142">                cellButtons[x][y].setOpaque(true);</span>
+<span class="nc" id="L143">                cellButtons[x][y].setFocusable(true);</span>
+<span class="nc" id="L144">                cellButtons[x][y].setBackground(CYAN);</span>
+<span class="nc" id="L145">                cellButtons[x][y].setForeground(BLACK);</span>
+<span class="nc" id="L146">                cellButtons[x][y].setFont(new Font(&quot;Comfortaa&quot;, Font.BOLD, 20));</span>
+<span class="nc" id="L147">                cellButtons[x][y].setHorizontalAlignment(JButton.CENTER);</span>
+<span class="nc" id="L148">                cellButtons[x][y].setVerticalAlignment(JButton.CENTER);</span>
+<span class="nc" id="L149">                panel2.add(cellButtons[x][y]);</span>
+<span class="nc" id="L150">                cellButtons[x][y].addActionListener(new ActionListener() {</span>
+                    public void actionPerformed(ActionEvent event) {
+<span class="nc" id="L152">                        final int[] a = button.getValues();</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                        if (g.shoot(a[1], a[0])) {</span>
+                            // change the color of the cell we shot
+                            // using an event listener
+<span class="nc" id="L156">                            getCell();</span>
+<span class="nc" id="L157">                            Object source = event.getSource();</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">                            if (source instanceof Component) {</span>
+<span class="nc" id="L159">                                Button but = (Button) source;</span>
+<span class="nc" id="L160">                                ((Component) source).setBackground(GREEN);</span>
+<span class="nc" id="L161">                                s1++;</span>
+                            }
+<span class="nc bnc" id="L163" title="All 2 branches missed.">                        } else if (button.getBackground() != GREEN) { // if the button is not black</span>
+<span class="nc" id="L164">                            button.setBackground(YELLOW);</span>
+                        }
+<span class="nc" id="L166">                    }</span>
+                });
+<span class="nc" id="L168">                panel2.add(cellButtons[x][y]);</span>
+            }
+        }
+<span class="nc" id="L171">        panel2.setBackground(PINK);</span>
+<span class="nc" id="L172">        panel2.setBorder(createDashedBorder(ORANGE));</span>
+<span class="nc" id="L173">        panel2.setBackground(YELLOW);</span>
+
+        // Add the grid panel to the frame
+<span class="nc" id="L176">        JPanel panel22 = new JPanel();</span>
+<span class="nc" id="L177">        GridLayout layoutt = new GridLayout(10, 10, 1, 1);</span>
+<span class="nc" id="L178">        layoutt.setHgap(2); // horizontal gap between columns</span>
+<span class="nc" id="L179">        layoutt.setVgap(2); // vertical gap between rows</span>
+<span class="nc" id="L180">        panel22.setLayout(layoutt);</span>
+<span class="nc" id="L181">        panel22.setBorder(new LineBorder(GREEN, 1));</span>
+<span class="nc" id="L182">        panel22.setBackground(ORANGE);</span>
+
+<span class="nc" id="L184">        JTextField textField = new JTextField();</span>
+<span class="nc" id="L185">        textField.setText(&quot;Player 1&quot;);</span>
+<span class="nc" id="L186">        textField.setEditable(false);</span>
+<span class="nc" id="L187">        textField.setFont(new Font(&quot;Comfortaa&quot;, Font.BOLD, 20));</span>
+<span class="nc" id="L188">        textField.setHorizontalAlignment(JTextField.CENTER);</span>
+<span class="nc" id="L189">        textField.setBorder(new LineBorder(BLACK, 4));</span>
+<span class="nc" id="L190">        textField.setBackground(WHITE);</span>
+<span class="nc" id="L191">        textField.setVisible(true);</span>
+<span class="nc" id="L192">        textField.revalidate();</span>
+
+        try {
+<span class="nc" id="L195">            UIManager.setLookAndFeel(new MetalLookAndFeel());</span>
+<span class="nc" id="L196">        } catch (UnsupportedLookAndFeelException exception) {</span>
+<span class="nc" id="L197">            throw new RuntimeException(exception);</span>
+<span class="nc" id="L198">        }</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">        for (int x = 0; x &lt; 10; x++) {</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">            for (int y = 0; y &lt; 10; y++) {</span>
+<span class="nc" id="L201">                Button[][] target = new Button[10][10];</span>
+<span class="nc" id="L202">                final Button button = new Button(x, y);</span>
+<span class="nc" id="L203">                target[y][x] = button;</span>
+<span class="nc" id="L204">                button.setBackground(BLUE);</span>
+<span class="nc" id="L205">                target[y][x].setBackground(CYAN);</span>
+<span class="nc" id="L206">                target[y][x].setForeground(CYAN);</span>
+<span class="nc" id="L207">                target[y][x].addActionListener(new ActionListener() {</span>
+                    public void actionPerformed(final ActionEvent event) {
+<span class="nc" id="L209">                        final int[] a = button.getValues(); // get the values of the button</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">                        if (g.shoot(a[1], a[0])) {</span>
+                            // change the color of the cell we shot
+                            // using an event listener
+<span class="nc" id="L213">                            getCell();</span>
+<span class="nc" id="L214">                            Object source = event.getSource();</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                            if (source instanceof Component) {</span>
+<span class="nc" id="L216">                                Button butt = (Button) source;</span>
+<span class="nc" id="L217">                                ((Component) source).setBackground(RED);</span>
+<span class="nc" id="L218">                                s2++;</span>
+                            }
+<span class="nc bnc" id="L220" title="All 2 branches missed.">                        } else if (button.getBackground() != RED) { // if the button is not black</span>
+<span class="nc" id="L221">                            button.setBackground(ORANGE);</span>
+                        }
+<span class="nc" id="L223">                    }</span>
+                });
+<span class="nc" id="L225">                panel22.add(target[y][x]); // add the button to the panel</span>
+            }
+        }
+
+
+<span class="nc" id="L230">        panel22.setBackground(PINK);</span>
+<span class="nc" id="L231">        panel22.setBorder(createDashedBorder(ORANGE));</span>
+<span class="nc" id="L232">        panel22.setBackground(CYAN);</span>
+<span class="nc" id="L233">        panel22.setLayout(layoutt);</span>
+
+<span class="nc" id="L235">        JPanel panel3 = new JPanel();</span>
+<span class="nc" id="L236">        JButton restart = new JButton(&quot;Restart&quot;);</span>
+
+<span class="nc" id="L238">        restart.setFont(new Font(&quot;Comfortaa&quot;, Font.PLAIN, 30));</span>
+<span class="nc" id="L239">        restart.setBackground(PINK);</span>
+<span class="nc" id="L240">        restart.setForeground(BLACK);</span>
+
+<span class="nc" id="L242">        JButton quit = new JButton(&quot;Quit&quot;);</span>
+<span class="nc" id="L243">        quit.setFont(new Font(&quot;Comfortaa&quot;, Font.PLAIN, 30));</span>
+<span class="nc" id="L244">        quit.setBackground(CYAN);</span>
+<span class="nc" id="L245">        quit.setForeground(RED);</span>
+
+<span class="nc" id="L247">        JButton rules = new JButton(&quot;Rules&quot;);</span>
+<span class="nc" id="L248">        rules.setFont(new Font(&quot;Comfortaa&quot;, Font.PLAIN, 30));</span>
+<span class="nc" id="L249">        rules.setBackground(BLACK);</span>
+<span class="nc" id="L250">        rules.setForeground(ORANGE);</span>
+<span class="nc" id="L251">        rules.addMouseListener((new java.awt.event.MouseAdapter() {</span>
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L253">                rules.setBackground(BLACK);</span>
+<span class="nc" id="L254">                rules.setForeground(PINK);</span>
+<span class="nc" id="L255">            }</span>
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L258">                rules.setForeground(BLACK);</span>
+<span class="nc" id="L259">                rules.setBackground(GREEN);</span>
+<span class="nc" id="L260">            }</span>
+        }));
+
+<span class="nc" id="L263">        JButton placeShip = new JButton(&quot;Place Ship&quot;);</span>
+<span class="nc" id="L264">        placeShip.setFont(new Font(&quot;Comfortaa&quot;, Font.PLAIN, 30));</span>
+<span class="nc" id="L265">        placeShip.setBackground(BLACK);</span>
+<span class="nc" id="L266">        placeShip.setForeground(WHITE);</span>
+
+<span class="nc" id="L268">        JButton toggleCheat = new JButton(&quot;Toggle Cheat Mode&quot;);</span>
+<span class="nc" id="L269">        toggleCheat.setFont(new Font(&quot;Comfortaa&quot;, Font.BOLD, 30));</span>
+<span class="nc" id="L270">        toggleCheat.setForeground(GREEN);</span>
+<span class="nc" id="L271">        toggleCheat.setBackground(BLACK);</span>
+<span class="nc" id="L272">        toggleCheat.addMouseListener((new java.awt.event.MouseAdapter() {</span>
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L274">                toggleCheat.setBackground(BLACK);</span>
+<span class="nc" id="L275">                toggleCheat.setForeground(YELLOW);</span>
+<span class="nc" id="L276">            }</span>
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L279">                toggleCheat.setForeground(BLACK);</span>
+<span class="nc" id="L280">                toggleCheat.setBackground(GREEN);</span>
+<span class="nc" id="L281">            }</span>
+        }));
+<span class="nc" id="L283">        panel3.add(restart);</span>
+<span class="nc" id="L284">        panel3.add(quit);</span>
+<span class="nc" id="L285">        panel3.add(rules);</span>
+<span class="nc" id="L286">        panel3.add(placeShip);</span>
+<span class="nc" id="L287">        panel3.add(toggleCheat);</span>
+<span class="nc" id="L288">        panel3.setBackground(RED);</span>
+<span class="nc" id="L289">        panel3.setPreferredSize(new Dimension(20, 60));</span>
+
+<span class="nc" id="L291">        JPanel panel4 = new JPanel();</span>
+<span class="nc" id="L292">        panel4.setBackground(WHITE);</span>
+<span class="nc" id="L293">        panel4.setFont(new Font(&quot;Comfortaa&quot;, Font.PLAIN, 20));</span>
+<span class="nc" id="L294">        panel4.setForeground(BLACK);</span>
+
+<span class="nc" id="L296">        totalMoves = new JLabel(&quot;Total Moves: 0&quot;);</span>
+<span class="nc" id="L297">        totalMoves.setFont(new Font(&quot;Comfortaa&quot;, Font.BOLD, 30));</span>
+<span class="nc" id="L298">        totalMoves.setForeground(BLACK);</span>
+<span class="nc" id="L299">        totalMoves.setBackground(GREEN);</span>
+<span class="nc" id="L300">        totalMoves.setOpaque(true);</span>
+<span class="nc" id="L301">        totalMoves.setBorder(new LineBorder(ORANGE, 1));</span>
+<span class="nc" id="L302">        totalMoves.setVisible(true);</span>
+<span class="nc" id="L303">        panel4.add(totalMoves);</span>
+
+
+<span class="nc" id="L306">        JLabel label = new JLabel();</span>
+
+<span class="nc" id="L308">        JPanel panel8 = new JPanel();</span>
+<span class="nc" id="L309">        panel8.setLayout(new FlowLayout());</span>
+<span class="nc" id="L310">        panel8.setBorder(new LineBorder(ORANGE, 1));</span>
+<span class="nc" id="L311">        panel8.setBackground(YELLOW);</span>
+<span class="nc" id="L312">        panel8.setVisible(true);</span>
+
+
+<span class="nc" id="L315">        panel4.add(label);</span>
+<span class="nc" id="L316">        panel4.add(panel8);</span>
+
+
+<span class="nc" id="L319">        panel2.setPreferredSize(new Dimension(720, 900));</span>
+<span class="nc" id="L320">        panel22.setPreferredSize(new Dimension(720, 900));</span>
+
+<span class="nc" id="L322">        frame.add(title, BorderLayout.NORTH);</span>
+<span class="nc" id="L323">        frame.add(panel2, BorderLayout.EAST);</span>
+<span class="nc" id="L324">        frame.add(panel22, BorderLayout.WEST);</span>
+<span class="nc" id="L325">        frame.add(panel3, BorderLayout.SOUTH);</span>
+<span class="nc" id="L326">        frame.add(panel4, BorderLayout.CENTER);</span>
+<span class="nc" id="L327">        frame.pack();</span>
+<span class="nc" id="L328">        frame.setSize(new Dimension(1920, 1080));</span>
+<span class="nc" id="L329">        frame.setVisible(true);</span>
+
+
+<span class="nc" id="L332">        restart.addActionListener(e -&gt; {</span>
+<span class="nc" id="L333">            restartGame(1);</span>
+<span class="nc" id="L334">            totalNumberOfMoves = 0;</span>
+<span class="nc" id="L335">            totalMoves.setText(&quot;Total Moves: &quot; + totalNumberOfMoves);</span>
+            // and also place ships randomly
+            //Game.placeShipRandomly();
+<span class="nc" id="L338">            Ship.placeShipsRandomly();</span>
+<span class="nc" id="L339">        });</span>
+
+<span class="nc" id="L341">        restart.addMouseListener(new java.awt.event.MouseAdapter() {</span>
+            /**
+             * Invoked when the mouse button is hovering over the button.
+             *
+             * @param evt the event to be processed
+             */
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L348">                restart.setBackground(ORANGE);</span>
+<span class="nc" id="L349">                restart.setForeground(GREEN);</span>
+<span class="nc" id="L350">            }</span>
+
+            /**
+             * Invoked when the mouse button is no longer hovering over the button.
+             *
+             * @param evt the event to be processed
+             */
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L358">                restart.setForeground(BLACK);</span>
+<span class="nc" id="L359">                restart.setBackground(CYAN);</span>
+<span class="nc" id="L360">            }</span>
+        });
+
+<span class="nc" id="L363">        quit.addActionListener(e -&gt; quitGame(1));</span>
+
+<span class="nc" id="L365">        rules.addActionListener(e -&gt; {</span>
+<span class="nc" id="L366">            JFrame rulesFrame = new JFrame(&quot;Rules&quot;);</span>
+
+<span class="nc" id="L368">            JPanel rulesPanel = new JPanel();</span>
+<span class="nc" id="L369">            rulesPanel.setBackground(PINK);</span>
+<span class="nc" id="L370">            rulesPanel.setBorder(new LineBorder(YELLOW, 2));</span>
+<span class="nc" id="L371">            rulesPanel.setFont(new Font(&quot;Comfortaa&quot;, Font.BOLD, 20));</span>
+<span class="nc" id="L372">            rulesPanel.setForeground(GREEN);</span>
+<span class="nc" id="L373">            rulesPanel.setLayout(new GridLayout(0, 1));</span>
+            // we will display the rules in a new window in html format
+            // and each rule will be in a separate dot line
+<span class="nc" id="L376">            JLabel rulesLabel = new JLabel(&quot;&lt;html&gt;&lt;body&gt;&lt;p&gt;Welcome to Battleship: Call&quot;</span>
+                    + &quot;of Ships © Kelvin Likollari &amp; Ilker Kaymak&lt;/p&gt;&quot;
+                    + &quot;&lt;li&gt;The main objective of the game is to sink all the enemy ships.&lt;/li&gt;&quot;
+                    + &quot;&lt;li&gt;The player who sinks all the enemy ships first wins the game.&lt;/li&gt;&quot;
+                    + &quot;&lt;li&gt;The player can place his ships on the grid by clicking on the grid.&lt;/li&gt;&quot;
+                    + &quot;&lt;li&gt;The player can also click on the grid to shoot at the enemy ships.&lt;/li&gt;&quot;
+                    + &quot;&lt;li&gt;The player can also click on the grid to mark the enemy ships.&lt;/li&gt;&quot;
+                    + &quot;&lt;li&gt;Every time the player hits a ship, his score will increase by 1.&lt;/li&gt;&quot;
+                    + &quot;&lt;li&gt;Every time the player misses a ship, his score will decrease by 1.&lt;/li&gt;&quot;
+                    + &quot;&lt;li&gt;The person who has the highest score at the end of the game wins.&lt;/li&gt;&quot;
+                    + &quot;&lt;li&gt;Every person has 5 lives.&lt;/li&gt;&quot;
+                    + &quot;&lt;li&gt;Every time the player's ship gets hit, his lives' count will decrease by 1.&lt;/li&gt;&quot;
+            );
+<span class="nc" id="L389">            rulesLabel.setFont(new Font(&quot;Comfortaa&quot;, Font.BOLD, 25));</span>
+<span class="nc" id="L390">            rulesLabel.setForeground(BLUE);</span>
+<span class="nc" id="L391">            rulesLabel.setBackground(YELLOW);</span>
+            // We also need to add a button to close this popup window
+<span class="nc" id="L393">            JButton button = new JButton(&quot;Click here to return to the game&quot;);</span>
+<span class="nc" id="L394">            button.addActionListener(e1 -&gt; rulesFrame.dispose());</span>
+<span class="nc" id="L395">            button.addMouseListener(new java.awt.event.MouseAdapter() {</span>
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L397">                    button.setBackground(RED);</span>
+<span class="nc" id="L398">                    button.setForeground(GREEN);</span>
+<span class="nc" id="L399">                }</span>
+
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L402">                    button.setForeground(RED);</span>
+<span class="nc" id="L403">                    button.setBackground(GREEN);</span>
+<span class="nc" id="L404">                }</span>
+            });
+
+            // set the button's size
+<span class="nc" id="L408">            button.setPreferredSize(new Dimension(100, 100));</span>
+            // set the button's font
+<span class="nc" id="L410">            button.setFont(new Font(&quot;Comfortaa&quot;, Font.BOLD, 20));</span>
+            // set the button's color
+<span class="nc" id="L412">            button.setBackground(YELLOW);</span>
+            // set the button's foreground color
+<span class="nc" id="L414">            button.setForeground(ORANGE);</span>
+
+            // we want to add the text before the button
+<span class="nc" id="L417">            rulesPanel.add(rulesLabel);</span>
+<span class="nc" id="L418">            rulesPanel.add(button);</span>
+<span class="nc" id="L419">            rulesFrame.add(rulesPanel);</span>
+<span class="nc" id="L420">            rulesFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);</span>
+<span class="nc" id="L421">            rulesFrame.pack();</span>
+<span class="nc" id="L422">            rulesFrame.setSize(new Dimension(1000, 1000));</span>
+<span class="nc" id="L423">            rulesFrame.setVisible(true);</span>
+<span class="nc" id="L424">        });</span>
+
+        // clicking on &quot;Place Ship&quot; will place the ships on the grid
+        // we will also add an event listener to the placeShip button
+<span class="nc" id="L428">        placeShip.addActionListener(event -&gt; {</span>
+            // simply call the method that will place the ships
+            // with respect to the mouse click
+<span class="nc" id="L431">            placeShip();</span>
+            // actionPerformedd(e);
+<span class="nc" id="L433">            int x1 = MouseInfo.getPointerInfo().getLocation().x;</span>
+<span class="nc" id="L434">            int y1 = MouseInfo.getPointerInfo().getLocation().y;</span>
+
+            // TODO: Fix the method below providing direction too (horizontal or vertical)
+<span class="nc" id="L437">            placeShip();</span>
+
+<span class="nc" id="L439">        });</span>
+
+        // the direction of the ship will be determined by the
+        // mouse click
+        // if it is a left click, the ship will be placed vertically
+        // if it is a right click, the ship will be placed horizontally
+        // we will also add an event listener to the placeShip button
+        // TODO: Fix the method below
+<span class="nc" id="L447">        placeShip.addMouseListener(new MouseAdapter() {</span>
+            @Override
+            public void mouseClicked(MouseEvent event) {
+<span class="nc" id="L450">                super.mouseClicked(event);</span>
+<span class="nc bnc" id="L451" title="All 2 branches missed.">                if (event.getButton() == MouseEvent.BUTTON1) {</span>
+                    // if the left button is clicked, the ship will be placed vertically
+                    // we will also add an event listener to the placeShip button
+<span class="nc" id="L454">                    placeShip();</span>
+<span class="nc bnc" id="L455" title="All 2 branches missed.">                } else if (event.getButton() == MouseEvent.BUTTON3) {</span>
+                    // if the right button is clicked, the ship will be placed horizontally
+                    // we will also add an event listener to the placeShip button
+<span class="nc" id="L458">                    placeShip();</span>
+                }
+<span class="nc" id="L460">            }</span>
+        });
+
+<span class="nc" id="L463">        placeShip.addMouseListener(new java.awt.event.MouseAdapter() {</span>
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L465">                placeShip.setBackground(ORANGE);</span>
+<span class="nc" id="L466">                placeShip.setForeground(BLACK);</span>
+<span class="nc" id="L467">            }</span>
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L470">                placeShip.setForeground(BLACK);</span>
+<span class="nc" id="L471">                placeShip.setBackground(CYAN);</span>
+<span class="nc" id="L472">            }</span>
+        });
+<span class="nc" id="L474">        placeShip();</span>
+<span class="nc" id="L475">        ButtonListener = (ActionEvent event) -&gt; {</span>
+<span class="nc bnc" id="L476" title="All 2 branches missed.">            if (event.getActionCommand().equals(&quot;cheat&quot;)) {</span>
+<span class="nc bnc" id="L477" title="All 2 branches missed.">                if (event.getActionCommand().equals(&quot;cheat&quot;)) {</span>
+<span class="nc" id="L478">                    Field.toggleCheatMode();</span>
+                }
+            } else {
+                // get the x and y coordinates of the mouse click
+<span class="nc" id="L482">                int x2 = MouseInfo.getPointerInfo().getLocation().x;</span>
+<span class="nc" id="L483">                int y2 = MouseInfo.getPointerInfo().getLocation().y;</span>
+                // increment the total moves
+<span class="nc" id="L485">                totalNumberOfMoves++;</span>
+                // update the total moves label
+<span class="nc" id="L487">                totalMoves.setText(&quot;Total Moves: &quot; + totalNumberOfMoves);</span>
+
+                String lastTurn;
+                while (true) {
+<span class="nc bnc" id="L491" title="All 2 branches missed.">                    if (isOccupiedByShip(x2, y2)) {</span>
+<span class="nc" id="L492">                        lastTurn = &quot;First Player&quot;;</span>
+                        // if the user clicks on a ship, the ship will be sunk
+                        // and the score will be increased by 1
+                        // we will also add an event listener to the placeShip button
+<span class="nc" id="L496">                        setHitWithIcon(x2, y2);</span>
+<span class="nc bnc" id="L497" title="All 2 branches missed.">                        if (checkWhetherShipIsSunk(x2, y2)) {</span>
+<span class="nc" id="L498">                            sunkShips++;</span>
+
+<span class="nc bnc" id="L500" title="All 2 branches missed.">                            if (ships[x2][y2].getTypeOfShip() == &quot;Carrier&quot;) {</span>
+<span class="nc" id="L501">                                score += 10;</span>
+<span class="nc" id="L502">                                JOptionPane.showMessageDialog(null, &quot;You sunk the Carrier!&quot;);</span>
+<span class="nc bnc" id="L503" title="All 2 branches missed.">                            } else if (ships[x2][y2].getTypeOfShip() == &quot;Battleship&quot;) {</span>
+<span class="nc" id="L504">                                score += 8;</span>
+<span class="nc" id="L505">                                JOptionPane.showMessageDialog(null, &quot;You sunk the Battleship!&quot;);</span>
+
+<span class="nc bnc" id="L507" title="All 2 branches missed.">                            } else if (ships[x2][y2].getTypeOfShip() == &quot;Cruiser&quot;) {</span>
+<span class="nc" id="L508">                                score += 6;</span>
+<span class="nc" id="L509">                                JOptionPane.showMessageDialog(null, &quot;You sunk the Cruiser!&quot;);</span>
+<span class="nc bnc" id="L510" title="All 2 branches missed.">                            } else if (ships[x2][y2].getTypeOfShip() == &quot;Submarine&quot;) {</span>
+<span class="nc" id="L511">                                score += 4;</span>
+<span class="nc" id="L512">                                JOptionPane.showMessageDialog(null, &quot;You sunk the Submarine!&quot;);</span>
+<span class="nc bnc" id="L513" title="All 2 branches missed.">                            } else if (ships[x2][y2].getTypeOfShip() == &quot;Destroyer&quot;) {</span>
+<span class="nc" id="L514">                                score += 2;</span>
+<span class="nc" id="L515">                                JOptionPane.showMessageDialog(null, &quot;You sunk the Destroyer!&quot;);</span>
+                            }
+                        }
+<span class="nc" id="L518">                        playGameWithTurns(x2, y2);</span>
+                        // if game over
+<span class="nc bnc" id="L520" title="All 2 branches missed.">                        if (isGameOver(lastTurn)) {</span>
+<span class="nc" id="L521">                            JOptionPane.showMessageDialog(null, &quot;Player 1 has won the game!&quot;);</span>
+<span class="nc" id="L522">                            System.exit(0);</span>
+                        }
+<span class="nc" id="L524">                        lastTurn = &quot;Second Player&quot;;</span>
+                        // if the user clicks on a ship, the ship will be sunk
+                        // and the score will be increased by 1
+                        // we will also add an event listener to the placeShip button
+<span class="nc" id="L528">                        setHitWithIcon(x2, y2);</span>
+<span class="nc bnc" id="L529" title="All 2 branches missed.">                        if (checkWhetherShipIsSunk(x2, y2)) {</span>
+<span class="nc" id="L530">                            sunkShips++;</span>
+
+<span class="nc bnc" id="L532" title="All 2 branches missed.">                            if (ships[x2][y2].getTypeOfShip() == &quot;Carrier&quot;) {</span>
+<span class="nc" id="L533">                                score += 10;</span>
+<span class="nc" id="L534">                                JOptionPane.showMessageDialog(null, &quot;You sunk the Carrier!&quot;);</span>
+<span class="nc bnc" id="L535" title="All 2 branches missed.">                            } else if (ships[x2][y2].getTypeOfShip() == &quot;Battleship&quot;) {</span>
+<span class="nc" id="L536">                                score += 8;</span>
+<span class="nc" id="L537">                                JOptionPane.showMessageDialog(null, &quot;You sunk the Battleship!&quot;);</span>
+
+<span class="nc bnc" id="L539" title="All 2 branches missed.">                            } else if (ships[x2][y2].getTypeOfShip() == &quot;Cruiser&quot;) {</span>
+<span class="nc" id="L540">                                score += 6;</span>
+<span class="nc" id="L541">                                JOptionPane.showMessageDialog(null, &quot;You sunk the Cruiser!&quot;);</span>
+<span class="nc bnc" id="L542" title="All 2 branches missed.">                            } else if (ships[x2][y2].getTypeOfShip() == &quot;Submarine&quot;) {</span>
+<span class="nc" id="L543">                                score += 4;</span>
+<span class="nc" id="L544">                                JOptionPane.showMessageDialog(null, &quot;You sunk the Submarine!&quot;);</span>
+<span class="nc bnc" id="L545" title="All 2 branches missed.">                            } else if (ships[x2][y2].getTypeOfShip() == &quot;Destroyer&quot;) {</span>
+<span class="nc" id="L546">                                score += 2;</span>
+<span class="nc" id="L547">                                JOptionPane.showMessageDialog(null, &quot;You sunk the Destroyer!&quot;);</span>
+                            }
+                        }
+<span class="nc" id="L550">                        playGameWithTurns(x2, y2);</span>
+                        // if game over
+<span class="nc bnc" id="L552" title="All 2 branches missed.">                        if (isGameOver(lastTurn)) {</span>
+<span class="nc" id="L553">                            JOptionPane.showMessageDialog(null, &quot;Player 2 has won the game!&quot;);</span>
+<span class="nc" id="L554">                            System.exit(0);</span>
+                        }
+                    } else {
+                        // you missed
+<span class="nc" id="L558">                        setMissWithIcon(x2, y2);</span>
+                    }
+                }
+            }
+<span class="nc" id="L562">        };</span>
+<span class="nc" id="L563">        declareWinnerGUI();</span>
+<span class="nc" id="L564">    }</span>
+
+    /**
+     * This method will place the ship in the grid.
+     */
+    public static void placeShip() {
+<span class="nc" id="L570">        int x3 = MouseInfo.getPointerInfo().getLocation().x;</span>
+<span class="nc" id="L571">        int y3 = MouseInfo.getPointerInfo().getLocation().y;</span>
+        // we will use the x and y coordinates of the mouse to place the ships
+<span class="nc" id="L573">        setPlayerShipsManually(x3, y3);</span>
+<span class="nc" id="L574">    }</span>
+
+    /**
+     * This method restarts the game.
+     *
+     * @param mode the mode of the game, should be an integer
+     */
+    public static void restartGame(int mode) {
+<span class="nc bnc" id="L582" title="All 2 branches missed.">        if (mode == 1) {</span>
+            // ask the user whether he truly wants to restart the game
+<span class="nc" id="L584">            int restart = JOptionPane.showConfirmDialog(null, &quot;Are you sure you want to restart the game?&quot;, &quot;Restart Game&quot;, JOptionPane.YES_NO_OPTION);</span>
+<span class="nc bnc" id="L585" title="All 2 branches missed.">            if (restart == JOptionPane.YES_OPTION) {</span>
+                // if yes, we will reset the game
+                //                hideCheatMode();
+                //                for (int i = 0; i &lt; 10; i++) {
+                //                    for (int j = 0; j &lt; 10; j++) {
+                //                        // we will reset the grid
+                //                        ships[i][j] = new ResettedGrid(0);
+                //                        if (!cellButtons[i][j].isEnabled()) {
+                //                            cellButtons[i][j].setEnabled(true);
+                //                            cellButtons[i][j].setBackground(Color.CYAN);
+                //                        }
+                //                    }
+                //                }
+                //                totalNumberOfMoves = 0;
+                //                totalMoves.setText(&quot;Total Moves: &quot; + totalNumberOfMoves);
+                //                sunkShips = 0;
+                //                score = 0;
+                //                // todo: specify player 1 and player 2 score. + Add more things to reset
+<span class="nc" id="L603">                restartGameLoops(1);</span>
+            } else { // else if the user does not want to restart the game
+                // we will do nothing
+<span class="nc" id="L606">                System.out.println(&quot;You chose not to restart the game&quot;);</span>
+            }
+<span class="nc bnc" id="L608" title="All 2 branches missed.">        } else if (mode == 2) {</span>
+<span class="nc" id="L609">            restartGameLoops(2);</span>
+        }
+<span class="nc" id="L611">    }</span>
+
+    /**
+     * Helper function to avoid CPD.
+     *
+     * @param mode the mode of the game, should be an integer
+     */
+    public static void restartGameLoops(int mode) {
+<span class="nc" id="L619">        hideCheatMode();</span>
+<span class="nc bnc" id="L620" title="All 2 branches missed.">        for (int i = 0; i &lt; 10; i++) {</span>
+<span class="nc bnc" id="L621" title="All 2 branches missed.">            for (int j = 0; j &lt; 10; j++) {</span>
+                // we will reset the grid
+<span class="nc" id="L623">                ships[i][j] = new ResettedGrid(0);</span>
+<span class="nc bnc" id="L624" title="All 2 branches missed.">                if (!cellButtons[i][j].isEnabled()) {</span>
+<span class="nc" id="L625">                    cellButtons[i][j].setEnabled(true);</span>
+<span class="nc" id="L626">                    cellButtons[i][j].setBackground(Color.CYAN);</span>
+                }
+            }
+        }
+<span class="nc" id="L630">        totalNumberOfMoves = 0;</span>
+<span class="nc" id="L631">        totalMoves.setText(&quot;Total Moves: &quot; + totalNumberOfMoves);</span>
+<span class="nc" id="L632">        sunkShips = 0;</span>
+<span class="nc" id="L633">        score = 0;</span>
+<span class="nc" id="L634">    }</span>
+
+
+    /**
+     * This method will quit the game.
+     *
+     * @param mode the mode of the game, should be an integer
+     */
+    public static void quitGame(int mode) {
+<span class="nc bnc" id="L643" title="All 2 branches missed.">        if (mode == 1) {</span>
+<span class="nc" id="L644">            int playerResponse = JOptionPane.showConfirmDialog(null, &quot;Are you sure you want to quit the game?&quot;, &quot;Quit Game&quot;, JOptionPane.YES_NO_OPTION);</span>
+<span class="nc bnc" id="L645" title="All 2 branches missed.">            if (playerResponse == JOptionPane.YES_OPTION) {</span>
+                // quit the game
+<span class="nc" id="L647">                System.exit(0);</span>
+<span class="nc bnc" id="L648" title="All 2 branches missed.">            } else if (playerResponse == JOptionPane.NO_OPTION) {</span>
+                // do nothing
+            }
+        }
+<span class="nc" id="L652">    }</span>
+
+    /**
+     * Invoked when an action occurs.
+     *
+     * @param event the event to be processed
+     */
+    @Override
+    public void actionPerformed(ActionEvent event) {
+<span class="nc" id="L661">        JButton btn = (JButton) event.getSource();</span>
+<span class="nc" id="L662">        System.out.println(&quot;clicked column &quot; + btn.getClientProperty(&quot;column&quot;)</span>
+<span class="nc" id="L663">                + &quot;, row &quot; + btn.getClientProperty(&quot;row&quot;));</span>
+<span class="nc" id="L664">    }</span>
+
+    /**
+     * Dummy method used to change the color of a grid cell clicked.
+     * (Simulation of the shot of the player)
+     *
+     * @return the color of the cell clicked
+     */
+    protected static JPanel getCell() {
+<span class="nc" id="L673">        JPanel panel = new JPanel();</span>
+<span class="nc" id="L674">        panel.setBackground(Color.RED);</span>
+<span class="nc" id="L675">        panel.setBorder(BorderFactory.createLineBorder(Color.RED, 1));</span>
+<span class="nc" id="L676">        panel.setPreferredSize(new Dimension(20, 20));</span>
+<span class="nc" id="L677">        panel.addMouseListener(new MouseAdapter() {</span>
+            public void mouseReleased(MouseEvent event) {
+<span class="nc" id="L679">                panel.setBackground(Color.RED);</span>
+<span class="nc" id="L680">                panel.setBorder(BorderFactory.createLineBorder(Color.blue, 1));</span>
+<span class="nc" id="L681">                panel.setPreferredSize(new Dimension(1000, 1000));</span>
+<span class="nc" id="L682">                panel.setVisible(true);</span>
+<span class="nc" id="L683">            }</span>
+        });
+
+<span class="nc" id="L686">        return panel;</span>
+    }
+
+    /**
+     * This method will set the ship manually with an image.
+     *
+     * @param x1 the x coordinate of the mouse
+     * @param y1 the y coordinate of the mouse
+     */
+    private static void setHitWithIcon(int x1, int y1) {
+<span class="nc" id="L696">        String pathToImage = &quot;/Users/cuenc/Documents/PF2-Project/src/gui/Images/tick.png&quot;;</span>
+<span class="nc" id="L697">        ImageIcon pict = new ImageIcon(Main.class.getClassLoader().getResource(pathToImage));</span>
+<span class="nc" id="L698">        cellButtons[x1][y1].setDisabledIcon(pict);</span>
+<span class="nc" id="L699">        cellButtons[x1][y1].setEnabled(false);</span>
+<span class="nc" id="L700">        numberOfClicks++;</span>
+<span class="nc" id="L701">    }</span>
+
+    /**
+     * This method will set the ship manually with an image.
+     *
+     * @param x2 the x coordinate of the mouse
+     * @param y2 the y coordinate of the mouse
+     */
+    public static void setMissWithIcon(int x2, int y2) {
+<span class="nc" id="L710">        String pathToImage = &quot;/Users/cuenc/Documents/PF2-Project/src/gui/Images/x.png&quot;;</span>
+<span class="nc" id="L711">        ImageIcon pict = new ImageIcon(Main.class.getClassLoader().getResource(pathToImage));</span>
+<span class="nc" id="L712">        cellButtons[x2][y2].setDisabledIcon(pict);</span>
+<span class="nc" id="L713">        cellButtons[x2][y2].setEnabled(false);</span>
+<span class="nc" id="L714">        numberOfClicks++;</span>
+<span class="nc" id="L715">    }</span>
+
+    /**
+     * This method will check whether the game is over or not.
+     *
+     * @param lastTurn the player who had last turn of the game
+     * @return true if the game is over, false if not
+     */
+    public static boolean isGameOver(String lastTurn) {
+<span class="nc bnc" id="L724" title="All 4 branches missed.">        if (sunkShips &gt;= 10 &amp;&amp; lastTurn.equals(&quot;Player 1&quot;)) {</span>
+<span class="nc" id="L725">            JOptionPane.showMessageDialog(null, &quot;Player 1 has won the game!&quot;);</span>
+<span class="nc" id="L726">            return true;</span>
+<span class="nc bnc" id="L727" title="All 4 branches missed.">        } else if (sunkShips &gt;= 10 &amp;&amp; lastTurn.equals(&quot;Player 2&quot;)) {</span>
+<span class="nc" id="L728">            JOptionPane.showMessageDialog(null, &quot;Player 2 has won the game!&quot;);</span>
+<span class="nc" id="L729">            return true;</span>
+        } else {
+<span class="nc" id="L731">            return false;</span>
+        }
+    }
+
+    /**
+     * This method will check whether the ship is sunk or not.
+     *
+     * @param x4 the x coordinate of the ship
+     * @param y4 the y coordinate of the ship
+     * @return true if the ship is sunk, false if not
+     */
+    public static boolean checkWhetherShipIsSunk(int x4, int y4) {
+        int row;
+        int column;
+<span class="nc" id="L745">        int count = 0;</span>
+
+<span class="nc bnc" id="L747" title="All 2 branches missed.">        if (ships[x4][y4].getTypeOfShip() == &quot;Carrier&quot;) {</span>
+<span class="nc" id="L748">            return true;</span>
+        } else {
+<span class="nc bnc" id="L750" title="All 2 branches missed.">            for (int i = 0; i &lt; ships[x4][y4].getEachShipCoordinates().size(); i += 2) {</span>
+<span class="nc" id="L751">                row = ships[x4][y4].getEachShipCoordinates().get(i);</span>
+<span class="nc" id="L752">                column = ships[x4][4].getEachShipCoordinates().get(i + 1);</span>
+
+<span class="nc bnc" id="L754" title="All 2 branches missed.">                if (!cellButtons[row][column].isEnabled()) {</span>
+<span class="nc" id="L755">                    count++;</span>
+                }
+            }
+<span class="nc bnc" id="L758" title="All 5 branches missed.">            switch (ships[x4][y4].getTypeOfShip()) {</span>
+                case &quot;Carrier&quot;:
+<span class="nc bnc" id="L760" title="All 2 branches missed.">                    if (count == 5) {</span>
+<span class="nc" id="L761">                        return true;</span>
+                    } else {
+<span class="nc" id="L763">                        return false;</span>
+                    }
+                case &quot;Battleship&quot;:
+<span class="nc bnc" id="L766" title="All 2 branches missed.">                    if (count == 4) {</span>
+<span class="nc" id="L767">                        return true;</span>
+                    } else {
+<span class="nc" id="L769">                        return false;</span>
+                    }
+                case &quot;Cruiser&quot;:
+                case &quot;Submarine&quot;:
+<span class="nc bnc" id="L773" title="All 2 branches missed.">                    if (count == 3) {</span>
+<span class="nc" id="L774">                        return true;</span>
+                    } else {
+<span class="nc" id="L776">                        return false;</span>
+                    }
+                case &quot;Destroyer&quot;:
+<span class="nc bnc" id="L779" title="All 2 branches missed.">                    if (count == 2) {</span>
+<span class="nc" id="L780">                        return true;</span>
+                    } else {
+<span class="nc" id="L782">                        return false;</span>
+                    }
+                default:
+<span class="nc" id="L785">                    return false;</span>
+            }
+        }
+    }
+
+    /**
+     * This method plays the game with turns.
+     *
+     * @param xx the x coordinate of the mouse
+     * @param yy the y coordinate of the mouse
+     */
+    public void playGameWithTurns(int xx, int yy) {
+<span class="nc" id="L797">        setHitWithIcon(xx, yy);</span>
+<span class="nc bnc" id="L798" title="All 2 branches missed.">        if (checkWhetherShipIsSunk(xx, yy)) {</span>
+<span class="nc" id="L799">            sunkShips++;</span>
+
+<span class="nc bnc" id="L801" title="All 2 branches missed.">            if (ships[xx][yy].getTypeOfShip() == &quot;Carrier&quot;) {</span>
+<span class="nc" id="L802">                score += 10;</span>
+<span class="nc" id="L803">                JOptionPane.showMessageDialog(null, &quot;You sunk the Carrier!&quot;);</span>
+<span class="nc bnc" id="L804" title="All 2 branches missed.">            } else if (ships[xx][yy].getTypeOfShip() == &quot;Battleship&quot;) {</span>
+<span class="nc" id="L805">                score += 8;</span>
+<span class="nc" id="L806">                JOptionPane.showMessageDialog(null, &quot;You sunk the Battleship!&quot;);</span>
+
+<span class="nc bnc" id="L808" title="All 2 branches missed.">            } else if (ships[xx][yy].getTypeOfShip() == &quot;Cruiser&quot;) {</span>
+<span class="nc" id="L809">                score += 6;</span>
+<span class="nc" id="L810">                JOptionPane.showMessageDialog(null, &quot;You sunk the Cruiser!&quot;);</span>
+<span class="nc bnc" id="L811" title="All 2 branches missed.">            } else if (ships[xx][yy].getTypeOfShip() == &quot;Submarine&quot;) {</span>
+<span class="nc" id="L812">                score += 4;</span>
+<span class="nc" id="L813">                JOptionPane.showMessageDialog(null, &quot;You sunk the Submarine!&quot;);</span>
+<span class="nc bnc" id="L814" title="All 2 branches missed.">            } else if (ships[xx][yy].getTypeOfShip() == &quot;Destroyer&quot;) {</span>
+<span class="nc" id="L815">                score += 2;</span>
+<span class="nc" id="L816">                JOptionPane.showMessageDialog(null, &quot;You sunk the Destroyer!&quot;);</span>
+            }
+        }
+<span class="nc" id="L819">    }</span>
+
+    /**
+     * Method that shows the winner of the game.
+     */
+    public void declareWinnerGUI() {
+<span class="nc bnc" id="L825" title="All 2 branches missed.">        if (s1 &gt; s2) {</span>
+<span class="nc" id="L826">            JOptionPane.showMessageDialog(null, &quot;Player 1 has won the game!&quot;);</span>
+            //closeJOptionPane();
+<span class="nc bnc" id="L828" title="All 2 branches missed.">        } else if (s1 &lt; s2) {</span>
+<span class="nc" id="L829">            JOptionPane.showMessageDialog(null, &quot;Player 2 has won the game!&quot;);</span>
+            //closeJOptionPane();
+        } else {
+            //closeJOptionPane();
+<span class="nc" id="L833">            JOptionPane.showMessageDialog(null, &quot;The Game has not started yet, you both start tied&quot;);</span>
+        }
+<span class="nc" id="L835">    }</span>
+
+    // we want the joptionpane to be able to be closed automatically after 5 seconds
+    //    public static void closeJOptionPane() {
+    //        final JLabel label = new JLabel();
+    //        int timerDelay = 3000;
+    //        new Timer(timerDelay, new ActionListener() {
+    //            int timeLeft = 3;
+    //
+    //            @Override
+    //            public void actionPerformed(ActionEvent e) {
+    //                if (timeLeft &gt; 0) {
+    //                    label.setText(&quot;\&quot;The Game has not started yet, you both start tied\&quot;&quot;);
+    //                    timeLeft--;
+    //                } else {
+    //                    ((Timer) e.getSource()).stop();
+    //                    Window win = SwingUtilities.getWindowAncestor(label);
+    //                    win.setVisible(false);
+    //                }
+    //            }
+    //        }) {{
+    //            setInitialDelay(0);
+    //        }}.start();
+    //
+    //        JOptionPane.showMessageDialog(null, label);
+    //    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

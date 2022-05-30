@@ -1,0 +1,1225 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">project</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">package model;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+
+/**
+ * Game class is the main class of the game.
+ * This class runs the actual Battleship game taking into consideration the game logic.
+ *  @author kelvin.likollari@usi.ch| and ilker.kaymak@usi.ch
+ */
+public class Game {
+    private int playersNumber;
+    private static int x;
+    private static int y;
+
+    // Initializes the player and the AI (Computer)
+    private static Player player; // made public static to be accessible in the main class in TUI
+    private static Player player2; // the second player
+    private static Ai ai;
+    private static Ai ai2;
+
+<span class="fc" id="L24">    private static Field playerField = new Field(); // player field</span>
+<span class="fc" id="L25">    private static Field aiField = new Field(); // ai field</span>
+
+<span class="fc" id="L27">    private static Field aiFieldForPlayer = new Field(); // ai field for player</span>
+
+<span class="fc" id="L29">    private static Field aiFieldForSecondAi = new Field(); // ai field for AI2</span>
+
+<span class="fc" id="L31">    private static Field playerFieldForPlayer = new Field(); // player field for player</span>
+
+<span class="fc" id="L33">    private static Field secondPlayerFieldForPlayer = new Field(); // second player field for player</span>
+
+<span class="fc" id="L35">    private static Field aiFieldForAi = new Field();</span>
+
+<span class="fc" id="L37">    private static Field secondPlayerFieldForAi = new Field(); // second player field for ai</span>
+
+    private final static String name = &quot;Computer&quot;;
+    private boolean turncounter; // if it is true, it is player's turn, else it is AI's turn
+    private boolean isgameover; // if it is true, the game is over
+    private boolean isgamewon; // if it is true, the game is won
+    private boolean isgamelost; // if it is true, the game is lost
+
+    //  The position of the ship on the board, that is, which cell is occupied by the ship.
+<span class="pc" id="L46">    private Field fieldShips = new Field();</span>
+    // fieldShot contains information regarding the position (a cell) that has been shot.
+<span class="pc" id="L48">    private Field fieldShot = new Field();</span>
+<span class="pc" id="L49">    private int shipsShot = 0;</span>
+    private Coordinates coordinates;
+    // a list of integers holding the sizes of the ships
+<span class="fc" id="L52">    private static List&lt;Integer&gt; shipSizes = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc" id="L53">    private static long aiRoomsLeft = 5;</span>
+<span class="fc" id="L54">    private static long playerRoomsLeft = 5;</span>
+
+<span class="fc" id="L56">    private static long secondPlayerRoomsLeft = 5;</span>
+
+<span class="fc" id="L58">    private static long secondAiRoomsLeft = 5;</span>
+    private static final int FIELD_SIZE = 10;
+
+<span class="fc" id="L61">    private static DisplayField display = new DisplayField(FIELD_SIZE, FIELD_SIZE);</span>
+
+    // to be incremented by 1 everytime a ship is hit
+<span class="fc" id="L64">    private static int playerScore = 0;</span>
+
+    // the score of the second player
+<span class="fc" id="L67">    private static int secondPlayerScore = 0;</span>
+
+    // to be incremented by 1 everytime a ship is hit
+<span class="fc" id="L70">    private static int aiScore = 0;</span>
+
+    // the score of the second AI
+<span class="fc" id="L73">    private static int secondAiScore = 0;</span>
+
+    /**
+     * Empty constructor of the Game class.
+     * @param scannerino is the scanner object that is used to read the input from the user.
+     */
+<span class="nc" id="L79">    public Game(Scanner scannerino) {</span>
+
+<span class="nc" id="L81">    }</span>
+
+    /**
+     * Constructor of the Game class.
+     */
+<span class="fc" id="L86">    public Game() {</span>
+        // n is the number of players
+<span class="fc" id="L88">        this.playersNumber = 1;</span>
+<span class="fc" id="L89">        player = new Player();</span>
+<span class="fc" id="L90">        ai = new Ai(name, playersNumber); // check line 23</span>
+<span class="fc" id="L91">        this.turncounter = true;</span>
+<span class="fc" id="L92">        this.isgameover = false;</span>
+<span class="fc" id="L93">        this.isgamewon = false;</span>
+<span class="fc" id="L94">        this.isgamelost = false;</span>
+
+        // we want to insert the ships at random positions
+<span class="fc" id="L97">        fieldShips.placeShipRandomly();</span>
+<span class="fc" id="L98">        fieldShips.placeShipRandomly();</span>
+<span class="fc" id="L99">        fieldShips.placeShipRandomly();</span>
+<span class="fc" id="L100">        fieldShips.placeShipRandomly();</span>
+<span class="fc" id="L101">        fieldShips.placeShipRandomly();</span>
+        //Ship.placeShipsRandomly();
+
+<span class="fc" id="L104">    }</span>
+
+
+    /**
+     * THe following method updates the display of the game.
+     * It is going to update the display of the player's field,
+     * and the display of the AI's field.
+     *
+     * @param field1 is the player's field
+     * @param field2 is the AI's field
+     */
+    public static void updateGameDisplay(Field field1, Field field2) {
+        // update the display of the player's field
+<span class="fc" id="L117">        String[][] playerFieldDisplay = field1.getField(); // get the player's field</span>
+<span class="fc" id="L118">        String[][] aiFieldDisplay = field2.getField(); // get the AI's field</span>
+<span class="fc" id="L119">        display.displayBoard(playerFieldDisplay, aiFieldDisplay); // print the player's field</span>
+        // displayField.printBoard(playerFieldDisplay); // print the player's field
+<span class="fc" id="L121">    }</span>
+
+    /**
+     * The following method is used to update the display of the game in pvp mode.
+     * @param field1 is the player's field
+     * @param field2 is the second player's field
+     */
+    public static void updateGameDisplayPVP(Field field1, Field field2) {
+        // update the display of the player's field
+<span class="nc" id="L130">        String[][] playerFieldDisplay = field1.getField(); // get the player's field</span>
+<span class="nc" id="L131">        String[][] aiFieldDisplay = field2.getField(); // get the AI's field</span>
+<span class="nc" id="L132">        display.displayBoard(playerFieldDisplay, aiFieldDisplay); // print the player's field</span>
+        // displayField.printBoard(playerFieldDisplay); // print the player's field
+<span class="nc" id="L134">    }</span>
+
+
+    /**
+     * This method is used as a helper method for the shipsizes.
+     */
+    public static void shipSizesHelpful() {
+        // first we create a dictionary with the ship sizes
+<span class="nc" id="L142">        int[] shipSizes = {5, 4, 3, 3, 2};</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        for (int shipSize : shipSizes) {</span>
+<span class="nc" id="L144">            Game.shipSizes.add(shipSize);</span>
+        }
+<span class="nc" id="L146">    }</span>
+
+    //    /**
+    //     * This method is used as a helper method for the shipsizes.
+    //      * It is a duplicate of the method above, just for the sake of the test.
+    //
+    //     */
+    //    // TODO: It is a duplicate of the method above, just for the sake of the test.
+    //    public static void shipSizesHelpful1() {
+    //        // first we create a dictionary with the ship sizes
+    //        int[] shipSizes = {5};
+    //        for (int i = 0; i &lt; shipSizes.length; i++) {
+    //            Game.shipSizes.add(shipSizes[i]);
+    //        }
+    //    }
+
+
+
+
+
+    /**
+     * This method is used for the welcoming instructions shown to the user.
+     * @param scannerino the scanner object that is used to get the user input.
+     */
+    public static void welcomingInstructions(Scanner scannerino) {
+<span class="nc" id="L171">        String welcome10 = &quot;Everything clear? (y/n)&quot;;</span>
+<span class="nc" id="L172">        String welcome11 = &quot;Let's start playing then!&quot;;</span>
+        // an array on which we will store the instructions needed for the yes/no question
+<span class="nc" id="L174">        String[] instructions = {welcome10, welcome11};</span>
+        // a loop that will run until the user answers yes to the question
+<span class="nc" id="L176">        int idx = 0;</span>
+        do {
+<span class="nc" id="L178">            System.out.println(instructions[idx]);</span>
+<span class="nc" id="L179">            String answer = scannerino.nextLine();</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">            if (&quot;y&quot;.equals(answer)</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">                    || &quot;yes&quot;.equals(answer)</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">                    || &quot;Y&quot;.equals(answer)</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">                    || &quot;YES&quot;.equals(answer)</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">                    || &quot;Yes&quot;.equals(answer)) {</span>
+<span class="nc" id="L185">                idx++;</span>
+<span class="nc" id="L186">                System.out.println(instructions[idx]);</span>
+<span class="nc" id="L187">                break;</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">            } else if (&quot;ex&quot;.equals(answer)</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">                    || &quot;exit&quot;.equals(answer)</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">                    || &quot;EXIT&quot;.equals(answer)</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">                    || &quot;Exit&quot;.equals(answer)) {</span>
+<span class="nc" id="L192">                break;</span>
+            } else {
+<span class="nc" id="L194">                System.out.println(&quot;Your answer was not recognized. Please try again.&quot;);</span>
+
+            }
+        }
+<span class="nc" id="L198">        while (true);</span>
+<span class="nc" id="L199">    }</span>
+
+    /**
+     * This method asks the player to set the ships manually or randomly,
+     * and then set the ships accordingly.
+     * @param scannerino the scanner object that is used to get the user input.
+     */
+    public static void setPlayerShips(Scanner scannerino) {
+        while (true) {
+            // typing yes will set the ships manually, typing no will set the ships randomly
+<span class="nc" id="L209">            System.out.println(&quot;Would you like to set your ships manually or randomly?&quot;</span>
+                    +
+                    &quot;\nType 'y' or 'Y' for manual placement &quot;
+                    +
+                    &quot;or 'n' or 'N' for random.&quot;);
+<span class="nc" id="L214">            String answer = scannerino.nextLine();</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">            if (&quot;y&quot;.equals(answer)</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">                    || &quot;Y&quot;.equals(answer)) { // if the player wants to set the ships manually</span>
+<span class="nc" id="L217">                setPlayerShipsManually(scannerino);</span>
+<span class="nc" id="L218">                break;</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">            } else if (&quot;n&quot;.equals(answer)</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">                    || &quot;N&quot;.equals(answer)) { // if the player wants to set the ships randomly</span>
+<span class="nc" id="L221">                System.out.println(&quot;You have chosen to set your ships randomly.&quot;);</span>
+<span class="nc" id="L222">                placeShipRandomlyV2(playerFieldForPlayer, player);</span>
+<span class="nc" id="L223">                break;</span>
+            } else {
+<span class="nc" id="L225">                System.out.println(&quot;Your answer was not recognized&quot;);</span>
+            }
+<span class="nc" id="L227">        }</span>
+<span class="nc" id="L228">    }</span>
+
+    /**
+     * This method is used to set the SECOND PLAYER's ships automatically.
+     * @param scannerino the scanner object that is used to get the user input.
+     */
+    public static void setSecondPlayerShips(Scanner scannerino) {
+        while (true) {
+            // typing yes will set the ships manually, typing no will set the ships randomly
+<span class="nc" id="L237">            System.out.println(&quot;Hey Player 2, would you like to set your ships manually or randomly?&quot;</span>
+                    +
+                    &quot;\nType 'y' or 'Y' for manual placement &quot;
+                    +
+                    &quot;or 'n' or 'N' for random.&quot;);
+<span class="nc" id="L242">            String answer = scannerino.nextLine();</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">            if (&quot;y&quot;.equals(answer)</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">                    || &quot;Y&quot;.equals(answer)) { // if the player wants to set the ships manually</span>
+<span class="nc" id="L245">                setSecondPlayerShipsManually(scannerino);</span>
+<span class="nc" id="L246">                break;</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">            } else if (&quot;n&quot;.equals(answer)</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">                    ||(&quot;N&quot;).equals(answer)) { // if the player wants to set the ships randomly</span>
+<span class="nc" id="L249">                System.out.println(&quot;You have chosen to set your ships randomly.&quot;);</span>
+<span class="nc" id="L250">                placeShipRandomlyPVP(secondPlayerFieldForPlayer, player2);</span>
+<span class="nc" id="L251">                break;</span>
+            } else {
+<span class="nc" id="L253">                System.out.println(&quot;Your answer was not recognized&quot;);</span>
+            }
+<span class="nc" id="L255">        }</span>
+<span class="nc" id="L256">    }</span>
+
+    /**
+     * This method is used to set the ships manually.
+     * @param scannerino the scanner object that is used to get the user input.
+     */
+    public static void setPlayerShipsManually(Scanner scannerino) {
+        int x1;
+        int y1;
+        String direction;
+        boolean isValid;
+<span class="nc" id="L267">        String str = &quot;Please enter a ship of length &quot;;</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">        for (int size : shipSizes) {</span>
+<span class="nc" id="L269">            System.out.println(str + size + &quot;.&quot;);</span>
+<span class="nc" id="L270">            isValid = false;</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">            while (isValid == false) {</span>
+<span class="nc" id="L272">                x1 = player.inWhichRowToPutShip(scannerino);</span>
+<span class="nc" id="L273">                y1 = player.inWhichColToPutShip(scannerino);</span>
+<span class="nc" id="L274">                direction = player.whichDirectionToPutShip(scannerino);</span>
+
+<span class="nc bnc" id="L276" title="All 2 branches missed.">                if (playerFieldForPlayer.isValidPlacementForShip(x1, y1, size, direction, true)) {</span>
+<span class="nc" id="L277">                    playerFieldForPlayer.setShipOfDifferentSize(x1, y1, direction, size, player.getSymbol());</span>
+<span class="nc" id="L278">                    updateGameDisplay(playerFieldForPlayer, aiFieldForPlayer);</span>
+<span class="nc" id="L279">                    break;</span>
+                }
+            }
+<span class="nc" id="L282">        }</span>
+<span class="nc" id="L283">    }</span>
+
+    /**
+     * Method that sets the player ship on the field automatically.
+     * @param x1 the x coordinate
+     * @param y1 the y coordinate
+     */
+    public static void setPlayerShipsManually(int x1, int y1) {
+<span class="nc bnc" id="L291" title="All 2 branches missed.">        if (playerFieldForPlayer.isValidMoveV2(x1, y1)) { // If the move is valid.</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">            if (playerFieldForPlayer.checkWhetherHitWasSuccessful(x1, y1)) { // If the move is a hit.</span>
+<span class="nc" id="L293">                playerScore++; // Increase the player's score.</span>
+<span class="nc" id="L294">                System.out.println(&quot;Ship Hit! Congratulations!&quot;);</span>
+<span class="nc" id="L295">                System.out.println(&quot;Current Score: &quot; + playerScore);</span>
+<span class="nc" id="L296">                aiRoomsLeft--; // Decrease the number of rooms left for the ai.</span>
+<span class="nc" id="L297">                aiFieldForPlayer.setHit(x1, y1);  // Set the hit on the player's field.</span>
+<span class="nc" id="L298">                aiFieldForAi.setHit(x1, y1); // Set the hit on the ai's field.</span>
+            } else { // If the move is a miss.
+<span class="nc" id="L300">                System.out.println(&quot;Ship Missed! Try again!&quot;);</span>
+<span class="nc" id="L301">                aiFieldForPlayer.setMissed(x1, y1); // Set the missed on the player's field.</span>
+<span class="nc" id="L302">                aiFieldForAi.setMissed(x1, y1); // Set the missed on the ai's field.</span>
+            }
+        }
+<span class="nc" id="L305">    }</span>
+
+    /**
+     * This method is used to set the SECOND PLAYER's ships manually.
+     * @param scannerino the scanner object that is used to get the user input.
+     */
+    public static void setSecondPlayerShipsManually(Scanner scannerino) {
+        int xx;
+        int yy;
+        String direction;
+        boolean isValid;
+<span class="nc" id="L316">        String str = &quot;Please enter a ship of length &quot;;</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">        for (int size : shipSizes) {</span>
+<span class="nc" id="L318">            System.out.println(str + size + &quot;.&quot;);</span>
+<span class="nc" id="L319">            isValid = false;</span>
+<span class="nc bnc" id="L320" title="All 2 branches missed.">            while (isValid == false) {</span>
+<span class="nc" id="L321">                xx = player.inWhichRowToPutShip(scannerino);</span>
+<span class="nc" id="L322">                yy = player.inWhichColToPutShip(scannerino);</span>
+<span class="nc" id="L323">                direction = player.whichDirectionToPutShip(scannerino);</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">                if (secondPlayerFieldForPlayer.isValidPlacementForShip(xx, yy, size, direction, true)) {</span>
+<span class="nc" id="L325">                    secondPlayerFieldForPlayer.setShipOfDifferentSize(xx, yy, direction, size, player.getSymbol());</span>
+<span class="nc" id="L326">                    updateGameDisplay(playerFieldForPlayer, secondPlayerFieldForPlayer);</span>
+<span class="nc" id="L327">                    break;</span>
+                }
+            }
+<span class="nc" id="L330">        }</span>
+<span class="nc" id="L331">    }</span>
+
+
+    /**
+     * This method places ships randomly on the field.
+     * @param field       the field on which the ships will be placed.
+     * @param gamePlayers the game players to place the ship on.
+     */
+    public static void placeShipRandomlyV2(Field field, GamePlayers gamePlayers) {
+        boolean isFree; // If the ship can be placed.
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">        for (int size : shipSizes) { // Loop through the ships.</span>
+<span class="nc" id="L342">            isFree = false; // The ship is not placed.</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">            while (isFree == false) { // While the ship is not placed.</span>
+<span class="nc" id="L344">                int rx = gamePlayers.generateRandomXCoordinate(); // Generate a random x coordinate.</span>
+<span class="nc" id="L345">                int ry = gamePlayers.generateRandomYCoordinate(); // Generate a random y coordinate.</span>
+<span class="nc" id="L346">                String direction = gamePlayers.generateRandomDirectionForAi(); // Randomly choose a direction.</span>
+
+
+<span class="nc bnc" id="L349" title="All 2 branches missed.">                if (field.isValidPlacementForShip(rx, ry, size, direction, false)) { // If the ship can be placed.</span>
+<span class="nc" id="L350">                    field.directionOnWhereToSetShip(rx, ry, direction, size, ai.getSymbol()); // Set the ship.</span>
+                    // isFree = true; // The ship is placed.
+<span class="nc" id="L352">                    break; // Break the loop.</span>
+                }
+<span class="nc" id="L354">            }</span>
+<span class="nc" id="L355">        }</span>
+<span class="fc" id="L356">    }</span>
+
+    /**
+     * Method that places ships randomly on the field in pvp mode.
+     * @param field      the field on which the ships will be placed
+     * @param gamePlayers the game players to place the ship on
+     */
+    public static void placeShipRandomlyPVP(Field field, GamePlayers gamePlayers) {
+        boolean isFree; // If the ship can be placed.
+<span class="nc bnc" id="L365" title="All 2 branches missed.">        for (int size : shipSizes) { // Loop through the ships.</span>
+<span class="nc" id="L366">            isFree = false; // The ship is not placed.</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">            while (isFree == false) { // While the ship is not placed.</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">                if (gamePlayers == null) {</span>
+<span class="nc" id="L369">                    System.out.println(&quot;debug&quot;);</span>
+                }
+<span class="nc" id="L371">                int rx = gamePlayers.generateRandomXCoordinateForSecondPlayer(); // Generate a random y coord</span>
+<span class="nc" id="L372">                int ry = gamePlayers.generateRandomYCoordinateForSecondPlayer(); // Generate a random y coordinate.</span>
+<span class="nc" id="L373">                String direction = gamePlayers.generateRandomDirectionForSecondPlayer(); // Randomly choose a direction.</span>
+
+<span class="nc bnc" id="L375" title="All 2 branches missed.">                if (field.isValidPlacementForShip(rx, ry, size, direction, false)) { // If the ship can be placed.</span>
+<span class="nc" id="L376">                    field.directionOnWhereToSetShip(rx, ry, direction, size, player.getSymbol()); // Set the ship.</span>
+                    // isFree = true; // The ship is placed.
+<span class="nc" id="L378">                    break; // Break the loop.</span>
+                }
+<span class="nc" id="L380">            }</span>
+<span class="nc" id="L381">        }</span>
+<span class="nc" id="L382">    }</span>
+
+    /**
+     * This method is used to place the ships randomly on the field for the second (left) ai.
+     * @param field the field on which the ships will be placed.
+     * @param gamePlayers the game players to place the ship on.
+     */
+    public static void placeShipRandomlySecondAi(Field field, GamePlayers gamePlayers) {
+        boolean isFree; // If the ship can be placed.
+<span class="nc bnc" id="L391" title="All 2 branches missed.">        for (int size : shipSizes) { // Loop through the ships.</span>
+<span class="nc" id="L392">            isFree = false; // The ship is not placed.</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">            while (isFree == false) { // While the ship is not placed.</span>
+<span class="nc" id="L394">                int rx = gamePlayers.generateRandomXCoordinateForSecondAI(); // Generate a random x coordinate.</span>
+<span class="nc" id="L395">                int ry = gamePlayers.generateRandomYCoordinateForSecondAI(); // Generate a random y coordinate.</span>
+<span class="nc" id="L396">                String direction = gamePlayers.generateRandomDirectionForSecondAI(); // Randomly choose a direction.</span>
+
+
+<span class="nc bnc" id="L399" title="All 2 branches missed.">                if (field.isValidPlacementForShip(rx, ry, size, direction, false)) { // If the ship can be placed.</span>
+<span class="nc" id="L400">                    field.directionOnWhereToSetShip(rx, ry, direction, size, ai2.getSymbol()); // Set the ship.</span>
+                    // isFree = true; // The ship is placed.
+<span class="nc" id="L402">                    break; // Break the loop.</span>
+                }
+<span class="nc" id="L404">            }</span>
+<span class="nc" id="L405">        }</span>
+<span class="nc" id="L406">    }</span>
+
+
+    /**
+     * This method leaves the floor to the ai to set the ships.
+     */
+    public static void setAiShips() {
+<span class="nc" id="L413">        placeShipRandomlyV2(aiFieldForAi, ai);</span>
+<span class="nc" id="L414">    }</span>
+
+    /**
+     * This method leaves the floor to the second ai to set the ships.
+     */
+    public static void setSecondAiShips() {
+<span class="nc" id="L420">        placeShipRandomlySecondAi(aiFieldForSecondAi, ai2);</span>
+<span class="nc" id="L421">    }</span>
+
+
+    /**
+     * Main method called in the TUI used to start the game.
+     * @param scannerino the scanner object that is used to get the user input.
+     */
+    public static void startGamePvsAI(Scanner scannerino) {
+        // check who's turn it is
+        String turn; // The turn.
+        while (true) { // While the game is not over.
+            // if it's the player's turn
+<span class="nc" id="L433">            turn = &quot;Player&quot;; // The turn is the player.</span>
+            // then the player has to make a move
+<span class="nc" id="L435">            playerTurnToMakeAMove(scannerino); // The player makes a move.</span>
+            // makePlayerMove();
+            // update the field after the player makes a move
+<span class="nc" id="L438">            updateGameDisplay(playerFieldForPlayer, aiFieldForPlayer); // Update the game display after the player makes a move.</span>
+            // check if the player has won
+<span class="nc" id="L440">            checkWhoWonTheGame();// If the player has won the game.</span>
+
+            //turn = &quot;Second Player&quot;; // The turn is the second player.
+            //then the second player has to make a move
+            //secondPlayerTurnToMakeAMove(scannerino); // The second player
+            //makeSecondPlayerMove();
+            //update the field after the second player makes a move
+            //updateGameDisplay(playerFieldForPlayer, secondPlayerFieldForPlayer); // Update the game display after the second player makes a move.
+            //check if the second player has won
+            //if (checkWhoWonTheGame() == true) { // If the second player has won the game.
+            //break;
+            //}
+
+            //turn = &quot;Second AI&quot;;  // The turn is the second AI.
+            //then the second AI has to make a move
+            //secondAiTurnToMakeAMove(); // The second AI makes a move.
+            // update the field after the second AI makes a move
+            //updateGameDisplay(aiFieldForAi, secondAiFieldForSecondAi); // Update the game display after the second AI makes a move.
+            //check if the second AI has won
+            //if (checkWhoWonTheGame() == true) { // If the second AI has won the game.
+            //break;
+            //}
+
+            //if it's the ai's turn
+<span class="nc" id="L464">            turn = &quot;AI&quot;; // The turn is the ai.</span>
+            //then the ai has to make a move and update the field
+<span class="nc" id="L466">            aiTurnToMakeAMove(); // The ai makes a move.</span>
+            //makeAIMove(); // The ai makes a move
+            //update the field after the ai makes a move
+<span class="nc" id="L469">            updateGameDisplay(playerFieldForPlayer, aiFieldForPlayer); // Update the game display after the ai makes a move.</span>
+            //check if the ai has won
+<span class="nc bnc" id="L471" title="All 2 branches missed.">            if (checkWhoWonTheGame()) { // If the ai has won the game.</span>
+<span class="nc" id="L472">                break;</span>
+            }
+        }
+<span class="nc" id="L475">        declareWinner(turn); // Declare the winner.</span>
+<span class="nc" id="L476">    }</span>
+
+
+    /**
+     * Main method called in the TUI to start game pvp.
+     * @param scannerino the scanner object that is used to get the user input.
+     */
+    public static void startGamePVP(Scanner scannerino) {
+        // check who's turn it is
+        String turn; // The turn.
+        // If the second player has won the game.
+        do { // While the game is not over.
+            // if it's the player's turn
+<span class="nc" id="L489">            turn = &quot;Player&quot;; // The turn is the player.</span>
+            // then the player has to make a move
+<span class="nc" id="L491">            playerTurnToMakeAMove(scannerino); // The player makes a move.</span>
+            // makePlayerMove();
+            // update the field after the player makes a move
+<span class="nc" id="L494">            updateGameDisplay(playerFieldForPlayer, secondPlayerFieldForPlayer); // Update the game display after the player makes a move.</span>
+            // check if the player has won
+<span class="nc" id="L496">            checkWhoWonTheGame();// If the player has won the game.</span>
+
+            // if it's the second player's turn
+<span class="nc" id="L499">            turn = &quot;Second Player&quot;; // The turn is the second player.</span>
+            // then the second player has to make a move
+<span class="nc" id="L501">            secondPlayerTurnToMakeAMove(scannerino); // The second player</span>
+            // makeSecondPlayerMove();
+            // update the field after the second player makes a move
+<span class="nc" id="L504">            updateGameDisplay(playerFieldForPlayer, secondPlayerFieldForPlayer); // Update the game display after the second player makes a move.</span>
+            // check if the second player has won
+<span class="nc bnc" id="L506" title="All 2 branches missed.">        } while (!checkWhoWonTheGame());</span>
+<span class="nc" id="L507">        declareWinner(turn); // Declare the winner.</span>
+<span class="nc" id="L508">    }</span>
+
+    /**
+     * Method used to start game ai vs ai.
+     * @param scannerino the scanner object that is used to get the user input.
+     */
+    public static void startGameAIvsAI(Scanner scannerino) {
+        String turn; // The turn.
+        // If the game is over.
+        do { // While the game is not over.
+            // if it's the second's ai's turn, i.e. the ai who replaces the player
+<span class="nc" id="L519">            turn = &quot;Second AI&quot;; // The turn is the second ai.</span>
+            // then the second ai has to make a move
+<span class="nc" id="L521">            secondAiTurnToMakeAMove(); // The second ai makes a move.</span>
+            // makeSecondAIMove();
+            // update the field after the second ai makes a move
+            // TODO: There must be mistake below
+<span class="nc" id="L525">            updateGameDisplay(aiFieldForSecondAi, aiFieldForAi); // Update the game display after the second ai makes a move.</span>
+            // check if the second AI has won
+<span class="nc" id="L527">            checkWhoWonTheGame();// If the second ai has won the game.</span>
+
+            // if it's the ai's turn,
+<span class="nc" id="L530">            turn = &quot;AI&quot;; // The turn is the ai.</span>
+            // then the ai has to make a move
+<span class="nc" id="L532">            aiTurnToMakeAMove(); // The ai makes a move.</span>
+            // makeAIMove();
+            // update the field after the ai makes a move
+<span class="nc" id="L535">            updateGameDisplay(aiFieldForSecondAi, aiFieldForAi); // Update the game display after the ai makes a move.</span>
+            // check if the ai has won
+<span class="nc" id="L537">            checkWhoWonTheGame();// If the ai has won the game.</span>
+
+<span class="nc bnc" id="L539" title="All 2 branches missed.">        } while (!checkIfTheGameIsOverAIvsAI());</span>
+<span class="nc" id="L540">        declareWinner(turn); // Declare the winner.</span>
+<span class="nc" id="L541">    }</span>
+
+    /**
+     * Method used to check whether the ai vs ai game is over or not.
+     * @return true if the game is over, false otherwise.
+     */
+    public static boolean checkIfTheGameIsOverAIvsAI() {
+        // If the game is over.
+<span class="pc bpc" id="L549" title="2 of 4 branches missed.">        return secondAiRoomsLeft == 0 || aiRoomsLeft == 0;</span>
+    }
+
+
+    /**
+     * This method declares the winner of the game.
+     * @param lastTurn the turn of the last player.
+     */
+    public static void declareWinner(String lastTurn) {
+        try {
+<span class="pc bpc" id="L559" title="4 of 5 branches missed.">            switch (lastTurn) {</span>
+                case &quot;player&quot;:
+<span class="nc" id="L561">                    Thread.sleep(3000);</span>
+<span class="nc" id="L562">                    System.out.println(&quot;Finally, a real person has won the game.&quot;);</span>
+<span class="nc" id="L563">                    player.wonTheGame(); // The player won the game.</span>
+
+
+<span class="nc" id="L566">                    break;</span>
+                case &quot;ai&quot;:
+<span class="nc" id="L568">                    System.out.println(&quot;Wow&quot;);</span>
+<span class="nc" id="L569">                    Thread.sleep(1000);</span>
+<span class="nc" id="L570">                    System.out.println(&quot;The computer has&quot;);</span>
+<span class="nc" id="L571">                    System.out.println(&quot;won the game.&quot;);</span>
+<span class="nc" id="L572">                    ai.wonTheGameAI();</span>
+<span class="nc" id="L573">                    break;</span>
+                case &quot;Second Player&quot;:
+<span class="nc" id="L575">                    System.out.println(&quot;Person 2 has won the game.&quot;);</span>
+<span class="nc" id="L576">                    Thread.sleep(1000);</span>
+<span class="nc" id="L577">                    System.out.println(&quot;Person 1 has lost the game.&quot;);</span>
+<span class="nc" id="L578">                    player2.wonTheGame();</span>
+<span class="nc" id="L579">                    break;</span>
+                case &quot;Second AI&quot;:
+<span class="nc" id="L581">                    System.out.println(&quot;Second AI has won the game.&quot;);</span>
+<span class="nc" id="L582">                    Thread.sleep(1000);</span>
+<span class="nc" id="L583">                    System.out.println(&quot;First AI has lost the game.&quot;);</span>
+<span class="nc" id="L584">                    ai2.wonTheGameAI();</span>
+                    break;
+            }
+
+<span class="nc" id="L588">        } catch (InterruptedException ex) {</span>
+<span class="nc" id="L589">            System.out.println(&quot;Error: &quot; + ex.getMessage());</span>
+<span class="fc" id="L590">        }</span>
+<span class="fc" id="L591">    }</span>
+
+
+    /**
+     * This method asks the player to make a move.
+     * @param scannerino the scanner object that is used to get the user input.
+     */
+    public static void playerTurnToMakeAMove(Scanner scannerino) {
+        int x1; // the x coordinate
+        int y1; // the y coordinate
+<span class="nc" id="L601">        boolean isValid = false; // if the move is valid</span>
+        try { // try to get the coordinates
+<span class="nc bnc" id="L603" title="All 2 branches missed.">            while (isValid == false) { // while the move is not valid</span>
+<span class="nc" id="L604">                x1 = player.shootPlayerRow(scannerino); // get the x coordinate</span>
+<span class="nc" id="L605">                y1 = player.shootPlayerCol(scannerino); // get the y coordinate</span>
+<span class="nc bnc" id="L606" title="All 2 branches missed.">                if (aiFieldForAi.isValidMoveV2(x1, y1)) { // If the move of the ai is valid.</span>
+<span class="nc bnc" id="L607" title="All 2 branches missed.">                    if (aiFieldForAi.checkWhetherHitWasSuccessful(x1, y1)) { // If the move of the ai is a hit.</span>
+<span class="nc" id="L608">                        playerScore++; // Increase the player's score.</span>
+<span class="nc" id="L609">                        System.out.println(&quot;Ship Hit! Congratulations!&quot;);</span>
+<span class="nc" id="L610">                        System.out.println(&quot;Current Score: &quot; + playerScore);</span>
+<span class="nc" id="L611">                        aiRoomsLeft--; // Decrease the number of rooms left for the ai.</span>
+<span class="nc" id="L612">                        aiFieldForPlayer.setHit(x1, y1);  // Set the hit on the player's field.</span>
+<span class="nc" id="L613">                        aiFieldForAi.setHit(x1, y1); // Set the hit on the ai's field.</span>
+                    } else { // If the move of the ai is a miss.
+<span class="nc" id="L615">                        System.out.println(&quot;Ship Missed! Try again!&quot;);</span>
+<span class="nc" id="L616">                        aiFieldForPlayer.setMissed(x1, y1); // Set the missed on the player's field.</span>
+<span class="nc" id="L617">                        aiFieldForAi.setMissed(x1, y1); // Set the missed on the ai's field.</span>
+                    }
+<span class="nc" id="L619">                    isValid = true; // The move is valid.</span>
+                }
+            }
+<span class="nc" id="L622">        } catch (Exception ex) { // if the move is not valid</span>
+<span class="nc" id="L623">            System.out.println(ex.getMessage()); // print the error message</span>
+<span class="nc" id="L624">        }</span>
+<span class="nc" id="L625">    }</span>
+
+
+
+
+    /**
+     * This method asks the ai to make a move.
+     */
+    public static void aiTurnToMakeAMove() {
+        try {  // try to make a move
+            int x1;  // x coordinate
+            int y1; // y coordinate
+<span class="fc" id="L637">            boolean isValid = false; // whether the move is valid. Default is false.</span>
+            int[] move; // the move
+<span class="fc bfc" id="L639" title="All 2 branches covered.">            while (isValid == false) {</span>
+<span class="fc" id="L640">                move = ai.generateAiMove(); // get the move</span>
+<span class="fc" id="L641">                x1 = move[0]; // x coordinate</span>
+<span class="fc" id="L642">                y1 = move[1]; // y coordinate</span>
+<span class="pc bpc" id="L643" title="1 of 2 branches missed.">                if (playerFieldForPlayer.isValidMoveV2(x1, y1)) { // If the move of the player is valid.</span>
+<span class="pc bpc" id="L644" title="1 of 2 branches missed.">                    if (playerFieldForPlayer.checkWhetherHitWasSuccessful(x1, y1)) { // If the move of the player is a hit.</span>
+<span class="nc" id="L645">                        String str = String.format(&quot;The Machine has hit your ship at row %d, column %d.\n&quot;, x1, y1);</span>
+<span class="nc" id="L646">                        System.out.println(str);</span>
+<span class="nc" id="L647">                        aiScore++; // Increase the ai's score.</span>
+<span class="nc" id="L648">                        System.out.println(&quot;Current Score: &quot; + aiScore);</span>
+<span class="nc" id="L649">                        secondAiRoomsLeft--; // Decrease the number of rooms left.</span>
+<span class="nc" id="L650">                        aiFieldForSecondAi.setHit(x1, y1); // Set the hit in the ai's field.</span>
+<span class="nc" id="L651">                        aiFieldForSecondAi.setHit(x1, y1); // Set the hit in the player's field.</span>
+<span class="nc" id="L652">                    } else { // If the move of the player is a miss.</span>
+<span class="fc" id="L653">                        String str = String.format(&quot;The Machine's attack at row %d, column %d has been a miss.\n&quot;, x1, y1);</span>
+<span class="fc" id="L654">                        System.out.println(str);</span>
+
+<span class="fc" id="L656">                        aiFieldForSecondAi.setMissed(x1, y1); // Set the miss in the player's field.</span>
+<span class="fc" id="L657">                        aiFieldForAi.setMissed(x1, y1); // Set the miss in the ai's field.</span>
+                    }
+<span class="fc" id="L659">                    isValid = true; // The move is valid.</span>
+                }
+            }
+<span class="nc" id="L662">        } catch (Exception ex) { // if the move is not valid.</span>
+<span class="nc" id="L663">            System.out.println(ex.getMessage()); // Print the error message.</span>
+<span class="fc" id="L664">        }</span>
+<span class="fc" id="L665">    }</span>
+
+
+    /**
+     * This method asks the machine to make a move.
+     */
+    public static void makeAIMove() {
+        try {
+<span class="nc" id="L673">            Thread.sleep(1000);</span>
+<span class="nc" id="L674">            boolean hit = false;</span>
+            int x1;
+            int y1;
+            int[] move;
+<span class="nc bnc" id="L678" title="All 2 branches missed.">            while (hit) {</span>
+<span class="nc" id="L679">                move = ai.generateAiMove();</span>
+<span class="nc" id="L680">                x1 = move[0];</span>
+<span class="nc" id="L681">                y1 = move[1];</span>
+                // if valid move
+<span class="nc bnc" id="L683" title="All 2 branches missed.">                if (playerField.isValidMoveV2(x1, y1)) {</span>
+<span class="nc bnc" id="L684" title="All 2 branches missed.">                    if (playerField.checkWhetherHitWasSuccessful(x1, y1)) {</span>
+<span class="nc" id="L685">                        System.out.println(&quot;AI hit a ship!&quot;);</span>
+<span class="nc" id="L686">                        Thread.sleep(1000);</span>
+<span class="nc" id="L687">                        System.out.println(&quot;Your ship was hit at position &quot; + x1 + &quot;,&quot; + y1 + &quot;.&quot;);</span>
+<span class="nc" id="L688">                        Thread.sleep(1000);</span>
+<span class="nc" id="L689">                        aiRoomsLeft--;</span>
+<span class="nc" id="L690">                        playerField.setHit(x1, y1); // update the player field</span>
+<span class="nc" id="L691">                        aiField.setHit(x1, y1); // update the AI field</span>
+                    } else {
+<span class="nc" id="L693">                        System.out.println(&quot;AI missed!&quot;);</span>
+<span class="nc" id="L694">                        Thread.sleep(1000);</span>
+<span class="nc" id="L695">                        System.out.println(&quot;Your ship was not hit at position &quot; + x + &quot;,&quot; + y + &quot;.&quot;);</span>
+<span class="nc" id="L696">                        playerField.setMissed(x1, y1); // update the player field</span>
+<span class="nc" id="L697">                        aiField.setMissed(x1, y1); // update the AI field</span>
+                    }
+<span class="nc" id="L699">                    hit = true;</span>
+                }
+            }
+<span class="nc" id="L702">        } catch (InterruptedException ex) {</span>
+<span class="nc" id="L703">            ex.printStackTrace();</span>
+<span class="nc" id="L704">        }</span>
+<span class="nc" id="L705">    }</span>
+
+
+    /**
+     * This method asks the player to make a move.
+     */
+    public static void makePlayerMove() {
+        try {
+<span class="nc" id="L713">            Thread.sleep(1000);</span>
+<span class="nc" id="L714">            boolean hit = false;</span>
+            int x1;
+            int y1;
+            int[] move;
+<span class="nc bnc" id="L718" title="All 2 branches missed.">            while (hit) {</span>
+<span class="nc" id="L719">                move = player.generateRandomPlayerMove();</span>
+<span class="nc" id="L720">                x1 = move[0];</span>
+<span class="nc" id="L721">                y1 = move[1];</span>
+                // if valid move
+<span class="nc bnc" id="L723" title="All 2 branches missed.">                if (aiField.isValidMoveV2(x1, y1)) {</span>
+<span class="nc bnc" id="L724" title="All 2 branches missed.">                    if (aiField.checkWhetherHitWasSuccessful(x1, y1)) {</span>
+<span class="nc" id="L725">                        System.out.println(&quot;You hit a ship!&quot;);</span>
+<span class="nc" id="L726">                        Thread.sleep(1000);</span>
+<span class="nc" id="L727">                        System.out.println(&quot;AI's ship was hit at position &quot; + x1 + &quot;,&quot; + y1 + &quot;.&quot;);</span>
+<span class="nc" id="L728">                        Thread.sleep(1000);</span>
+<span class="nc" id="L729">                        playerRoomsLeft--;</span>
+<span class="nc" id="L730">                        aiField.setHit(x1, y1); // update the AI field</span>
+<span class="nc" id="L731">                        playerField.setHit(x1, y1); // update the player field</span>
+                    } else {
+<span class="nc" id="L733">                        System.out.println(&quot;You missed!&quot;);</span>
+<span class="nc" id="L734">                        Thread.sleep(2000);</span>
+<span class="nc" id="L735">                        System.out.println(&quot;AI's ship was not hit at position &quot; + x + &quot;,&quot; + y + &quot;.&quot;);</span>
+<span class="nc" id="L736">                        aiField.setMissed(x1, y1); // update the AI field</span>
+<span class="nc" id="L737">                        playerField.setMissed(x1, y1); // update the player field</span>
+                    }
+<span class="nc" id="L739">                    hit = true;</span>
+                }
+            }
+<span class="nc" id="L742">        } catch (InterruptedException ex) {</span>
+<span class="nc" id="L743">            ex.printStackTrace();</span>
+<span class="nc" id="L744">        }</span>
+<span class="nc" id="L745">    }</span>
+
+    /**
+     * This method asks the player what symbol he wants to use for the Ai ships.
+     * @param symbol the symbol the player wants to use
+     */
+    public static void getAiShipSymbol(String symbol) {
+<span class="nc" id="L752">        ai = new Ai(symbol, FIELD_SIZE);</span>
+<span class="nc" id="L753">    }</span>
+
+    /**
+     * This method asks the player what symbol he wants to use for the Ai ships.
+     * @param scannerino the scanner that is used to get the input.
+     */
+    public static void getAiShipSymbol(Scanner scannerino) {
+        String input;
+<span class="nc" id="L761">        boolean validInput = false;</span>
+<span class="nc bnc" id="L762" title="All 2 branches missed.">        while (validInput == false) {</span>
+<span class="nc" id="L763">            System.out.println(&quot;What symbol do you want to use for your ships?&quot;);</span>
+<span class="nc" id="L764">            input = scannerino.nextLine();</span>
+<span class="nc bnc" id="L765" title="All 2 branches missed.">            if (input.length() != 1) {</span>
+<span class="nc" id="L766">                System.out.println(&quot;Please enter a single character input.&quot;);</span>
+<span class="nc" id="L767">                continue;</span>
+            } else {
+<span class="nc" id="L769">                ai = new Ai(input, FIELD_SIZE);</span>
+<span class="nc" id="L770">                validInput = true;</span>
+<span class="nc" id="L771">                break;</span>
+            }
+        }
+<span class="nc" id="L774">    }</span>
+
+    /**
+     * This method gets the player's symbol.
+     * @param scannerino the scanner that is used to get the input.
+     */
+    public static void getPlayerShipSymbol(Scanner scannerino) {
+        String input;
+<span class="nc" id="L782">        boolean validInput = false;</span>
+<span class="nc bnc" id="L783" title="All 2 branches missed.">        while (validInput == false) {</span>
+<span class="nc" id="L784">            System.out.println(&quot;What symbol do you want to use for your ships?&quot;);</span>
+<span class="nc" id="L785">            input = scannerino.nextLine();</span>
+<span class="nc bnc" id="L786" title="All 2 branches missed.">            if (input.length() != 1) {</span>
+<span class="nc" id="L787">                System.out.println(&quot;Please enter a single character input.&quot;);</span>
+<span class="nc" id="L788">                continue;</span>
+            } else {
+<span class="nc" id="L790">                player = new Player(input, FIELD_SIZE);</span>
+<span class="nc" id="L791">                validInput = true;</span>
+<span class="nc" id="L792">                break;</span>
+            }
+        }
+<span class="nc" id="L795">    }</span>
+
+    /**
+     * This method gets the second's player symbol.
+     * @param scannerino the scanner that is used to get the input.
+     */
+    public static void getSecondPlayerShipSymbol(Scanner scannerino) {
+        String input;
+<span class="nc" id="L803">        boolean validInput = false;</span>
+<span class="nc bnc" id="L804" title="All 2 branches missed.">        while (validInput == false) {</span>
+<span class="nc" id="L805">            System.out.println(&quot;What symbol do you want to use for your ships?&quot;);</span>
+<span class="nc" id="L806">            input = scannerino.nextLine();</span>
+<span class="nc bnc" id="L807" title="All 2 branches missed.">            if (input.length() != 1) {</span>
+<span class="nc" id="L808">                System.out.println(&quot;Please enter a single character input.&quot;);</span>
+<span class="nc" id="L809">                continue;</span>
+            } else {
+<span class="nc" id="L811">                player2 = new Player(input, FIELD_SIZE);</span>
+<span class="nc" id="L812">                validInput = true;</span>
+<span class="nc" id="L813">                break;</span>
+            }
+        }
+<span class="nc" id="L816">    }</span>
+
+
+    /**
+     * This method asks the player what symbol he wants to use for the second Ai ship.
+     * @param scannerino the scanner that is used to get the input.
+     */
+    public static void getSecondAiShipSymbol(Scanner scannerino) {
+        String input;
+<span class="nc" id="L825">        boolean validInput = false;</span>
+<span class="nc bnc" id="L826" title="All 2 branches missed.">        while (validInput == false) {</span>
+<span class="nc" id="L827">            System.out.println(&quot;What symbol do you want to use for your ships?&quot;);</span>
+<span class="nc" id="L828">            input = scannerino.nextLine();</span>
+<span class="nc bnc" id="L829" title="All 2 branches missed.">            if (input.length() != 1) {</span>
+<span class="nc" id="L830">                System.out.println(&quot;Please enter a single character input.&quot;);</span>
+<span class="nc" id="L831">                continue;</span>
+            } else {
+<span class="nc" id="L833">                ai2 = new Ai(input, FIELD_SIZE);</span>
+<span class="nc" id="L834">                validInput = true;</span>
+<span class="nc" id="L835">                break;</span>
+            }
+        }
+<span class="nc" id="L838">    }</span>
+
+    /**
+     * Get symbol of the second AI player.
+     * In this case, the second AI player is the one that is going to replace the player that was doing the move first.
+     * @param symbol the symbol of the second AI player.
+     */
+    public static void getSecondAiShipSymbol(String symbol) {
+<span class="nc" id="L846">        ai2 = new Ai(symbol, FIELD_SIZE);</span>
+<span class="nc" id="L847">    }</span>
+
+
+
+    /**
+     * Method that checks who won the game.
+     * @return a boolean that is true if the player won the game.
+     */
+    public static boolean checkWhoWonTheGame() {
+        // Or if the AI has no more rooms left.
+<span class="nc bnc" id="L857" title="All 2 branches missed.">        if (playerRoomsLeft == 0) {</span>
+<span class="nc" id="L858">            System.out.println(&quot;You lost!&quot;);</span>
+<span class="nc" id="L859">            return true;</span>
+        }
+        // Or if the player has no more rooms left.
+<span class="nc bnc" id="L862" title="All 2 branches missed.">        if (aiRoomsLeft == 0) {</span>
+<span class="nc" id="L863">            System.out.println(&quot;You won!&quot;);</span>
+<span class="nc" id="L864">            return true;</span>
+        }
+
+        // if the second player has no more rooms left.
+<span class="nc bnc" id="L868" title="All 2 branches missed.">        if (secondPlayerRoomsLeft == 0) {</span>
+<span class="nc" id="L869">            System.out.println(&quot;Hey Player 2! You lost!&quot;);</span>
+<span class="nc" id="L870">            return true;</span>
+        }
+
+        // if the second AI has no more rooms left.
+<span class="nc bnc" id="L874" title="All 2 branches missed.">        if (secondPlayerRoomsLeft == 0) {</span>
+<span class="nc" id="L875">            System.out.println(&quot;Hey AI 1! You lost!&quot;);</span>
+<span class="nc" id="L876">            return true;</span>
+        }
+
+<span class="nc" id="L879">        return false;</span>
+    }
+
+    /**
+     * This method prints the highest score.
+     * @param scannerino the scanner that is used to get the input.
+     */
+    public static void printHighestScore(Scanner scannerino) {
+<span class="nc bnc" id="L887" title="All 2 branches missed.">        if (playerScore &gt; aiScore) {</span>
+<span class="nc" id="L888">            System.out.println(&quot;You won the game with a score of &quot;</span>
+                    + playerScore
+                    + &quot; to &quot; + aiScore
+                    + &quot;.&quot;);
+<span class="nc bnc" id="L892" title="All 2 branches missed.">        } else if (playerScore &lt; aiScore) {</span>
+<span class="nc" id="L893">            System.out.println(&quot;You lost the game with a score of &quot;</span>
+                    + playerScore
+                    + &quot; to &quot; + aiScore
+                    + &quot;.&quot;);
+<span class="nc bnc" id="L897" title="All 2 branches missed.">        } else if (playerScore &gt; secondPlayerScore) {</span>
+<span class="nc" id="L898">            System.out.println(&quot;Player 1 won the game &quot;</span>
+                    + &quot;with a score of &quot;
+                    + playerScore
+                    + &quot; to &quot; + secondPlayerScore
+                    + &quot;.&quot;);
+<span class="nc bnc" id="L903" title="All 2 branches missed.">        } else if (playerScore &lt; secondPlayerScore) {</span>
+<span class="nc" id="L904">            System.out.println(&quot;Player 2 won the game with a score of &quot;</span>
+                    + playerScore
+                    + &quot; to &quot;
+                    + secondPlayerScore
+                    + &quot;.&quot;);
+<span class="nc bnc" id="L909" title="All 2 branches missed.">        } else if (aiScore &gt; secondAiScore) {</span>
+<span class="nc" id="L910">            System.out.println(&quot;AI 1 won the game with a score of &quot;</span>
+                    + aiScore
+                    + &quot; to &quot; + secondAiScore
+                    + &quot;.&quot;);
+<span class="nc bnc" id="L914" title="All 2 branches missed.">        } else if (aiScore &lt; secondAiScore) {</span>
+<span class="nc" id="L915">            System.out.println(&quot;AI 2 won the game with a score of &quot;</span>
+                    + aiScore
+                    + &quot; to &quot; + secondAiScore
+                    + &quot;.&quot;);
+        } else {
+<span class="nc" id="L920">            System.out.println(&quot;It's a draw!&quot;);</span>
+        }
+<span class="nc" id="L922">    }</span>
+
+    /**
+     * The following method adds a second player instead of the AI.
+     * @param scannerino the scanner that is used to get the input.
+     */
+    public static void secondPlayerTurnToMakeAMove(Scanner scannerino) {
+        int x2; // the x coordinate
+        int y2; // the y coordinate
+<span class="nc" id="L931">        boolean isValid = false; // if the move is valid</span>
+        try { // try to get the coordinates
+<span class="nc bnc" id="L933" title="All 2 branches missed.">            while (isValid) { // while the move is not valid</span>
+<span class="nc" id="L934">                x2 = player.shootPlayerRow(scannerino); // get the x coordinate</span>
+<span class="nc" id="L935">                y2 = player.shootPlayerCol(scannerino); // get the y coordinate</span>
+<span class="nc bnc" id="L936" title="All 2 branches missed.">                if (secondPlayerFieldForPlayer.isValidMoveV2(x2, y2)) { // If the move of the ai is valid.</span>
+<span class="nc bnc" id="L937" title="All 2 branches missed.">                    if (secondPlayerFieldForPlayer.checkWhetherHitWasSuccessful(x2, y2)) { // If the move of the ai is a hit.</span>
+<span class="nc" id="L938">                        secondPlayerScore++; // Increase the second player's score.</span>
+<span class="nc" id="L939">                        System.out.println(&quot;The second Player has hit a ship! Congratulations!&quot;);</span>
+<span class="nc" id="L940">                        System.out.println(&quot;Current Score: &quot; + secondPlayerScore);</span>
+<span class="nc" id="L941">                        secondPlayerRoomsLeft--; // Decrease the number of rooms left for the ai.</span>
+<span class="nc" id="L942">                        secondPlayerFieldForPlayer.setHit(x2, y2);  // Set the hit on the player's field.</span>
+<span class="nc" id="L943">                        secondPlayerFieldForPlayer.setHit(x2, y2); // Set the hit on the second player's field.</span>
+                    } else { // If the move of the second player is a miss.
+<span class="nc" id="L945">                        System.out.println(&quot;Hey 2nd player, Ship Missed! Try again!&quot;);</span>
+<span class="nc" id="L946">                        secondPlayerFieldForPlayer.setMissed(x2, y2); // Set the missed on the player's field.</span>
+<span class="nc" id="L947">                        secondPlayerFieldForPlayer.setMissed(x2, y2); // Set the missed on the ai's field.</span>
+                    }
+<span class="nc" id="L949">                    isValid = true; // The move is valid.</span>
+                }
+            }
+<span class="nc" id="L952">        } catch (Exception ex) { // if the move is not valid</span>
+<span class="nc" id="L953">            System.out.println(ex.getMessage()); // print the error message</span>
+<span class="nc" id="L954">        }</span>
+<span class="nc" id="L955">    }</span>
+
+    /**
+     * The following method implements an AI based game between 2 computers.
+     */
+    public static void secondAiTurnToMakeAMove() {
+        try {  // try to make a move
+            int x3;  // x coordinate
+            int y3; // y coordinate
+<span class="fc" id="L964">            boolean isValid = false; // whether the move is valid. Default is false.</span>
+            int[] move; // the move
+<span class="pc bpc" id="L966" title="1 of 2 branches missed.">            while (isValid) {</span>
+<span class="nc" id="L967">                move = ai2.generateAiMoveForSecondAi(); // get the move</span>
+<span class="nc" id="L968">                x3 = move[0]; // x coordinate</span>
+<span class="nc" id="L969">                y3 = move[1]; // y coordinate</span>
+<span class="nc bnc" id="L970" title="All 2 branches missed.">                if (aiFieldForSecondAi.isValidMoveV2(x3, y3)) { // If the move of the second ai is valid.</span>
+<span class="nc bnc" id="L971" title="All 2 branches missed.">                    if (aiFieldForSecondAi.checkWhetherHitWasSuccessful(x3, y3)) { // If the move of the player is a hit.</span>
+<span class="nc" id="L972">                        String str = String.format(&quot;Machine 2 has hit a ship at row %d, column %d.\n&quot;, x3, y3);</span>
+<span class="nc" id="L973">                        System.out.println(str);</span>
+<span class="nc" id="L974">                        secondAiScore++; // Increase the seconds ai's score.</span>
+<span class="nc" id="L975">                        System.out.println(&quot;Current Score: &quot; + secondAiScore);</span>
+<span class="nc" id="L976">                        secondAiRoomsLeft--; // Decrease the number of rooms left.</span>
+<span class="nc" id="L977">                        aiFieldForSecondAi.setHit(x3, y3); // Set the hit in the first ai's field.</span>
+<span class="nc" id="L978">                        aiFieldForAi.setHit(x3, y3); // Set the hit in the player's field.</span>
+<span class="nc" id="L979">                    } else { // If the move of the player is a miss.</span>
+<span class="nc" id="L980">                        String str = String.format(&quot;The Machine's attack at row %d, column %d has been a miss.\n&quot;, x3, y3);</span>
+<span class="nc" id="L981">                        System.out.println(str);</span>
+
+<span class="nc" id="L983">                        aiFieldForSecondAi.setMissed(x3, y3); // Set the miss in the player's field.</span>
+<span class="nc" id="L984">                        secondPlayerFieldForAi.setMissed(x3, y3); // Set the miss in the ai's field.</span>
+                    }
+<span class="nc" id="L986">                    isValid = true; // The move is valid.</span>
+                } else { // If the move of the second ai is not valid.
+<span class="nc" id="L988">                    System.out.println(&quot;The Machine's attack at row &quot; + x3 + &quot;, column &quot; + y3 + &quot; is invalid. Try again.&quot;);</span>
+                }
+            }
+<span class="nc" id="L991">        } catch (Exception ex) { // if the move is not valid.</span>
+<span class="nc" id="L992">            System.out.println(ex.getMessage()); // Print the error message.</span>
+<span class="fc" id="L993">        }</span>
+
+<span class="fc" id="L995">    }</span>
+
+    /**
+     * Main method called in the TUI used to start the game.
+     * @param scannerino the scanner object that is used to get the user input.
+     */
+    public static void startGameTest(Scanner scannerino) {
+        // check who's turn it is
+        String turn; // The turn.
+        while (true) { // While the game is not over.
+            // do an if condition taking users input and deciding which of the 3
+            // game modes we will play: ai vs ai, player vs ai, player vs player
+            // and then call the appropriate method to play the game.
+<span class="nc" id="L1008">            Scanner scanner = new Scanner(System.in);</span>
+<span class="nc" id="L1009">            System.out.println(&quot;What game mode do you want to play?\n&quot;</span>
+                    + &quot;1. Player vs Player\n&quot;
+                    + &quot;2. Player vs AI\n&quot;
+                    + &quot;3. AI vs AI\n&quot;
+                    + &quot;4. Exit\n&quot;);
+<span class="nc" id="L1014">            int gameMode = scanner.nextInt();</span>
+
+<span class="nc bnc" id="L1016" title="All 2 branches missed.">            if (gameMode == 1) {</span>
+<span class="nc" id="L1017">                System.out.println(&quot;You have chosen to play Player vs Player.\n&quot;);</span>
+<span class="nc" id="L1018">                turn = &quot;Player&quot;; // The turn is the player.</span>
+                // then the player1 has to make a move
+<span class="nc" id="L1020">                playerTurnToMakeAMove(scannerino); // The player makes a move.</span>
+                // makePlayerMove();
+                // update the field after the player makes a move
+<span class="nc" id="L1023">                updateGameDisplay(playerFieldForPlayer, secondPlayerFieldForPlayer); // Update the game display after the player makes a move.</span>
+                // check if the player has won
+<span class="nc" id="L1025">                checkWhoWonTheGame();// If the player has won the game.</span>
+                // second player has to make a move
+<span class="nc" id="L1027">                turn = &quot;Second Player&quot;; // The turn is the player.</span>
+<span class="nc" id="L1028">                secondPlayerTurnToMakeAMove(scannerino); // The second player makes a move.</span>
+                // makeSecondPlayerMove();
+                // update the field after the second player makes a move
+<span class="nc" id="L1031">                updateGameDisplay(playerFieldForPlayer, secondPlayerFieldForPlayer); // Update the game display after the second player makes a move.</span>
+                // check if the second player has won
+<span class="nc bnc" id="L1033" title="All 2 branches missed.">                if (checkWhoWonTheGame()) { // If the second player has won the game.</span>
+<span class="nc" id="L1034">                    break;</span>
+                }
+<span class="nc bnc" id="L1036" title="All 2 branches missed.">            } else if (gameMode == 2) {</span>
+<span class="nc" id="L1037">                System.out.println(&quot;You have chosen to play Player vs AI.\n&quot;);</span>
+<span class="nc" id="L1038">                turn = &quot;Player&quot;; // The turn is the player.</span>
+                // then the player1 has to make a move
+<span class="nc" id="L1040">                playerTurnToMakeAMove(scannerino); // The player makes a move.</span>
+                // makePlayerMove();
+                // update the field after the player makes a move
+<span class="nc" id="L1043">                updateGameDisplay(playerFieldForPlayer, aiFieldForPlayer); // Update the game display after the player makes a move.</span>
+                // check if the player has won
+<span class="nc" id="L1045">                checkWhoWonTheGame();// If the player has won the game.</span>
+// then the second player has to make a move
+                // where the second player is the AI
+<span class="nc" id="L1048">                turn = &quot;AI&quot;; // The turn is the AI.</span>
+<span class="nc" id="L1049">                aiTurnToMakeAMove(); // The AI makes a move.</span>
+                // update the field after the AI makes a move
+<span class="nc" id="L1051">                updateGameDisplay(playerFieldForPlayer, aiFieldForPlayer); // Update the game display after the AI makes a move.</span>
+                // check if the AI has won
+<span class="nc bnc" id="L1053" title="All 2 branches missed.">                if (checkWhoWonTheGame()) { // If the AI has won the game.</span>
+<span class="nc" id="L1054">                    break;</span>
+                }
+
+<span class="nc bnc" id="L1057" title="All 2 branches missed.">            } else if (gameMode == 3) {</span>
+<span class="nc" id="L1058">                System.out.println(&quot;You have chosen to play AI vs AI.\n&quot;);</span>
+<span class="nc" id="L1059">                turn = &quot;Second AI&quot;; // The turn is the AI.</span>
+                // then the second ai (the ai that replaced the player) has to make a move
+<span class="nc" id="L1061">                secondAiTurnToMakeAMove(); // The second AI makes a move.</span>
+                // update the field after the second ai makes a move
+<span class="nc" id="L1063">                updateGameDisplay(aiFieldForSecondAi, aiFieldForAi); // Update the game display after the second AI makes a move.</span>
+                // check if the second ai has won
+<span class="nc" id="L1065">                checkWhoWonTheGame();// If the second AI has won the game.</span>
+                // then the first ai (the ai that replaced the second ai) has to make a move
+<span class="nc" id="L1067">                turn = &quot;Second AI&quot;; // The turn is the second AI.</span>
+<span class="nc" id="L1068">                aiTurnToMakeAMove(); // The first AI makes a move.</span>
+                // update the field after the first ai makes a move
+<span class="nc" id="L1070">                updateGameDisplay(aiFieldForSecondAi, aiFieldForAi); // Update the game display after the first AI</span>
+                // makes a move., aiFieldForPlayer); // Update the game display after
+                // the first AI makes a move.
+
+                // check if the first ai has won
+<span class="nc bnc" id="L1075" title="All 2 branches missed.">                if (checkWhoWonTheGame()) { // If the first AI has won the game.</span>
+<span class="nc" id="L1076">                    break;</span>
+                }
+
+<span class="nc bnc" id="L1079" title="All 2 branches missed.">            } else if (gameMode == 4) {</span>
+                // you chose to exit the game
+<span class="nc" id="L1081">                System.out.println(&quot;You have chosen to exit the game.\n&quot;);</span>
+            }  // else do nothing
+
+<span class="nc" id="L1084">        }</span>
+<span class="nc" id="L1085">        declareWinner(turn); // Declare the winner.</span>
+<span class="nc" id="L1086">    }</span>
+
+
+    // ---------- The methods below are not currently used -----------------------------------
+
+    /**
+     * This method is used to change the turn of the player/AI.
+     * @return true if the turn is changed, false if the turn is not changed
+     */
+    public boolean changeTurn() {
+<span class="fc bfc" id="L1096" title="All 2 branches covered.">        return this.turncounter = !turncounter;</span>
+    }
+
+    /**
+     * This method is used to check if the game is over.
+     * @return true if the game is over, false if the game is not over
+     */
+    // this checks if the game is over
+    public boolean isGameOver() {
+<span class="fc" id="L1105">        return isgameover;</span>
+    }
+
+    /**
+     * This method is used to check if the game is won.
+     * @return true if the game is won, false if the game is not won
+     */
+    public boolean isGameWon() {
+<span class="fc" id="L1113">        return isgamewon;</span>
+    }
+
+    /**
+     * This method is used to check if the game is lost.
+     *
+     * @return true if the game is lost, false if the game is not lost
+     */
+    public boolean isGameLost() {
+<span class="fc" id="L1122">        return isgamelost;</span>
+    }
+
+    /**
+     * This method is used to return the player's score.
+     *
+     * @return the player's score.
+     */
+    public int getScore() {
+<span class="fc" id="L1131">        return player.getScore();</span>
+    }
+
+    /**
+     * This method is used to return the AI's score.
+     *
+     * @return the AI's score.
+     */
+    public int getAiScore() {
+<span class="fc" id="L1140">        return ai.getAiScore();</span>
+    }
+
+    /**
+     * This method is used to return the player's name.
+     * @return the player's name.
+     */
+    public String getPlayerName() {
+<span class="fc" id="L1148">        return player.getName();</span>
+    }
+
+    /**
+     * This method is used to return the AI's name.
+     * @return the AI's name.
+     */
+    public String getAiName() {
+<span class="fc" id="L1156">        return ai.getAiName();</span>
+    }
+
+    /**
+     * This method is used to set the player's name.
+     * @param player the player's name.
+     */
+    public void setPlayerName(String player) {
+<span class="fc" id="L1164">        Game.player.setName(player);</span>
+<span class="fc" id="L1165">    }</span>
+
+    /**
+     * The following method is used to shoot.
+     * It checks if the shot is valid with respect to the board coordinates.
+     * If the shot is valid, it checks if the shot is a hit or a miss.
+     * This method is used in the TUI.
+     * @param x1 the x coordinate of the shot.
+     * @param y1 the y coordinate of the shot.
+     * @return true if the shot is a hit, false if the shot is a miss.
+     */
+    public boolean shoot(final int x1, final int y1) {
+<span class="fc" id="L1177">        boolean result = false; // this is the default value of the boolean</span>
+<span class="pc bpc" id="L1178" title="4 of 8 branches missed.">        if (x1 &lt; 0 || x1 &gt; 9 || y1 &lt; 0 || y1 &gt; 9) { // checks if the shot is valid, which is not.</span>
+<span class="nc" id="L1179">            System.out.println(&quot;Invalid coordinates.&quot;);</span>
+        } else { // if the shot is valid
+<span class="fc" id="L1181">            fieldShot.shootGrid(x1, y1); // this is the shot</span>
+<span class="pc bpc" id="L1182" title="1 of 2 branches missed.">            if (fieldShips.shootAtCell(x1, y1)) { // if the shot, shot at a cell is a hit</span>
+                // increment the number of shots
+<span class="nc" id="L1184">                this.shipsShot++;</span>
+<span class="nc" id="L1185">                result = true; // the shot is a hit</span>
+            }
+        }
+<span class="fc" id="L1188">        return result; // return true if the shot is a hit, false if the shot is a miss.</span>
+    }
+
+
+    /**
+     * This method returns the x coordinate.
+     *
+     * @return the x coordinate.
+     */
+    public int getX() {
+<span class="fc" id="L1198">        return x;</span>
+    }
+
+    /**
+     * This method set the x coordinate.
+     * @param x1 the x coordinate.
+     */
+    public void setX(int x1) {
+<span class="fc" id="L1206">        x = x1;</span>
+<span class="fc" id="L1207">    }</span>
+
+    /**
+     * This method returns the y coordinate.
+     * @return the y coordinate.
+     */
+    public int getY() {
+<span class="fc" id="L1214">        return y;</span>
+    }
+
+    /**
+     * This method sets the y coordinate.
+     * @param y1 the y coordinate.
+     */
+    public void setY(int y1) {
+<span class="fc" id="L1222">        y = y1;</span>
+<span class="fc" id="L1223">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
