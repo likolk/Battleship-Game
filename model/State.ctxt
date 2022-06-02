@@ -1,4 +1,0 @@
-#BlueJ class context
-comment0.target=State
-comment0.text=\n\ The\ state\ of\ a\ shot.\ A\ shot\ can\ be\ in\ one\ of\ the\ following\ states\:\n\ HIT,\ MISS,\ SUNK,\ or\ UNKNOWN.\n\ @author\ kelvin.likollari@usi.ch\n
-numComments=1

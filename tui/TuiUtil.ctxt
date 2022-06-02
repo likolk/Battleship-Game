@@ -1,7 +1,0 @@
-#BlueJ class context
-comment0.target=TuiUtil
-comment0.text=\n\ Text-User-Interface\ for\ the\ Battleship\ game.\n\ This\ class\ represents\ the\ Battleship\ game\ and\ provides\ a\ TUI.\n\ @author\ kelvin.likollari@usi.ch\n
-comment1.params=
-comment1.target=void\ run()
-comment1.text=\n\ run\ method\ -\ This\ is\ the\ main\ method\ of\ the\ TUI.\n\ @throws\ InterruptedException\ if\ the\ thread\ is\ interrupted\n
-numComments=2
