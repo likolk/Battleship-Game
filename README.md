@@ -2,8 +2,6 @@
 ## **`Kelvin Likollari - Battleship Project`**
 
 
-
-
 ### ```29 May 2022```
 Call of Ships is a clone of the original Battleship Game.
 
